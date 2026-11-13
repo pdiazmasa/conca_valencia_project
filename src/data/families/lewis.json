@@ -1,0 +1,56 @@
+{
+  "id": "lewis",
+  "displayName": "Lewis family",
+  "verified": false,
+  "source": "Team notes, pending verification against the Sherpas MCP",
+  "members": [
+    { "id": "samantha", "name": "Samantha" }
+  ],
+  "headline": "No debt, college starting, and a new home in 2030: what now?",
+  "facts": {
+    "planScore": 82,
+    "savingsRunOutAge": 73,
+    "newHomeYear": 2030
+  },
+  "factKinds": {
+    "planScore": "score",
+    "savingsRunOutAge": "age"
+  },
+  "questions": [
+    {
+      "id": "run_out_age",
+      "prompt": "At what age do you think your savings would run out?",
+      "type": "slider",
+      "scale": {
+        "kind": "age",
+        "min": 50,
+        "max": 95,
+        "step": 1,
+        "unit": "age"
+      },
+      "planFactKey": "savingsRunOutAge",
+      "revealSentence": "Your plan scores {planScore}, and still your savings run out at {savingsRunOutAge}."
+    },
+    {
+      "id": "plan_score",
+      "prompt": "What score do you think your plan got?",
+      "type": "slider",
+      "scale": {
+        "kind": "score",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "score"
+      },
+      "planFactKey": "planScore",
+      "revealSentence": "Your plan scores {planScore}."
+    }
+  ],
+  "recommendations": [
+    {
+      "id": "review_home",
+      "label": "Review the 2030 home goal with your advisor",
+      "detail": "Your advisor has the options already calculated."
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "id": "weah",
+  "displayName": "Weah family",
+  "verified": false,
+  "source": "Team notes, pending verification against the Sherpas MCP",
+  "members": [
+    { "id": "timothy", "name": "Timothy" },
+    { "id": "melanie", "name": "Melanie" }
+  ],
+  "headline": "Lots of cash and an expensive credit card: where does each dollar go?",
+  "facts": {
+    "planScore": 60,
+    "cash": 150000,
+    "cardBalance": 18000,
+    "cardRate": 18,
+    "cardInterestPerYear": 3240,
+    "scoreAfterStep1": 62,
+    "scoreAfterStep2": 73,
+    "scoreAfterStep3": 78
+  },
+  "factKinds": {
+    "planScore": "score",
+    "cash": "usd",
+    "cardBalance": "usd",
+    "cardRate": "percent",
+    "cardInterestPerYear": "usd_per_year",
+    "scoreAfterStep1": "score",
+    "scoreAfterStep2": "score",
+    "scoreAfterStep3": "score"
+  },
+  "questions": [
+    {
+      "id": "card_interest",
+      "prompt": "How much do you think you pay in credit card interest each year?",
+      "type": "slider",
+      "scale": {
+        "kind": "usd_per_year",
+        "min": 0,
+        "max": 6000,
+        "step": 60,
+        "unit": "$/year"
+      },
+      "planFactKey": "cardInterestPerYear",
+      "revealSentence": "Your plan says you pay about {plan} a year in card interest, while {cash} sits in cash."
+    },
+    {
+      "id": "plan_score",
+      "prompt": "What score do you think your plan got?",
+      "type": "slider",
+      "scale": {
+        "kind": "score",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "score"
+      },
+      "planFactKey": "planScore",
+      "revealSentence": "Your plan scores {planScore}."
+    }
+  ],
+  "recommendations": [
+    {
+      "id": "pay_card",
+      "label": "Pay off the credit card with cash",
+      "detail": "Use part of your cash to clear the {cardBalance} card at {cardRate}%.",
+      "scoreAfterFactKey": "scoreAfterStep1"
+    },
+    {
+      "id": "life_insurance",
+      "label": "Life insurance for both of you",
+      "detail": "Protect the family if one income stops.",
+      "scoreAfterFactKey": "scoreAfterStep2"
+    },
+    {
+      "id": "college",
+      "label": "Start saving for Liam and Josh's college",
+      "detail": "Put money aside for both boys.",
+      "scoreAfterFactKey": "scoreAfterStep3"
+    },
+    {
+      "id": "liability",
+      "label": "Add liability insurance",
+      "detail": "Cover the family against a lawsuit."
+    }
+  ]
+}
