@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FAMILIES, PROBES, formatValue, type Family } from "./data";
+import { FAMILIES, formatValue, type Family } from "./data";
 
 type Dir = "forward" | "back";
 type State = {
@@ -71,31 +71,32 @@ function QuestionScreen({
   onChange: (v: number) => void;
   onNext: () => void;
 }) {
-  const probe = PROBES[family.probes[index]];
-  const pct = ((value - probe.min) / (probe.max - probe.min)) * 100;
+  const probe = family.probes[index];
+  const { input } = probe;
+  const pct = ((value - input.min) / (input.max - input.min)) * 100;
   return (
     <main className="content">
       <p className="eyebrow">
-        Familia {family.name} · {index + 1} de {family.probes.length}
+        {family.name} · {index + 1} de {family.probes.length}
       </p>
       <h1 className="question">{probe.question}</h1>
       <p className="value" aria-live="polite">
-        {formatValue(probe, value)}
+        {formatValue(input, value)}
       </p>
       <input
         className="slider"
         type="range"
-        min={probe.min}
-        max={probe.max}
-        step={probe.step}
+        min={input.min}
+        max={input.max}
+        step={input.step}
         value={value}
         style={{ ["--pct" as string]: `${pct}%` }}
         onChange={(e) => onChange(Number(e.target.value))}
         aria-label={probe.question}
       />
       <div className="range-labels">
-        <span>{formatValue(probe, probe.min)}</span>
-        <span>{formatValue(probe, probe.max)}</span>
+        <span>{formatValue(input, input.min)}</span>
+        <span>{formatValue(input, input.max)}</span>
       </div>
       <button type="button" className="pill pill-filled" onClick={onNext}>
         Continuar
@@ -103,7 +104,7 @@ function QuestionScreen({
       <p className="footnote">Según tu plan. Son proyecciones, no certezas.</p>
       <div className="dots" aria-hidden="true">
         {family.probes.map((p, i) => (
-          <span key={p} className={i === index ? "dot active" : "dot"} />
+          <span key={p.id} className={i === index ? "dot active" : "dot"} />
         ))}
       </div>
     </main>
@@ -143,11 +144,11 @@ export default function App() {
           <QuestionScreen
             family={s.family}
             index={s.index}
-            value={s.answers[s.family.probes[s.index]] ?? PROBES[s.family.probes[s.index]].initial}
+            value={s.answers[s.family.probes[s.index].id] ?? s.family.probes[s.index].input.initial}
             onChange={(v) =>
               setS((cur) => ({
                 ...cur,
-                answers: { ...cur.answers, [s.family!.probes[cur.index]]: v },
+                answers: { ...cur.answers, [s.family!.probes[cur.index].id]: v },
               }))
             }
             onNext={next}

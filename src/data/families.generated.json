@@ -1,0 +1,475 @@
+{
+  "source": "MCP de Sherpas",
+  "families": [
+    {
+      "id": "timothy-melanie-weah",
+      "name": "Timothy y Melanie Weah",
+      "household": [
+        {
+          "name": "Timothy",
+          "role": "client",
+          "age": 40
+        },
+        {
+          "name": "Melanie",
+          "role": "co-client",
+          "age": 38
+        },
+        {
+          "name": "Liam",
+          "role": "child",
+          "age": 6
+        },
+        {
+          "name": "Josh",
+          "role": "child",
+          "age": 3
+        }
+      ],
+      "score": 60,
+      "probes": [
+        {
+          "id": "colchon",
+          "question": "¿Cuántos meses podrías vivir con tu efectivo?",
+          "input": {
+            "min": 0,
+            "max": 36,
+            "step": 0.5,
+            "initial": 6,
+            "unit": "meses"
+          },
+          "truth": {
+            "value": 16,
+            "recommendedMin": 8,
+            "recommendedMax": 9
+          },
+          "tone": "good",
+          "strength": 1,
+          "why": "siempre se activa (la dirección depende de los datos)"
+        },
+        {
+          "id": "mezcla",
+          "question": "¿Qué % de tu inversión está en bolsa?",
+          "input": {
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "initial": 50,
+            "unit": "%"
+          },
+          "truth": {
+            "value": 77,
+            "targetPct": 60
+          },
+          "tone": "bad",
+          "strength": 2.35,
+          "why": "77 % en bolsa frente al 60 % de su perfil"
+        },
+        {
+          "id": "tarjeta",
+          "question": "De cada 300 $ que pagas a la tarjeta, ¿cuánto reduce la deuda?",
+          "input": {
+            "min": 0,
+            "max": 300,
+            "step": 10,
+            "initial": 150,
+            "unit": "$"
+          },
+          "truth": {
+            "value": 30,
+            "interest": 270,
+            "payment": 300,
+            "apr": 0.18,
+            "balance": 18000
+          },
+          "tone": "bad",
+          "strength": 3.5,
+          "why": "tarjeta al 18 % con 18000 $ de saldo y limita la nota"
+        },
+        {
+          "id": "seguro",
+          "question": "Si faltaras, ¿cuántos años de sueldo cubriría tu seguro de vida?",
+          "input": {
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "initial": 3,
+            "unit": "años de sueldo"
+          },
+          "truth": {
+            "value": 0.93,
+            "coverage": 140000,
+            "income": 150000,
+            "recommendedMin": 750000
+          },
+          "tone": "bad",
+          "strength": 3.41,
+          "why": "cubre 0.9 años de sueldo y limita la nota"
+        }
+      ],
+      "notSelected": [
+        {
+          "id": "ahorros",
+          "strength": 1
+        },
+        {
+          "id": "fiscal",
+          "strength": 2.24
+        }
+      ],
+      "skipped": [
+        {
+          "id": "destino",
+          "why": "ya destina el 63 % a jubilación"
+        },
+        {
+          "id": "orden",
+          "why": "pendiente: requiere pantalla de ordenar"
+        }
+      ]
+    },
+    {
+      "id": "michael-carter",
+      "name": "Michael Carter",
+      "household": [
+        {
+          "name": "Michael",
+          "role": "client",
+          "age": 37
+        }
+      ],
+      "score": 26,
+      "probes": [
+        {
+          "id": "colchon",
+          "question": "¿Cuántos meses podrías vivir con tu efectivo?",
+          "input": {
+            "min": 0,
+            "max": 36,
+            "step": 0.5,
+            "initial": 6,
+            "unit": "meses"
+          },
+          "truth": {
+            "value": 3.2,
+            "recommendedMin": 5,
+            "recommendedMax": 6
+          },
+          "tone": "bad",
+          "strength": 1,
+          "why": "siempre se activa (la dirección depende de los datos)"
+        },
+        {
+          "id": "tarjeta",
+          "question": "De cada 200 $ que pagas a la tarjeta, ¿cuánto reduce la deuda?",
+          "input": {
+            "min": 0,
+            "max": 200,
+            "step": 5,
+            "initial": 100,
+            "unit": "$"
+          },
+          "truth": {
+            "value": 141.67,
+            "interest": 58.33,
+            "payment": 200,
+            "apr": 0.2,
+            "balance": 3500
+          },
+          "tone": "bad",
+          "strength": 2.1,
+          "why": "tarjeta al 20 % con 3500 $ de saldo"
+        },
+        {
+          "id": "ahorros",
+          "question": "¿A qué edad crees que se acabarían tus ahorros?",
+          "input": {
+            "min": 60,
+            "max": 100,
+            "step": 1,
+            "initial": 80,
+            "unit": "años"
+          },
+          "truth": {
+            "depletes": true,
+            "age": 85,
+            "endOfPlanAge": 91
+          },
+          "tone": "bad",
+          "strength": 3.3,
+          "why": "se agotan a los 85 (plan a 91)"
+        },
+        {
+          "id": "seguro",
+          "question": "Si faltaras, ¿cuántos años de sueldo cubriría tu seguro de vida?",
+          "input": {
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "initial": 3,
+            "unit": "años de sueldo"
+          },
+          "truth": {
+            "value": 1,
+            "coverage": 180000,
+            "income": 180000,
+            "recommendedMin": 900000
+          },
+          "tone": "bad",
+          "strength": 2.4,
+          "why": "cubre 1 años de sueldo"
+        }
+      ],
+      "notSelected": [],
+      "skipped": [
+        {
+          "id": "destino",
+          "why": "ya destina el 56 % a jubilación"
+        },
+        {
+          "id": "mezcla",
+          "why": "mezcla cercana a la del perfil"
+        },
+        {
+          "id": "fiscal",
+          "why": "el plan no trae cifra de ahorro fiscal por 401(k)"
+        },
+        {
+          "id": "orden",
+          "why": "pendiente: requiere pantalla de ordenar"
+        }
+      ]
+    },
+    {
+      "id": "daniel-emily-johnson",
+      "name": "Daniel y Emily Johnson",
+      "household": [
+        {
+          "name": "Daniel",
+          "role": "client",
+          "age": 44
+        },
+        {
+          "name": "Emily",
+          "role": "co-client",
+          "age": 42
+        },
+        {
+          "name": "Oliver",
+          "role": "child",
+          "age": 11
+        },
+        {
+          "name": "Sophia",
+          "role": "child",
+          "age": 9
+        }
+      ],
+      "score": 52,
+      "probes": [
+        {
+          "id": "colchon",
+          "question": "¿Cuántos meses podrías vivir con tu efectivo?",
+          "input": {
+            "min": 0,
+            "max": 36,
+            "step": 0.5,
+            "initial": 6,
+            "unit": "meses"
+          },
+          "truth": {
+            "value": 1.4,
+            "recommendedMin": 8,
+            "recommendedMax": 9
+          },
+          "tone": "bad",
+          "strength": 1,
+          "why": "siempre se activa (la dirección depende de los datos)"
+        },
+        {
+          "id": "ahorros",
+          "question": "¿A qué edad crees que se acabarían tus ahorros?",
+          "input": {
+            "min": 60,
+            "max": 100,
+            "step": 1,
+            "initial": 80,
+            "unit": "años"
+          },
+          "truth": {
+            "depletes": false,
+            "liquidAtEnd": 260272,
+            "endOfPlanAge": 91
+          },
+          "tone": "good",
+          "strength": 1,
+          "why": "no se agotan: buena noticia"
+        },
+        {
+          "id": "tarjeta",
+          "question": "De cada 450 $ que pagas a la tarjeta, ¿cuánto reduce la deuda?",
+          "input": {
+            "min": 0,
+            "max": 450,
+            "step": 10,
+            "initial": 230,
+            "unit": "$"
+          },
+          "truth": {
+            "value": 76.5,
+            "interest": 373.5,
+            "payment": 450,
+            "apr": 0.249,
+            "balance": 18000
+          },
+          "tone": "bad",
+          "strength": 2.5,
+          "why": "tarjeta al 24.9 % con 18000 $ de saldo"
+        },
+        {
+          "id": "destino",
+          "question": "De cada 100 $ que ahorras, ¿cuántos van a la jubilación?",
+          "input": {
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "initial": 50,
+            "unit": "$"
+          },
+          "truth": {
+            "value": 0,
+            "toRetirement": 0,
+            "totalSaved": 26000
+          },
+          "tone": "bad",
+          "strength": 2.5,
+          "why": "0 $ de 26000 $ ahorrados al año van a jubilación"
+        }
+      ],
+      "notSelected": [
+        {
+          "id": "seguro",
+          "strength": 2.42
+        },
+        {
+          "id": "mezcla",
+          "strength": 2.47
+        },
+        {
+          "id": "fiscal",
+          "strength": 2.49
+        }
+      ],
+      "skipped": [
+        {
+          "id": "orden",
+          "why": "pendiente: requiere pantalla de ordenar"
+        }
+      ]
+    },
+    {
+      "id": "samantha-lewis",
+      "name": "Samantha Lewis",
+      "household": [
+        {
+          "name": "Samantha",
+          "role": "client",
+          "age": 47
+        },
+        {
+          "name": "Ethan",
+          "role": "child",
+          "age": 18
+        },
+        {
+          "name": "Ava",
+          "role": "child",
+          "age": 16
+        }
+      ],
+      "score": 82,
+      "probes": [
+        {
+          "id": "colchon",
+          "question": "¿Cuántos meses podrías vivir con tu efectivo?",
+          "input": {
+            "min": 0,
+            "max": 36,
+            "step": 0.5,
+            "initial": 6,
+            "unit": "meses"
+          },
+          "truth": {
+            "value": 7.9,
+            "recommendedMin": 5,
+            "recommendedMax": 6
+          },
+          "tone": "good",
+          "strength": 1,
+          "why": "siempre se activa (la dirección depende de los datos)"
+        },
+        {
+          "id": "destino",
+          "question": "De cada 100 $ que ahorras, ¿cuántos van a la jubilación?",
+          "input": {
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "initial": 50,
+            "unit": "$"
+          },
+          "truth": {
+            "value": 0,
+            "toRetirement": 0,
+            "totalSaved": 60000
+          },
+          "tone": "bad",
+          "strength": 2.5,
+          "why": "0 $ de 60000 $ ahorrados al año van a jubilación"
+        },
+        {
+          "id": "ahorros",
+          "question": "¿A qué edad crees que se acabarían tus ahorros?",
+          "input": {
+            "min": 60,
+            "max": 100,
+            "step": 1,
+            "initial": 80,
+            "unit": "años"
+          },
+          "truth": {
+            "depletes": true,
+            "age": 73,
+            "endOfPlanAge": 91
+          },
+          "tone": "bad",
+          "strength": 3.9,
+          "why": "se agotan a los 73 (plan a 91)"
+        }
+      ],
+      "notSelected": [],
+      "skipped": [
+        {
+          "id": "tarjeta",
+          "why": "sin deuda de tarjeta con interés alto"
+        },
+        {
+          "id": "seguro",
+          "why": "seguro en el nivel recomendado o sin dato"
+        },
+        {
+          "id": "mezcla",
+          "why": "mezcla cercana a la del perfil"
+        },
+        {
+          "id": "fiscal",
+          "why": "el plan no trae cifra de ahorro fiscal por 401(k)"
+        },
+        {
+          "id": "orden",
+          "why": "pendiente: requiere pantalla de ordenar"
+        }
+      ]
+    }
+  ]
+}
