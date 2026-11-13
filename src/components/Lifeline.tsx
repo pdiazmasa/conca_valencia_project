@@ -14,6 +14,7 @@ export type LifelineMark = {
   label: string;
   value: number;
   color: string;
+  isLighter?: boolean;
 };
 
 type LifelineProps = {
@@ -130,6 +131,7 @@ export function Lifeline({
       label: `${mark.label}: ${formatValue(mark.value, scale.kind, "tick")}`,
       color: mark.color,
       isBaseline: false,
+      isLighter: Boolean(mark.isLighter),
     })),
     ...(showBaseline && baselinePlanValue !== undefined
       ? [
@@ -139,6 +141,7 @@ export function Lifeline({
             label: `${baselineLabel}: ${formatValue(baselinePlanValue, scale.kind, "tick")}`,
             color: "var(--color-text-muted)",
             isBaseline: true,
+            isLighter: false,
           },
         ]
       : []),
@@ -268,8 +271,12 @@ export function Lifeline({
             return (
               <span
                 key={`dot-${mark.id}`}
-                className="lifeline-dot"
-                style={{ left: `${pct}%`, backgroundColor: mark.color }}
+                className={`lifeline-dot ${mark.isLighter ? "is-lighter" : ""}`}
+                style={
+                  mark.isLighter
+                    ? { left: `${pct}%`, borderColor: mark.color }
+                    : { left: `${pct}%`, backgroundColor: mark.color }
+                }
                 aria-hidden="true"
               />
             );
@@ -302,7 +309,9 @@ export function Lifeline({
             return (
               <div key={item.id} className="lifeline-below-item">
                 <span
-                  className={`lifeline-below-stem ${item.isBaseline ? "is-dashed" : ""}`}
+                  className={`lifeline-below-stem ${
+                    item.isBaseline || item.isLighter ? "is-dashed" : ""
+                  } ${item.isLighter ? "is-lighter" : ""}`}
                   style={{
                     left: `${item.percent}%`,
                     height: `${topPx}px`,
@@ -311,7 +320,9 @@ export function Lifeline({
                   aria-hidden="true"
                 />
                 <span
-                  className={`lifeline-mark-label ${item.isBaseline ? "is-baseline" : ""}`}
+                  className={`lifeline-mark-label ${
+                    item.isBaseline ? "is-baseline" : ""
+                  } ${item.isLighter ? "is-lighter" : ""}`}
                   style={{
                     top: `${topPx}px`,
                     ...getLabelStyleForBox(item.anchor, item.boxStartPct, item.boxEndPct),

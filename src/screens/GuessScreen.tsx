@@ -11,6 +11,8 @@ type GuessScreenProps = {
   totalQuestions: number;
   initialValue?: number;
   initialConfidence?: Confidence;
+  eyebrowOverride?: string;
+  titleOverride?: string;
   onSubmit: (value: number, confidence: Confidence) => void;
 };
 
@@ -49,6 +51,8 @@ export function GuessScreen({
   totalQuestions,
   initialValue,
   initialConfidence,
+  eyebrowOverride,
+  titleOverride,
   onSubmit,
 }: GuessScreenProps) {
   const [value, setValue] = useState<number | null>(initialValue ?? null);
@@ -78,9 +82,17 @@ export function GuessScreen({
   return (
     <main className="card">
       <p className="eyebrow">
-        {`${participantName} — Question ${questionNumber} of ${totalQuestions}`}
+        {eyebrowOverride ??
+          `${participantName} — Question ${questionNumber} of ${totalQuestions}`}
       </p>
-      <h1>{promptText}</h1>
+      {titleOverride ? (
+        <div className="stack-sm">
+          <h1>{titleOverride}</h1>
+          <h2>{promptText}</h2>
+        </div>
+      ) : (
+        <h1>{promptText}</h1>
+      )}
 
       {isChoice && question.options ? (
         <div className="stack-sm" role="group" aria-label={promptText}>

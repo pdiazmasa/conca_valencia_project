@@ -1,3 +1,4 @@
+import { CheckInsSection } from "../components/CheckInsSection";
 import { ListenButton } from "../components/ListenButton";
 import type { AgreementRecord, Family, Participant } from "../data/types";
 import { formatHumanDate } from "../utils/dates";
@@ -15,6 +16,8 @@ type AgreementScreenProps = {
   onToggleAgree: (participantId: string) => void;
   onResetAgreement: () => void;
   onOpenAdvisor: () => void;
+  onOpenDay3?: () => void;
+  onOpenDay30?: () => void;
 };
 
 export function AgreementScreen({
@@ -29,6 +32,8 @@ export function AgreementScreen({
   onToggleAgree,
   onResetAgreement,
   onOpenAdvisor,
+  onOpenDay3,
+  onOpenDay30,
 }: AgreementScreenProps) {
   const chosenRec =
     family.recommendations.find((r) => r.id === chosenRecommendationId) ??
@@ -83,6 +88,14 @@ export function AgreementScreen({
             </li>
           </ul>
         </section>
+
+        {onOpenDay3 && onOpenDay30 && (
+          <CheckInsSection
+            className="no-print"
+            onOpenDay3={onOpenDay3}
+            onOpenDay30={onOpenDay30}
+          />
+        )}
 
         <div className="stack-sm no-print">
           <button

@@ -582,6 +582,11 @@ a:focus-visible {
   font-weight: 700;
 }
 
+.lifeline-mark-label.is-lighter {
+  font-weight: 600;
+  opacity: 0.72;
+}
+
 .lifeline-plan-label {
   top: 0;
   color: var(--color-plan);
@@ -616,6 +621,16 @@ a:focus-visible {
   z-index: 2;
 }
 
+.lifeline-dot.is-lighter {
+  width: 16px;
+  height: 16px;
+  background-color: var(--color-surface);
+  border-width: 3px;
+  border-style: solid;
+  opacity: 0.65;
+  z-index: 2;
+}
+
 .lifeline-diamond {
   position: absolute;
   top: 50%;
@@ -638,6 +653,10 @@ a:focus-visible {
 
 .lifeline-below-stem.is-dashed {
   border-left-style: dashed;
+}
+
+.lifeline-below-stem.is-lighter {
+  opacity: 0.65;
 }
 
 .lifeline-plan-label,
@@ -849,6 +868,64 @@ a:focus-visible {
   grid-template-columns: repeat(2, 1fr);
   gap: 6px 12px;
   font-size: 0.88rem;
+}
+
+.advisor-summary-list {
+  margin: 8px 0 0;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.92rem;
+}
+
+.advisor-section-block {
+  border-top: 2px solid var(--color-border);
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.status-badge {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.status-badge.is-closer {
+  background-color: var(--color-agreed-bg);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.status-badge.is-same {
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.status-badge.is-further {
+  background-color: var(--color-flag-bg);
+  border-color: var(--color-flag-text);
+  color: var(--color-flag-text);
+}
+
+.comparison-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.comparison-sentence {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.4;
 }
 
 @media (prefers-reduced-motion: reduce) {

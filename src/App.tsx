@@ -3,12 +3,26 @@ import { FAMILIES, getFamilyById } from "./data";
 import type {
   AgreementRecord,
   Confidence,
+  Day3BlockerReason,
+  Day3PersonResponse,
   Family,
   Participant,
+  QuestionAnswer,
   SessionRecord,
+  StepProgressStatus,
 } from "./data/types";
 import { AdvisorScreen } from "./screens/AdvisorScreen";
 import { AgreementScreen } from "./screens/AgreementScreen";
+import {
+  Day3BlockerScreen,
+  Day3StatusScreen,
+  Day3SummaryScreen,
+} from "./screens/Day3CheckInScreens";
+import {
+  Day30RevealScreen,
+  Day30StepScreen,
+  Day30SummaryScreen,
+} from "./screens/Day30CheckInScreens";
 import { GuessOtherScreen } from "./screens/GuessOtherScreen";
 import { GuessScreen } from "./screens/GuessScreen";
 import { HandoffScreen } from "./screens/HandoffScreen";
@@ -20,7 +34,10 @@ import { getSelectedIdsForStepCount } from "./utils/planLogic";
 import { stopSpeech } from "./utils/speech";
 import {
   clearActiveState,
+  findLatestSessionWithAgreement,
   loadActiveState,
+  loadSessions,
+  normalizeSession,
   saveActiveState,
   upsertSession,
 } from "./utils/storage";
@@ -33,7 +50,19 @@ type ScreenState =
   | { screen: "reveal"; questionIndex: number }
   | { screen: "steps" }
   | { screen: "agreement" }
-  | { screen: "advisor"; returnTo: "start" | "agreement" };
+  | { screen: "day3_handoff"; personIndex: number }
+  | { screen: "day3_status"; personIndex: number }
+  | { screen: "day3_blocker"; personIndex: number }
+  | { screen: "day3_summary" }
+  | { screen: "day30_handoff"; personIndex: number }
+  | { screen: "day30_guess"; personIndex: number; questionIndex: number }
+  | { screen: "day30_reveal"; questionIndex: number }
+  | { screen: "day30_step" }
+  | { screen: "day30_summary" }
+  | {
+      screen: "advisor";
+      returnTo: "start" | "agreement" | "day3_summary" | "day30_summary";
+    };
 
 type AppState = {
   screenState: ScreenState;
@@ -44,6 +73,8 @@ type AppState = {
   agreementChoiceId: string;
   agreementDate: string;
   agreedIds: string[];
+  draftDay3Responses: Record<string, Day3PersonResponse>;
+  draftDay30Answers: Record<string, Record<string, QuestionAnswer>>;
 };
 
 function defaultNamesForFamily(family: Family, count: number): string[] {
@@ -66,18 +97,46 @@ function createInitialState(): AppState {
     agreementChoiceId: defaultFamily.recommendations[0]?.id ?? "",
     agreementDate: addDaysToIsoDate(getTodayIsoDate(), 7),
     agreedIds: [],
+    draftDay3Responses: {},
+    draftDay30Answers: {},
   };
 }
 
 function loadInitialState(): AppState {
-  const saved = loadActiveState<AppState>();
-  if (!saved || !saved.screenState || !getFamilyById(saved.draftFamilyId)) {
+  const saved = loadActiveState<Partial<AppState>>();
+  if (
+    !saved ||
+    !saved.screenState ||
+    !saved.draftFamilyId ||
+    !getFamilyById(saved.draftFamilyId)
+  ) {
     return createInitialState();
   }
-  if (saved.screenState.screen !== "start" && saved.screenState.screen !== "advisor" && !saved.session) {
+  const normalizedSession = saved.session
+    ? normalizeSession(saved.session)
+    : null;
+  if (
+    saved.screenState.screen !== "start" &&
+    saved.screenState.screen !== "advisor" &&
+    !normalizedSession
+  ) {
     return createInitialState();
   }
-  return saved;
+  const isCheckInScreen =
+    saved.screenState.screen.startsWith("day3_") ||
+    saved.screenState.screen.startsWith("day30_");
+  if (isCheckInScreen && !normalizedSession?.agreement) {
+    return createInitialState();
+  }
+
+  return {
+    ...createInitialState(),
+    ...saved,
+    screenState: saved.screenState,
+    session: normalizedSession,
+    draftDay3Responses: saved.draftDay3Responses ?? {},
+    draftDay30Answers: saved.draftDay30Answers ?? {},
+  };
 }
 
 function findNextOtherTarget(
@@ -173,6 +232,7 @@ export default function App() {
       answers: {},
       otherPredictions: {},
       selectedRecommendationIds: [],
+      checkIns: {},
     };
 
     setState((prev) => ({
@@ -181,6 +241,8 @@ export default function App() {
       agreementChoiceId: family.recommendations[0]?.id ?? "",
       agreementDate: addDaysToIsoDate(getTodayIsoDate(), 7),
       agreedIds: [],
+      draftDay3Responses: {},
+      draftDay30Answers: {},
       screenState: { screen: "handoff", personIndex: 0 },
     }));
   }
@@ -468,16 +530,283 @@ export default function App() {
     });
   }
 
+  function handleOpenDay3(targetSession?: SessionRecord) {
+    stopSpeech();
+    setState((prev) => {
+      const source = targetSession ?? prev.session;
+      if (!source || !source.agreement) return prev;
+      const normalized = normalizeSession(source) ?? source;
+      return {
+        ...prev,
+        session: normalized,
+        draftDay3Responses: {},
+        screenState: { screen: "day3_handoff", personIndex: 0 },
+      };
+    });
+  }
+
+  function handleOpenDay30(targetSession?: SessionRecord) {
+    stopSpeech();
+    setState((prev) => {
+      const source = targetSession ?? prev.session;
+      if (!source || !source.agreement) return prev;
+      const normalized = normalizeSession(source) ?? source;
+      return {
+        ...prev,
+        session: normalized,
+        draftDay30Answers: {},
+        screenState: { screen: "day30_handoff", personIndex: 0 },
+      };
+    });
+  }
+
+  function handleDay3SelectStatus(
+    personIndex: number,
+    status: StepProgressStatus
+  ) {
+    setState((prev) => {
+      if (!prev.session) return prev;
+      const person = prev.session.participants[personIndex];
+      if (!person) return prev;
+
+      if (status === "not_yet") {
+        const existing = prev.draftDay3Responses[person.id];
+        return {
+          ...prev,
+          draftDay3Responses: {
+            ...prev.draftDay3Responses,
+            [person.id]: {
+              status: "not_yet",
+              blockerReason: existing?.blockerReason,
+              blockerNote: existing?.blockerNote,
+            },
+          },
+          screenState: { screen: "day3_blocker", personIndex },
+        };
+      }
+
+      const nextResponses: Record<string, Day3PersonResponse> = {
+        ...prev.draftDay3Responses,
+        [person.id]: { status },
+      };
+
+      const nextPerson = personIndex + 1;
+      if (nextPerson < prev.session.participants.length) {
+        return {
+          ...prev,
+          draftDay3Responses: nextResponses,
+          screenState: { screen: "day3_handoff", personIndex: nextPerson },
+        };
+      }
+
+      const now = new Date().toISOString();
+      const updatedSession: SessionRecord = {
+        ...prev.session,
+        updatedAt: now,
+        checkIns: {
+          ...(prev.session.checkIns ?? {}),
+          day3: {
+            completedAt: now,
+            responses: nextResponses,
+          },
+        },
+      };
+      upsertSession(updatedSession);
+
+      return {
+        ...prev,
+        session: updatedSession,
+        draftDay3Responses: nextResponses,
+        screenState: { screen: "day3_summary" },
+      };
+    });
+  }
+
+  function handleDay3SubmitBlocker(
+    personIndex: number,
+    reason: Day3BlockerReason,
+    note?: string
+  ) {
+    setState((prev) => {
+      if (!prev.session) return prev;
+      const person = prev.session.participants[personIndex];
+      if (!person) return prev;
+
+      const nextResponses: Record<string, Day3PersonResponse> = {
+        ...prev.draftDay3Responses,
+        [person.id]: {
+          status: "not_yet",
+          blockerReason: reason,
+          ...(note ? { blockerNote: note } : {}),
+        },
+      };
+
+      const nextPerson = personIndex + 1;
+      if (nextPerson < prev.session.participants.length) {
+        return {
+          ...prev,
+          draftDay3Responses: nextResponses,
+          screenState: { screen: "day3_handoff", personIndex: nextPerson },
+        };
+      }
+
+      const now = new Date().toISOString();
+      const updatedSession: SessionRecord = {
+        ...prev.session,
+        updatedAt: now,
+        checkIns: {
+          ...(prev.session.checkIns ?? {}),
+          day3: {
+            completedAt: now,
+            responses: nextResponses,
+          },
+        },
+      };
+      upsertSession(updatedSession);
+
+      return {
+        ...prev,
+        session: updatedSession,
+        draftDay3Responses: nextResponses,
+        screenState: { screen: "day3_summary" },
+      };
+    });
+  }
+
+  function handleDay30SubmitGuess(
+    personIndex: number,
+    questionIndex: number,
+    value: number,
+    confidence: Confidence
+  ) {
+    setState((prev) => {
+      if (!prev.session) return prev;
+      const family = getFamilyById(prev.session.familyId);
+      if (!family) return prev;
+
+      const participant = prev.session.participants[personIndex];
+      const question = family.questions[questionIndex];
+      if (!participant || !question) return prev;
+
+      const nextAnswers: Record<string, Record<string, QuestionAnswer>> = {
+        ...prev.draftDay30Answers,
+        [participant.id]: {
+          ...(prev.draftDay30Answers[participant.id] ?? {}),
+          [question.id]: { value, confidence },
+        },
+      };
+
+      const nextQuestionIndex = questionIndex + 1;
+      if (nextQuestionIndex < family.questions.length) {
+        return {
+          ...prev,
+          draftDay30Answers: nextAnswers,
+          screenState: {
+            screen: "day30_guess",
+            personIndex,
+            questionIndex: nextQuestionIndex,
+          },
+        };
+      }
+
+      const nextPerson = personIndex + 1;
+      if (nextPerson < prev.session.participants.length) {
+        return {
+          ...prev,
+          draftDay30Answers: nextAnswers,
+          screenState: { screen: "day30_handoff", personIndex: nextPerson },
+        };
+      }
+
+      const now = new Date().toISOString();
+      const updatedSession: SessionRecord = {
+        ...prev.session,
+        updatedAt: now,
+        checkIns: {
+          ...(prev.session.checkIns ?? {}),
+          day30: {
+            ...(prev.session.checkIns?.day30 ?? {}),
+            completedAt: now,
+            answers: nextAnswers,
+          },
+        },
+      };
+      upsertSession(updatedSession);
+
+      return {
+        ...prev,
+        session: updatedSession,
+        draftDay30Answers: nextAnswers,
+        screenState: { screen: "day30_reveal", questionIndex: 0 },
+      };
+    });
+  }
+
+  function handleDay30NextReveal(questionIndex: number) {
+    stopSpeech();
+    setState((prev) => {
+      if (!prev.session) return prev;
+      const family = getFamilyById(prev.session.familyId);
+      if (!family) return prev;
+
+      if (questionIndex + 1 < family.questions.length) {
+        return {
+          ...prev,
+          screenState: {
+            screen: "day30_reveal",
+            questionIndex: questionIndex + 1,
+          },
+        };
+      }
+      return {
+        ...prev,
+        screenState: { screen: "day30_step" },
+      };
+    });
+  }
+
+  function handleDay30SelectStepStatus(status: StepProgressStatus) {
+    setState((prev) => {
+      if (!prev.session) return prev;
+      const now = new Date().toISOString();
+      const existingDay30 = prev.session.checkIns?.day30;
+      const updatedSession: SessionRecord = {
+        ...prev.session,
+        updatedAt: now,
+        checkIns: {
+          ...(prev.session.checkIns ?? {}),
+          day30: {
+            completedAt: now,
+            answers: existingDay30?.answers ?? prev.draftDay30Answers,
+            stepStatus: status,
+          },
+        },
+      };
+      upsertSession(updatedSession);
+
+      return {
+        ...prev,
+        session: updatedSession,
+        screenState: { screen: "day30_summary" },
+      };
+    });
+  }
+
   function renderScreen() {
     const { screenState, session } = state;
 
     if (screenState.screen === "start") {
+      const checkInSession = state.session?.agreement
+        ? state.session
+        : findLatestSessionWithAgreement(loadSessions(), state.draftFamilyId);
+
       return (
         <StartScreen
           families={FAMILIES}
           selectedFamilyId={state.draftFamilyId}
           peopleCount={state.draftPeopleCount}
           participantNames={state.draftNames}
+          checkInSession={checkInSession}
           onSelectFamily={handleSelectFamily}
           onChangePeopleCount={handleChangePeopleCount}
           onChangeName={handleChangeName}
@@ -488,6 +817,8 @@ export default function App() {
               screenState: { screen: "advisor", returnTo: "start" },
             }))
           }
+          onOpenDay3={handleOpenDay3}
+          onOpenDay30={handleOpenDay30}
         />
       );
     }
@@ -619,8 +950,197 @@ export default function App() {
                 screenState: { screen: "advisor", returnTo: "agreement" },
               }))
             }
+            onOpenDay3={() => handleOpenDay3(session)}
+            onOpenDay30={() => handleOpenDay30(session)}
           />
         );
+
+      case "day3_handoff": {
+        const person = session.participants[screenState.personIndex];
+        return (
+          <HandoffScreen
+            participantName={person.name}
+            eyebrow="Day 3 check-in — Next person"
+            onStartTurn={() =>
+              setState((prev) => ({
+                ...prev,
+                screenState: {
+                  screen: "day3_status",
+                  personIndex: screenState.personIndex,
+                },
+              }))
+            }
+          />
+        );
+      }
+
+      case "day3_status": {
+        const person = session.participants[screenState.personIndex];
+        const stepLabel = session.agreement?.recommendationLabel ?? "";
+        return (
+          <Day3StatusScreen
+            participantName={person.name}
+            stepLabel={stepLabel}
+            onSelectStatus={(status) =>
+              handleDay3SelectStatus(screenState.personIndex, status)
+            }
+          />
+        );
+      }
+
+      case "day3_blocker": {
+        const person = session.participants[screenState.personIndex];
+        const existing = state.draftDay3Responses[person.id];
+        return (
+          <Day3BlockerScreen
+            participantName={person.name}
+            initialReason={existing?.blockerReason}
+            initialNote={existing?.blockerNote}
+            onSubmit={(reason, note) =>
+              handleDay3SubmitBlocker(screenState.personIndex, reason, note)
+            }
+            onBack={() =>
+              setState((prev) => ({
+                ...prev,
+                screenState: {
+                  screen: "day3_status",
+                  personIndex: screenState.personIndex,
+                },
+              }))
+            }
+          />
+        );
+      }
+
+      case "day3_summary": {
+        const stepLabel = session.agreement?.recommendationLabel ?? "";
+        return (
+          <Day3SummaryScreen
+            familyDisplayName={session.familyDisplayName}
+            stepLabel={stepLabel}
+            participants={session.participants}
+            day3={session.checkIns?.day3}
+            onBackToStart={() =>
+              setState((prev) => ({
+                ...prev,
+                screenState: { screen: "start" },
+              }))
+            }
+            onOpenAdvisor={() =>
+              setState((prev) => ({
+                ...prev,
+                screenState: { screen: "advisor", returnTo: "day3_summary" },
+              }))
+            }
+          />
+        );
+      }
+
+      case "day30_handoff": {
+        const person = session.participants[screenState.personIndex];
+        return (
+          <HandoffScreen
+            participantName={person.name}
+            eyebrow="Day 30 check-in — Next person"
+            onStartTurn={() =>
+              setState((prev) => ({
+                ...prev,
+                screenState: {
+                  screen: "day30_guess",
+                  personIndex: screenState.personIndex,
+                  questionIndex: 0,
+                },
+              }))
+            }
+          />
+        );
+      }
+
+      case "day30_guess": {
+        const person = session.participants[screenState.personIndex];
+        const question = family.questions[screenState.questionIndex];
+        const existing = state.draftDay30Answers[person.id]?.[question.id];
+        return (
+          <GuessScreen
+            key={`day30-${person.id}-${question.id}`}
+            family={family}
+            participantName={person.name}
+            question={question}
+            questionNumber={screenState.questionIndex + 1}
+            totalQuestions={family.questions.length}
+            initialValue={existing?.value}
+            initialConfidence={existing?.confidence}
+            eyebrowOverride={`${person.name} — Day 30 check-in (${
+              screenState.questionIndex + 1
+            } of ${family.questions.length})`}
+            titleOverride="One month later: what does your plan say?"
+            onSubmit={(value, confidence) =>
+              handleDay30SubmitGuess(
+                screenState.personIndex,
+                screenState.questionIndex,
+                value,
+                confidence
+              )
+            }
+          />
+        );
+      }
+
+      case "day30_reveal": {
+        const question = family.questions[screenState.questionIndex];
+        const todayAnswers =
+          session.checkIns?.day30?.answers ?? state.draftDay30Answers;
+        return (
+          <Day30RevealScreen
+            key={`day30-reveal-${screenState.questionIndex}-${question.id}`}
+            family={family}
+            participants={session.participants}
+            question={question}
+            questionIndex={screenState.questionIndex}
+            totalQuestions={family.questions.length}
+            firstAnswers={session.answers}
+            todayAnswers={todayAnswers}
+            onNext={() => handleDay30NextReveal(screenState.questionIndex)}
+          />
+        );
+      }
+
+      case "day30_step": {
+        const stepLabel = session.agreement?.recommendationLabel ?? "";
+        return (
+          <Day30StepScreen
+            stepLabel={stepLabel}
+            onSelectStatus={handleDay30SelectStepStatus}
+          />
+        );
+      }
+
+      case "day30_summary": {
+        const stepLabel = session.agreement?.recommendationLabel ?? "";
+        const day30 = session.checkIns?.day30;
+        return (
+          <Day30SummaryScreen
+            family={family}
+            participants={session.participants}
+            stepLabel={stepLabel}
+            stepStatus={day30?.stepStatus}
+            firstAnswers={session.answers}
+            todayAnswers={day30?.answers ?? state.draftDay30Answers}
+            onBackToStart={() =>
+              setState((prev) => ({
+                ...prev,
+                screenState: { screen: "start" },
+              }))
+            }
+            onOpenAdvisor={() =>
+              setState((prev) => ({
+                ...prev,
+                screenState: { screen: "advisor", returnTo: "day30_summary" },
+              }))
+            }
+          />
+        );
+      }
     }
   }
 

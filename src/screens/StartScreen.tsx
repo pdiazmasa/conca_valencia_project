@@ -1,16 +1,20 @@
 import { useRef } from "react";
-import type { Family } from "../data/types";
+import { CheckInsSection } from "../components/CheckInsSection";
+import type { Family, SessionRecord } from "../data/types";
 
 type StartScreenProps = {
   families: Family[];
   selectedFamilyId: string;
   peopleCount: number;
   participantNames: string[];
+  checkInSession?: SessionRecord | null;
   onSelectFamily: (familyId: string) => void;
   onChangePeopleCount: (count: number) => void;
   onChangeName: (index: number, name: string) => void;
   onBegin: () => void;
   onOpenAdvisor: () => void;
+  onOpenDay3?: (session: SessionRecord) => void;
+  onOpenDay30?: (session: SessionRecord) => void;
 };
 
 export function StartScreen({
@@ -18,11 +22,14 @@ export function StartScreen({
   selectedFamilyId,
   peopleCount,
   participantNames,
+  checkInSession,
   onSelectFamily,
   onChangePeopleCount,
   onChangeName,
   onBegin,
   onOpenAdvisor,
+  onOpenDay3,
+  onOpenDay30,
 }: StartScreenProps) {
   const peopleSectionRef = useRef<HTMLElement | null>(null);
 
@@ -47,6 +54,14 @@ export function StartScreen({
           <p className="muted">See your plan the way it really is, together.</p>
         </div>
       </section>
+
+      {checkInSession?.agreement && onOpenDay3 && onOpenDay30 && (
+        <CheckInsSection
+          contextLine={`${checkInSession.familyDisplayName} — ${checkInSession.agreement.recommendationLabel}`}
+          onOpenDay3={() => onOpenDay3(checkInSession)}
+          onOpenDay30={() => onOpenDay30(checkInSession)}
+        />
+      )}
 
       <section className="card">
         <h2>Pick a family</h2>

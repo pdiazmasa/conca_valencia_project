@@ -70,6 +70,36 @@ export type AgreementRecord = {
   agreedParticipantIds: string[];
 };
 
+export type StepProgressStatus = "done" | "started" | "not_yet";
+
+export type Day3BlockerReason =
+  | "no_time"
+  | "not_sure_how"
+  | "changed_minds"
+  | "something_else";
+
+export type Day3PersonResponse = {
+  status: StepProgressStatus;
+  blockerReason?: Day3BlockerReason;
+  blockerNote?: string;
+};
+
+export type Day3CheckIn = {
+  completedAt?: string;
+  responses: Record<string, Day3PersonResponse>;
+};
+
+export type Day30CheckIn = {
+  completedAt?: string;
+  answers: Record<string, Record<string, QuestionAnswer>>;
+  stepStatus?: StepProgressStatus;
+};
+
+export type SessionCheckIns = {
+  day3?: Day3CheckIn;
+  day30?: Day30CheckIn;
+};
+
 export type SessionRecord = {
   id: string;
   familyId: string;
@@ -81,4 +111,5 @@ export type SessionRecord = {
   otherPredictions: Record<string, Record<string, number>>;
   selectedRecommendationIds: string[];
   agreement?: AgreementRecord;
+  checkIns: SessionCheckIns;
 };

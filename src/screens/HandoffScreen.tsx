@@ -1,12 +1,17 @@
 type HandoffScreenProps = {
   participantName: string;
+  eyebrow?: string;
   onStartTurn: () => void;
 };
 
-export function HandoffScreen({ participantName, onStartTurn }: HandoffScreenProps) {
+export function HandoffScreen({
+  participantName,
+  eyebrow = "Next person",
+  onStartTurn,
+}: HandoffScreenProps) {
   return (
     <main className="card">
-      <p className="eyebrow">Next person</p>
+      <p className="eyebrow">{eyebrow}</p>
       <h1>{`Pass the phone to ${participantName}`}</h1>
       <p className="muted">
         Other people&apos;s answers stay hidden while it is your turn.

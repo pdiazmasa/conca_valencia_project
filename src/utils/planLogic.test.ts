@@ -1,8 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { FAMILIES } from "../data";
+import type { SessionRecord } from "../data/types";
 import {
+  formatDay3FamilySummary,
+  getAdvisorTopSummary,
   getAppliedStepCount,
   getBestPredictorSummary,
+  getDay30Comparison,
+  getDay30ComparisonSentence,
   getDisplayedScore,
   getRevealConfidenceSummary,
   getScoredRecommendations,
@@ -152,5 +157,133 @@ describe("Advisor flags and reveal summaries", () => {
     expect(solo).toContain("Samantha");
     expect(solo).toContain("very sure");
     expect(solo).not.toMatch(/\d/);
+  });
+});
+
+describe("Day 3 summary, Day 30 comparison labels, and Advisor 3-bullet summary", () => {
+  const cardScale = {
+    kind: "usd_per_year" as const,
+    min: 0,
+    max: 6000,
+    unit: "$/year",
+  };
+
+  it("formats Day 3 family summary with statuses and blocker reason", () => {
+    const summary = formatDay3FamilySummary(
+      [
+        { id: "p1", name: "Timothy" },
+        { id: "p2", name: "Melanie" },
+      ],
+      {
+        responses: {
+          p1: { status: "started" },
+          p2: { status: "not_yet", blockerReason: "not_sure_how" },
+        },
+      }
+    );
+    expect(summary).toBe("Timothy: Started. Melanie: Not yet — Not sure how.");
+  });
+
+  it("assigns Closer, Same, and Further labels and word-only sentences", () => {
+    // Much closer: 600 -> 3000 vs plan 3240 (range 6000)
+    const closer = getDay30Comparison(600, 3000, 3240, cardScale);
+    expect(closer).toEqual({
+      firstGap: 2640,
+      todayGap: 240,
+      label: "Closer",
+      magnitude: "much",
+    });
+    const closerSentence = getDay30ComparisonSentence(
+      "Timothy",
+      600,
+      3000,
+      3240,
+      cardScale
+    );
+    expect(closerSentence).toBe(
+      "Timothy is much closer to the plan than a month ago."
+    );
+    expect(closerSentence).not.toMatch(/\d/);
+
+    // Same: 1200 -> 1320 vs plan 3240 (delta 120 = 2% of 6000 <= 5%)
+    const same = getDay30Comparison(1200, 1320, 3240, cardScale);
+    expect(same.label).toBe("Same");
+    const sameSentence = getDay30ComparisonSentence(
+      "Melanie",
+      1200,
+      1320,
+      3240,
+      cardScale
+    );
+    expect(sameSentence).toBe("Melanie stayed about the same.");
+    expect(sameSentence).not.toMatch(/\d/);
+
+    // Further: 2400 -> 600 vs plan 3240
+    const further = getDay30Comparison(2400, 600, 3240, cardScale);
+    expect(further).toEqual({
+      firstGap: 840,
+      todayGap: 2640,
+      label: "Further",
+      magnitude: "much",
+    });
+    const furtherSentence = getDay30ComparisonSentence(
+      "Timothy",
+      2400,
+      600,
+      3240,
+      cardScale
+    );
+    expect(furtherSentence).toBe(
+      "Timothy is much further from the plan than a month ago."
+    );
+    expect(furtherSentence).not.toMatch(/\d/);
+
+    // Exact match on Day 30 even within 5% of plan counts as Closer
+    const exactMatch = getDay30Comparison(75, 73, 73, {
+      kind: "age",
+      min: 50,
+      max: 95,
+      unit: "age",
+    });
+    expect(exactMatch.label).toBe("Closer");
+  });
+
+  it("builds the 3-bullet Advisor top summary using normalised gaps", () => {
+    const weah = FAMILIES.find((f) => f.id === "weah")!;
+    const session: SessionRecord = {
+      id: "s1",
+      familyId: "weah",
+      familyDisplayName: "Weah family",
+      createdAt: "2026-10-01T00:00:00.000Z",
+      updatedAt: "2026-10-01T00:00:00.000Z",
+      participants: [
+        { id: "person-1", name: "Timothy" },
+        { id: "person-2", name: "Melanie" },
+      ],
+      answers: {
+        "person-1": {
+          card_interest: { value: 600, confidence: 3 }, // gap 2640/6000 = 44%, confident & wrong
+          plan_score: { value: 85, confidence: 2 }, // diff vs Melanie = 25/100 = 25%
+        },
+        "person-2": {
+          card_interest: { value: 1200, confidence: 1 }, // diff vs Timothy = 600/6000 = 10%
+          plan_score: { value: 60, confidence: 2 },
+        },
+      },
+      otherPredictions: {},
+      selectedRecommendationIds: [],
+      checkIns: {},
+    };
+
+    const bullets = getAdvisorTopSummary(weah, session);
+    expect(bullets).toHaveLength(3);
+    expect(bullets[0]).toContain("Most misunderstood");
+    expect(bullets[0]).toContain("Timothy");
+    expect(bullets[0]).toContain("$2,640");
+    expect(bullets[1]).toContain("Where they disagree most");
+    expect(bullets[1]).toContain("plan got");
+    expect(bullets[1]).toContain("25");
+    expect(bullets[2]).toContain("Confident and wrong");
+    expect(bullets[2]).toContain("Timothy");
   });
 });

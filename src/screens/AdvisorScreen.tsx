@@ -3,10 +3,14 @@ import type { Confidence } from "../data/types";
 import { formatHumanDate } from "../utils/dates";
 import { formatTemplate, formatValue } from "../utils/format";
 import {
+  DAY3_BLOCKER_LABELS,
+  getAdvisorTopSummary,
+  getDay30Comparison,
   getQuestionDisagreements,
   isConfidentAndWrong,
+  STEP_STATUS_LABELS,
 } from "../utils/planLogic";
-import { loadSessions } from "../utils/storage";
+import { downloadSessionJson, loadSessions } from "../utils/storage";
 
 type AdvisorScreenProps = {
   onBack: () => void;
@@ -46,10 +50,16 @@ export function AdvisorScreen({ onBack }: AdvisorScreenProps) {
           const family = getFamilyById(session.familyId);
           if (!family) return null;
 
+          const topSummary = getAdvisorTopSummary(family, session);
+          const day3 = session.checkIns?.day3;
+          const day30 = session.checkIns?.day30;
+
           return (
             <section key={session.id} className="card">
               <div className="stack-sm">
-                <h2>{session.familyDisplayName}</h2>
+                <div className="advisor-row-top">
+                  <h2>{session.familyDisplayName}</h2>
+                </div>
                 <p className="muted" style={{ fontSize: "0.88rem" }}>
                   {`Participants: ${session.participants.map((p) => p.name).join(", ")}`}
                 </p>
@@ -60,6 +70,158 @@ export function AdvisorScreen({ onBack }: AdvisorScreenProps) {
                       session.agreement.targetDate
                     )})`}
                   </p>
+                )}
+
+                <div className="card-subtle" style={{ fontSize: "0.9rem" }}>
+                  <strong>Summary</strong>
+                  <ul className="advisor-summary-list">
+                    {topSummary.map((line, index) => (
+                      <li key={index}>{line}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={() => downloadSessionJson(session)}
+                >
+                  Export for advisor (JSON)
+                </button>
+              </div>
+
+              <div className="advisor-section-block">
+                <h3>Day 3 check-in</h3>
+                {!day3 || Object.keys(day3.responses ?? {}).length === 0 ? (
+                  <p className="muted" style={{ fontSize: "0.9rem" }}>
+                    Not completed yet.
+                  </p>
+                ) : (
+                  <div className="stack-sm">
+                    {session.participants.map((person) => {
+                      const resp = day3.responses?.[person.id];
+                      const statusText = resp
+                        ? STEP_STATUS_LABELS[resp.status]
+                        : "Not recorded";
+                      const blockerText =
+                        resp?.status === "not_yet" && resp.blockerReason
+                          ? DAY3_BLOCKER_LABELS[resp.blockerReason]
+                          : null;
+
+                      return (
+                        <div key={person.id} className="advisor-person-row">
+                          <div className="advisor-row-top">
+                            <strong>{person.name}</strong>
+                            <span className="status-badge">{statusText}</span>
+                          </div>
+                          {blockerText && (
+                            <p style={{ fontSize: "0.88rem" }}>
+                              <strong>Blocker: </strong>
+                              {blockerText}
+                            </p>
+                          )}
+                          {resp?.blockerNote && (
+                            <p className="muted" style={{ fontSize: "0.88rem" }}>
+                              <strong>Note: </strong>
+                              {resp.blockerNote}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              <div className="advisor-section-block">
+                <h3>Day 30 check-in</h3>
+                {!day30 ||
+                (Object.keys(day30.answers ?? {}).length === 0 &&
+                  !day30.stepStatus) ? (
+                  <p className="muted" style={{ fontSize: "0.9rem" }}>
+                    Not completed yet.
+                  </p>
+                ) : (
+                  <div className="stack-sm">
+                    {day30.stepStatus && (
+                      <p className="card-subtle" style={{ fontSize: "0.9rem" }}>
+                        <strong>Step completion: </strong>
+                        {STEP_STATUS_LABELS[day30.stepStatus]}
+                      </p>
+                    )}
+
+                    {family.questions.map((question) => {
+                      const planValue = family.facts[question.planFactKey];
+                      return (
+                        <div key={`day30-${question.id}`} className="stack-sm">
+                          <p style={{ fontSize: "0.92rem", fontWeight: 700 }}>
+                            {formatTemplate(question.prompt, family, { question })}
+                          </p>
+                          {session.participants.map((person) => {
+                            const firstAns = session.answers[person.id]?.[question.id];
+                            const day30Ans = day30.answers?.[person.id]?.[question.id];
+                            if (!firstAns || !day30Ans) return null;
+
+                            const comparison = getDay30Comparison(
+                              firstAns.value,
+                              day30Ans.value,
+                              planValue,
+                              question.scale
+                            );
+                            const badgeClass = `status-badge is-${comparison.label.toLowerCase()}`;
+
+                            return (
+                              <div
+                                key={`day30-${question.id}-${person.id}`}
+                                className="advisor-person-row"
+                              >
+                                <div className="advisor-row-top">
+                                  <strong>{person.name}</strong>
+                                  <span className={badgeClass}>
+                                    {comparison.label}
+                                  </span>
+                                </div>
+                                <div className="advisor-metrics">
+                                  <span>
+                                    <strong>First gap: </strong>
+                                    {formatValue(
+                                      comparison.firstGap,
+                                      question.scale.kind,
+                                      "sentence"
+                                    )}
+                                  </span>
+                                  <span>
+                                    <strong>Day-30 gap: </strong>
+                                    {formatValue(
+                                      comparison.todayGap,
+                                      question.scale.kind,
+                                      "sentence"
+                                    )}
+                                  </span>
+                                  <span>
+                                    <strong>First guess: </strong>
+                                    {formatValue(
+                                      firstAns.value,
+                                      question.scale.kind,
+                                      "readout"
+                                    )}
+                                  </span>
+                                  <span>
+                                    <strong>Day-30 guess: </strong>
+                                    {formatValue(
+                                      day30Ans.value,
+                                      question.scale.kind,
+                                      "readout"
+                                    )}
+                                  </span>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })}
+                  </div>
                 )}
               </div>
 
