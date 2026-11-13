@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getGapRangePercent, valueToPercent } from "./lifeline";
+import { assignLabelRows, getGapRangePercent, valueToPercent } from "./lifeline";
 
 describe("Lifeline position calculations", () => {
   it("maps values within range to [0, 100]", () => {
@@ -26,5 +26,37 @@ describe("Lifeline position calculations", () => {
     expect(gap).not.toBeNull();
     expect(gap!.startPercent).toBeCloseTo(10, 5);
     expect(gap!.endPercent).toBeCloseTo(54, 5);
+  });
+});
+
+describe("Lifeline non-overlapping label row assignment", () => {
+  it("stacks two marks closer than 15% onto different rows", () => {
+    const layout = assignLabelRows([
+      { id: "a", percent: 40, label: "Timothy: $2,400" },
+      { id: "b", percent: 48, label: "Melanie: $2,880" },
+    ]);
+    expect(layout[0].row).not.toBe(layout[1].row);
+  });
+
+  it("places up to 5 clustered marks onto distinct non-overlapping rows", () => {
+    const layout = assignLabelRows([
+      { id: "m1", percent: 42, label: "Timothy: $2,520" },
+      { id: "m2", percent: 45, label: "Melanie: $2,700" },
+      { id: "m3", percent: 49, label: "Alex: $2,940" },
+      { id: "m4", percent: 52, label: "Jordan: $3,120" },
+      { id: "m5", percent: 55, label: "Today: $3,300" },
+    ]);
+
+    const rows = new Set(layout.map((item) => item.row));
+    expect(rows.size).toBe(5);
+  });
+
+  it("allows well-separated marks at opposite ends to share a row", () => {
+    const layout = assignLabelRows([
+      { id: "left", percent: 5, label: "Timothy: $300" },
+      { id: "right", percent: 92, label: "Melanie: $5,520" },
+    ]);
+    expect(layout[0].row).toBe(0);
+    expect(layout[1].row).toBe(0);
   });
 });

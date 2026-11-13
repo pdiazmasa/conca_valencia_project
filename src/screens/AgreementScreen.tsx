@@ -110,7 +110,7 @@ export function AgreementScreen({
 
   return (
     <main className="stack-lg">
-      <section className="card">
+      <section className="card no-print">
         <p className="eyebrow">Agreement</p>
         <h1>Choose your first step</h1>
 
@@ -138,7 +138,7 @@ export function AgreementScreen({
         </div>
       </section>
 
-      <section className="card">
+      <section className="card no-print">
         <label className="field-label">
           <span>When will you do it?</span>
           <input
@@ -150,7 +150,7 @@ export function AgreementScreen({
         </label>
       </section>
 
-      <section className="card">
+      <section className="card no-print">
         <h2>Confirm together</h2>
         <p className="muted">
           Each person taps below once you both agree on this step and date.

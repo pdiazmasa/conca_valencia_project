@@ -16,6 +16,7 @@ import { RevealScreen } from "./screens/RevealScreen";
 import { StartScreen } from "./screens/StartScreen";
 import { StepsScreen } from "./screens/StepsScreen";
 import { addDaysToIsoDate, getTodayIsoDate } from "./utils/dates";
+import { getSelectedIdsForStepCount } from "./utils/planLogic";
 import { stopSpeech } from "./utils/speech";
 import {
   clearActiveState,
@@ -344,15 +345,13 @@ export default function App() {
     });
   }
 
-  function handleToggleRecommendation(recommendationId: string) {
+  function handleSetStepCount(stepCount: number) {
     setState((prev) => {
       if (!prev.session) return prev;
-      const current = prev.session.selectedRecommendationIds;
-      const exists = current.includes(recommendationId);
-      const nextSelected = exists
-        ? current.filter((id) => id !== recommendationId)
-        : [...current, recommendationId];
+      const family = getFamilyById(prev.session.familyId);
+      if (!family) return prev;
 
+      const nextSelected = getSelectedIdsForStepCount(family, stepCount);
       const updatedSession: SessionRecord = {
         ...prev.session,
         updatedAt: new Date().toISOString(),
@@ -578,6 +577,7 @@ export default function App() {
         const question = family.questions[screenState.questionIndex];
         return (
           <RevealScreen
+            key={`${screenState.questionIndex}-${question.id}`}
             family={family}
             participants={session.participants}
             question={question}
@@ -595,7 +595,7 @@ export default function App() {
           <StepsScreen
             family={family}
             selectedIds={session.selectedRecommendationIds}
-            onToggleRecommendation={handleToggleRecommendation}
+            onSetStepCount={handleSetStepCount}
             onContinue={handleContinueToAgreement}
           />
         );

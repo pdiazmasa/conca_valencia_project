@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import type { Family } from "../data/types";
 
 type StartScreenProps = {
@@ -23,8 +24,23 @@ export function StartScreen({
   onBegin,
   onOpenAdvisor,
 }: StartScreenProps) {
+  const peopleSectionRef = useRef<HTMLElement | null>(null);
+
+  function handleSelectFamily(familyId: string) {
+    onSelectFamily(familyId);
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    peopleSectionRef.current?.scrollIntoView?.({
+      behavior: prefersReduced ? "auto" : "smooth",
+      block: "start",
+    });
+  }
+
   return (
-    <main className="stack-lg">
+    <main className="stack-lg start-main">
       <section className="card">
         <div className="stack-sm">
           <h1>Same Page</h1>
@@ -43,7 +59,7 @@ export function StartScreen({
                 type="button"
                 className={`family-card ${selected ? "is-selected" : ""}`}
                 aria-pressed={selected}
-                onClick={() => onSelectFamily(family.id)}
+                onClick={() => handleSelectFamily(family.id)}
               >
                 <span className="family-card-title">{family.displayName}</span>
                 <span className="family-card-headline">{family.headline}</span>
@@ -53,7 +69,7 @@ export function StartScreen({
         </div>
       </section>
 
-      <section className="card">
+      <section ref={peopleSectionRef} className="card people-section">
         <h2>How many people are deciding?</h2>
         <div className="count-grid" role="group" aria-label="How many people are deciding">
           {[1, 2, 3, 4].map((count) => {
@@ -88,11 +104,11 @@ export function StartScreen({
         </div>
       </section>
 
-      <div className="stack-sm">
+      <div className="start-sticky-bar">
         <button type="button" className="btn-primary" onClick={onBegin}>
           Start
         </button>
-        <button type="button" className="btn-link" onClick={onOpenAdvisor}>
+        <button type="button" className="btn-link btn-link-compact" onClick={onOpenAdvisor}>
           Advisor view
         </button>
       </div>

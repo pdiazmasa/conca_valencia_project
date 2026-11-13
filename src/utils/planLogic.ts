@@ -1,25 +1,167 @@
-import type { Confidence, Family, Participant, QuestionAnswer, Scale } from "../data/types";
+import type {
+  Confidence,
+  Family,
+  Participant,
+  QuestionAnswer,
+  Recommendation,
+  Scale,
+} from "../data/types";
+
+export function getScoredRecommendations(family: Family): Recommendation[] {
+  return family.recommendations.filter(
+    (rec) => Boolean(rec.scoreAfterFactKey && rec.scoreAfterFactKey in family.facts)
+  );
+}
+
+export function getUnscoredRecommendations(family: Family): Recommendation[] {
+  return family.recommendations.filter(
+    (rec) => !(rec.scoreAfterFactKey && rec.scoreAfterFactKey in family.facts)
+  );
+}
+
+export function getAppliedStepCount(
+  family: Family,
+  selectedRecommendationIds: string[]
+): number {
+  const selectedSet = new Set(selectedRecommendationIds);
+  const scored = getScoredRecommendations(family);
+  let count = 0;
+
+  for (const rec of scored) {
+    if (!selectedSet.has(rec.id)) {
+      break;
+    }
+    count += 1;
+  }
+
+  return count;
+}
+
+export function getSelectedIdsForStepCount(
+  family: Family,
+  stepCount: number
+): string[] {
+  const scored = getScoredRecommendations(family);
+  const clamped = Math.max(0, Math.min(scored.length, stepCount));
+  return scored.slice(0, clamped).map((rec) => rec.id);
+}
 
 export function getDisplayedScore(
   family: Family,
   selectedRecommendationIds: string[]
-): { score: number; hasSelectedWithoutScore: boolean } {
+): { score: number; appliedStepCount: number; hasSelectedWithoutScore: boolean } {
+  const scored = getScoredRecommendations(family);
+  const appliedStepCount = getAppliedStepCount(family, selectedRecommendationIds);
   const selectedSet = new Set(selectedRecommendationIds);
-  let score = family.facts.planScore ?? 0;
-  let hasSelectedWithoutScore = false;
+  const unscored = getUnscoredRecommendations(family);
+  const hasSelectedWithoutScore = unscored.some((rec) => selectedSet.has(rec.id));
 
-  for (const rec of family.recommendations) {
-    if (!selectedSet.has(rec.id)) {
-      continue;
-    }
-    if (rec.scoreAfterFactKey && rec.scoreAfterFactKey in family.facts) {
-      score = family.facts[rec.scoreAfterFactKey];
-    } else {
-      hasSelectedWithoutScore = true;
+  let score = family.facts.planScore ?? 0;
+  if (appliedStepCount > 0) {
+    const lastApplied = scored[appliedStepCount - 1];
+    if (lastApplied.scoreAfterFactKey && lastApplied.scoreAfterFactKey in family.facts) {
+      score = family.facts[lastApplied.scoreAfterFactKey];
     }
   }
 
-  return { score, hasSelectedWithoutScore };
+  return { score, appliedStepCount, hasSelectedWithoutScore };
+}
+
+function formatNameList(names: string[]): string {
+  if (names.length === 0) return "";
+  if (names.length === 1) return names[0];
+  if (names.length === 2) return `${names[0]} and ${names[1]}`;
+  return `${names.slice(0, -1).join(", ")}, and ${names[names.length - 1]}`;
+}
+
+export function getRevealConfidenceSummary(
+  participants: Participant[],
+  questionId: string,
+  answers: Record<string, Record<string, QuestionAnswer>>,
+  planValue: number,
+  scale: Scale
+): string | null {
+  const entries = participants.flatMap((participant) => {
+    const ans = answers[participant.id]?.[questionId];
+    if (!ans) return [];
+    return [
+      {
+        participant,
+        value: ans.value,
+        confidence: ans.confidence,
+        distance: Math.abs(ans.value - planValue),
+      },
+    ];
+  });
+
+  if (entries.length === 0) {
+    return null;
+  }
+
+  const range = scale.max - scale.min;
+
+  if (entries.length === 1) {
+    const only = entries[0];
+    const far = range > 0 && only.distance > 0.25 * range;
+    if (only.distance === 0) {
+      return `${only.participant.name} matched the plan.`;
+    }
+    if (only.confidence === 3 && far) {
+      return `${only.participant.name} was very sure, and the plan had a different number.`;
+    }
+    if (only.confidence === 3) {
+      return `${only.participant.name} was very sure and close to the plan.`;
+    }
+    if (only.confidence === 2) {
+      return far
+        ? `${only.participant.name} was fairly sure, and the plan had a different number.`
+        : `${only.participant.name} was fairly sure and close to the plan.`;
+    }
+    return `${only.participant.name} was just guessing.`;
+  }
+
+  const maxDist = Math.max(...entries.map((e) => e.distance));
+  const minDist = Math.min(...entries.map((e) => e.distance));
+
+  if (maxDist === 0) {
+    return "Everyone matched the plan.";
+  }
+
+  if (Math.abs(maxDist - minDist) <= 1e-9) {
+    if (entries.every((e) => e.confidence === 3)) {
+      return "Everyone was very sure and equally close.";
+    }
+    return "Everyone was equally close to the plan.";
+  }
+
+  const furthestEntries = entries.filter((e) => Math.abs(e.distance - maxDist) <= 1e-9);
+  const confidentFurthest = furthestEntries.filter((e) => e.confidence === 3);
+
+  if (confidentFurthest.length === 1) {
+    return `${confidentFurthest[0].participant.name} was very sure and furthest away.`;
+  }
+  if (confidentFurthest.length > 1) {
+    return `${formatNameList(
+      confidentFurthest.map((e) => e.participant.name)
+    )} were very sure and furthest away.`;
+  }
+
+  const closestEntries = entries.filter((e) => Math.abs(e.distance - minDist) <= 1e-9);
+  if (closestEntries.length === 1) {
+    const closest = closestEntries[0];
+    if (closest.distance === 0) {
+      return `${closest.participant.name} matched the plan.`;
+    }
+    if (closest.confidence === 1) {
+      return `${closest.participant.name} was just guessing and came closest.`;
+    }
+    if (closest.confidence === 3) {
+      return `${closest.participant.name} was very sure and came closest.`;
+    }
+    return `${closest.participant.name} was closest.`;
+  }
+
+  return `${formatNameList(closestEntries.map((e) => e.participant.name))} were closest.`;
 }
 
 export function getBestPredictorSummary(
