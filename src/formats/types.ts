@@ -1,10 +1,9 @@
 import type { FC } from "react";
-import type { Family, Probe } from "../data";
+import type { Analysis, Family, Probe, Section } from "../data";
 
-// Un formato es una forma distinta de enseñar EXACTAMENTE la misma información
-// de una sonda: la pregunta, lo que respondió la persona, el valor real del plan
-// y la frase de contexto (truthValue, revealContext). Solo cambia la representación.
-export type FormatId = "directo" | "historia" | "futuro" | "visual";
+// Un formato es una forma distinta de enseñar la MISMA información: las sondas
+// (intuición vs. plan) y el análisis completo. Solo cambia la representación.
+export type FormatId = "wrapped" | "dashboard" | "audio" | "historia" | "futuro" | "visual" | "informe";
 
 export type RevealProps = {
   family: Family;
@@ -12,16 +11,29 @@ export type RevealProps = {
   answer: number;
   index: number;
   total: number;
-  // false en la galería final: se muestra ya en su estado final, sin animaciones.
   animate: boolean;
+};
+
+export type AskProps = { family: Family; probe: Probe };
+
+// Una página del análisis: la portada (nota) o una sección con las sondas que le pertenecen.
+export type AnalysisPage = { kind: "cover" } | { kind: "section"; section: Section; probes: Probe[] };
+
+export type PageProps = {
+  family: Family;
+  analysis: Analysis;
+  page: AnalysisPage;
+  answers: Record<string, number>;
+  Reveal: FC<RevealProps>;
 };
 
 export type FormatDef = {
   id: FormatId;
   name: string;
-  // Una línea para la pantalla "Tu formato" y para el selector final.
   tagline: string;
   Reveal: FC<RevealProps>;
-  // Frase opcional encima de la pregunta, para que la pantalla de pregunta encaje con el formato.
+  // Página del análisis; si falta se usa la de Dashboard.
+  Page?: FC<PageProps>;
+  Ask?: FC<AskProps>;
   askFraming?: (family: Family, probe: Probe) => string | null;
 };

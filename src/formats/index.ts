@@ -1,15 +1,27 @@
 import type { FormatDef, FormatId } from "./types";
-import { Directo } from "./Directo";
+import { Wrapped, WrappedPage } from "./Wrapped";
+import { DashboardPage } from "./DashboardPage";
+import { Dashboard } from "./Dashboard";
+import { Informe } from "./Informe";
 import { Historia } from "./Historia";
 import { Futuro } from "./Futuro";
 import { Visual } from "./Visual";
+import { AudioAsk, AudioPage, AudioReveal } from "./Audio";
 
 export const FORMATS: Record<FormatId, FormatDef> = {
-  directo: {
-    id: "directo",
-    name: "Straight",
+  wrapped: {
+    id: "wrapped",
+    name: "Wrapped",
+    tagline: "Your plan as a quick, swipeable recap.",
+    Reveal: Wrapped,
+    Page: WrappedPage,
+  },
+  dashboard: {
+    id: "dashboard",
+    name: "Dashboard",
     tagline: "Clear numbers and a chart, straight to the point.",
-    Reveal: Directo,
+    Reveal: Dashboard,
+    Page: DashboardPage,
   },
   historia: {
     id: "historia",
@@ -30,8 +42,30 @@ export const FORMATS: Record<FormatId, FormatDef> = {
     tagline: "Pictures you can understand at a glance.",
     Reveal: Visual,
   },
+  audio: {
+    id: "audio",
+    name: "Audio",
+    tagline: "We read it out to you, nice and clear.",
+    Reveal: AudioReveal,
+    Page: AudioPage,
+    Ask: AudioAsk,
+  },
+  informe: {
+    id: "informe",
+    name: "Report",
+    tagline: "A plain written report of your plan.",
+    Reveal: Informe,
+  },
 };
 
-export const FORMAT_ORDER: FormatId[] = ["directo", "historia", "futuro", "visual"];
+export const FORMAT_ORDER: FormatId[] = ["wrapped", "dashboard", "audio", "historia", "futuro", "visual", "informe"];
 
-export type { FormatDef, FormatId, RevealProps } from "./types";
+// Formato por defecto según la edad: 0–29 Wrapped · 30–54 Dashboard · 55+ Audio.
+export function formatForAge(age: number | null): FormatId {
+  if (age === null) return "dashboard";
+  if (age < 30) return "wrapped";
+  if (age < 55) return "dashboard";
+  return "audio";
+}
+
+export type { FormatDef, FormatId, RevealProps, AskProps } from "./types";

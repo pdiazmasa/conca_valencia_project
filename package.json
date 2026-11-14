@@ -8,7 +8,9 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "build:families": "node scripts/build-families.mjs",
-    "diagnose:mcp": "node scripts/build-families.mjs --diagnose"
+    "diagnose:mcp": "node scripts/build-families.mjs --diagnose",
+    "build:audio": "tsx scripts/build-audio.ts",
+    "build:analysis": "node scripts/build-analysis.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -19,6 +21,7 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
+    "tsx": "^4.19.0",
     "typescript": "~5.6.2",
     "vite": "^5.4.11"
   }

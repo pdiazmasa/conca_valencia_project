@@ -1,18 +1,19 @@
 import { useState } from "react";
-import { FAMILIES, formatValue, truthValue, type Family, type Probe } from "./data";
-import { FORMATS, FORMAT_ORDER, type FormatId } from "./formats";
-import { QUIZ, pickFormat } from "./formats/quiz";
-import { StatValue, toneLabel } from "./formats/Directo";
+import { ANALYSIS, FAMILIES, SECTION_OF_PROBE, familyAge, formatValue, truthValue, type Family } from "./data";
+import { FORMATS, FORMAT_ORDER, formatForAge, type FormatId } from "./formats";
+import { DashboardPage } from "./formats/DashboardPage";
+import type { AnalysisPage } from "./formats/types";
+import { StatValue, toneLabel } from "./formats/Dashboard";
 
 type Dir = "forward" | "back";
-// quiz: test de 3 pasos · format: formato asignado · ask: deslizador · reveal: respuesta frente al plan · done: resumen final
-type Phase = "quiz" | "format" | "ask" | "reveal" | "done";
+// age: edad (decide el formato) · ask: las preguntas de intuición · analysis: análisis completo · done: resumen y otros formatos
+type Phase = "age" | "ask" | "analysis" | "done";
 type State = {
   family: Family | null;
-  quizIndex: number;
-  quizAnswers: Record<string, FormatId>;
+  age: number;
   format: FormatId;
   index: number;
+  step: number;
   phase: Phase;
   answers: Record<string, number>;
   dir: Dir;
@@ -50,9 +51,7 @@ function Progress({ total, current }: { total: number; current: number }) {
 function FamilyScreen({ onPick }: { onPick: (f: Family) => void }) {
   return (
     <main className="content">
-      <p className="eyebrow">Same Page</p>
-      <h1 style={{ marginTop: 8 }}>Who are you?</h1>
-      <p className="lede">Choose your family to get started.</p>
+      <h1>Who are you?</h1>
       <ul className="family-list card card-list">
         {FAMILIES.map((f) => (
           <li key={f.id}>
@@ -62,7 +61,6 @@ function FamilyScreen({ onPick }: { onPick: (f: Family) => void }) {
                 <span className="row-title" style={{ display: "block" }}>
                   {f.name}
                 </span>
-                <span className="row-sub">{f.probes.length} questions</span>
               </span>
               <svg width="8" height="14" viewBox="0 0 8 14" fill="none" aria-hidden="true" style={{ color: "var(--muted)" }}>
                 <path d="m1 1 6 6-6 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
@@ -71,85 +69,6 @@ function FamilyScreen({ onPick }: { onPick: (f: Family) => void }) {
           </li>
         ))}
       </ul>
-    </main>
-  );
-}
-
-function QuizScreen({
-  family,
-  quizIndex,
-  selected,
-  onPick,
-}: {
-  family: Family;
-  quizIndex: number;
-  selected?: FormatId;
-  onPick: (format: FormatId) => void;
-}) {
-  const q = QUIZ[quizIndex];
-  return (
-    <main className="content">
-      <p className="crumbs">
-        {family.name} · <b>Step {quizIndex + 1} of {QUIZ.length}</b>
-      </p>
-      <h1 className="question">{q.question}</h1>
-      <Progress total={QUIZ.length} current={quizIndex} />
-      <ul className="family-list card card-list">
-        {q.options.map((opt) => (
-          <li key={opt.format}>
-            <button
-              type="button"
-              className={`family-row card-row ${selected === opt.format ? "quiz-row-selected" : ""}`}
-              onClick={() => onPick(opt.format)}
-            >
-              <span className="row-main">
-                <span className="row-title" style={{ display: "block" }}>
-                  {opt.label}
-                </span>
-              </span>
-              <svg width="8" height="14" viewBox="0 0 8 14" fill="none" aria-hidden="true" style={{ color: "var(--muted)" }}>
-                <path d="m1 1 6 6-6 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-          </li>
-        ))}
-      </ul>
-    </main>
-  );
-}
-
-function FormatScreen({
-  family,
-  format,
-  onStart,
-}: {
-  family: Family;
-  format: FormatId;
-  onStart: () => void;
-}) {
-  const def = FORMATS[format];
-  return (
-    <main className="content">
-      <p className="crumbs">{family.name}</p>
-      <p className="eyebrow" style={{ marginTop: 4 }}>
-        Based on your answers
-      </p>
-      <h1 style={{ marginTop: 8 }}>Your format: {def.name}</h1>
-      <p className="lede">{def.tagline}</p>
-
-      <div className="card" style={{ marginTop: 24 }}>
-        <p className="eyebrow">How it works</p>
-        <p className="context" style={{ marginTop: 8 }}>
-          First, you'll answer {family.probes.length} questions about your plan using your gut instinct. Then you'll see the reality in the{" "}
-          <b style={{ color: "var(--ink)", fontWeight: 500 }}>{def.name}</b> format.
-        </p>
-      </div>
-
-      <div className="actions">
-        <button type="button" className="pill pill-filled" onClick={onStart}>
-          Start
-        </button>
-      </div>
     </main>
   );
 }
@@ -169,22 +88,21 @@ function QuestionScreen({
   onChange: (v: number) => void;
   onNext: () => void;
 }) {
+  const isLast = index >= family.probes.length - 1;
   const probe = family.probes[index];
   const { input } = probe;
   const pct = ((value - input.min) / (input.max - input.min)) * 100;
   const framing = FORMATS[format].askFraming?.(family, probe);
+  const Ask = FORMATS[format].Ask;
 
   return (
     <main className="content">
-      <p className="crumbs">
-        {family.name} · <b>{index + 1} of {family.probes.length}</b>
-      </p>
       {framing && <p className="eyebrow ask-framing">{framing}</p>}
       <h1 className="question">{probe.question}</h1>
+      {Ask && <Ask family={family} probe={probe} />}
       <Progress total={family.probes.length} current={index} />
       <div className="card" style={{ marginTop: 24 }}>
-        <p className="eyebrow">Your gut feeling</p>
-        <div aria-live="polite" style={{ marginTop: 8 }}>
+        <div aria-live="polite">
           <StatValue probe={probe} v={value} />
         </div>
         <input
@@ -205,56 +123,93 @@ function QuestionScreen({
       </div>
       <div className="actions">
         <button type="button" className="pill pill-filled" onClick={onNext}>
-          See my plan
+          {isLast ? "See my plan" : "Next"}
         </button>
       </div>
-      <p className="footnote">Based on your plan. These are projections, not certainties.</p>
     </main>
   );
 }
 
-function RevealScreen({
-  family,
-  index,
-  probe,
-  answer,
-  format,
-  onNext,
-  isLast,
-}: {
-  family: Family;
-  index: number;
-  probe: Probe;
-  answer: number;
-  format: FormatId;
-  onNext: () => void;
-  isLast: boolean;
-}) {
-  const FormatReveal = FORMATS[format].Reveal;
+function AgeScreen({ value, onChange, onNext }: { value: number; onChange: (v: number) => void; onNext: () => void }) {
+  const min = 18;
+  const max = 95;
+  const pct = ((value - min) / (max - min)) * 100;
   return (
     <main className="content">
-      <p className="crumbs">
-        {family.name} · <b>{index + 1} of {family.probes.length}</b>
-      </p>
-      <Progress total={family.probes.length} current={index} />
-
-      <div className="reveal-slot">
-        <FormatReveal
-          family={family}
-          probe={probe}
-          answer={answer}
-          index={index}
-          total={family.probes.length}
-          animate={true}
+      <h1 className="question">How old are you?</h1>
+      <div className="card" style={{ marginTop: 24 }}>
+        <p className="stat-value" aria-live="polite">
+          {value}
+          <span className="stat-unit">years old</span>
+        </p>
+        <input
+          className="slider"
+          type="range"
+          min={min}
+          max={max}
+          step={1}
+          value={value}
+          style={{ ["--pct" as string]: `${pct}%` }}
+          onChange={(e) => onChange(Number(e.target.value))}
+          aria-label="Your age"
         />
+        <div className="range-labels">
+          <span>{min}</span>
+          <span>{max}</span>
+        </div>
       </div>
-
       <div className="actions">
         <button type="button" className="pill pill-filled" onClick={onNext}>
-          {isLast ? "See summary" : "Next question"}
+          Continue
         </button>
       </div>
-      <p className="footnote">Based on your plan. These are projections, not certainties.</p>
+    </main>
+  );
+}
+
+// Páginas del análisis: portada + una por sección, con las sondas que pertenecen a cada una.
+function analysisPages(family: Family): AnalysisPage[] {
+  const analysis = ANALYSIS[family.id];
+  if (!analysis) return [];
+  return [
+    { kind: "cover" },
+    ...analysis.sections.map((section): AnalysisPage => ({
+      kind: "section",
+      section,
+      probes: family.probes.filter((p) => SECTION_OF_PROBE[p.id] === section.id),
+    })),
+  ];
+}
+
+function AnalysisScreen({
+  family,
+  format,
+  step,
+  answers,
+  onNext,
+}: {
+  family: Family;
+  format: FormatId;
+  step: number;
+  answers: Record<string, number>;
+  onNext: () => void;
+}) {
+  const pages = analysisPages(family);
+  const page = pages[step];
+  const def = FORMATS[format];
+  const Page = def.Page ?? DashboardPage;
+  if (!page) return null;
+  return (
+    <main className="content">
+      <Progress total={pages.length} current={step} />
+      <div className="reveal-slot">
+        <Page family={family} analysis={ANALYSIS[family.id]} page={page} answers={answers} Reveal={def.Reveal} />
+      </div>
+      <div className="actions">
+        <button type="button" className="pill pill-filled" onClick={onNext}>
+          {step >= pages.length - 1 ? "Finish" : "Next"}
+        </button>
+      </div>
     </main>
   );
 }
@@ -262,16 +217,14 @@ function RevealScreen({
 function SummaryScreen({
   family,
   answers,
-  format,
+  onChangeFormat,
   onRestart,
 }: {
   family: Family;
   answers: Record<string, number>;
-  format: FormatId;
+  onChangeFormat: (f: FormatId) => void;
   onRestart: () => void;
 }) {
-  const [galleryFormat, setGalleryFormat] = useState<FormatId | null>(null);
-  const otherFormats = FORMAT_ORDER.filter((id) => id !== format);
 
   // Sondas con valor real numérico para contabilizar aciertos (margen <= 10 % del rango).
   const scorable = family.probes.filter((p) => truthValue(p) !== null);
@@ -284,13 +237,9 @@ function SummaryScreen({
   const clampPct = (v: number, min: number, max: number) =>
     Math.min(100, Math.max(0, ((v - min) / (max - min)) * 100));
 
-  const GalleryReveal = galleryFormat ? FORMATS[galleryFormat].Reveal : null;
-
   return (
     <main className="content">
-      <p className="crumbs">{family.name}</p>
       <h1>Summary</h1>
-      <p className="lede">Your gut feeling vs. your plan.</p>
 
       <section className="card summary-score" style={{ marginTop: 24 }}>
         <p className="eyebrow">CLOSE GUESSES</p>
@@ -331,51 +280,20 @@ function SummaryScreen({
       </ul>
 
       <section className="other-formats">
-        <h2 className="section-title">See in other formats</h2>
-        <p className="crumbs">
-          Your format: <b>{FORMATS[format].name}</b>
-        </p>
+        <h2 className="section-title">See it another way</h2>
         <div className="format-pills" role="group" aria-label="See in other formats">
-          {otherFormats.map((id) => (
+          {FORMAT_ORDER.map((id) => (
             <button
               key={id}
               type="button"
-              className={`format-pill ${galleryFormat === id ? "format-pill-active" : ""}`}
-              onClick={() => setGalleryFormat(id)}
+              className="format-pill"
+              onClick={() => onChangeFormat(id)}
             >
               {FORMATS[id].name}
             </button>
           ))}
-          <button
-            type="button"
-            className={`format-pill ${galleryFormat === format ? "format-pill-active" : ""}`}
-            onClick={() => setGalleryFormat(format)}
-          >
-            {FORMATS[format].name} · <span className="format-pill-sub">Your format</span>
-          </button>
         </div>
 
-        {galleryFormat && GalleryReveal && (
-          <div className="format-gallery">
-            <p className="lede" style={{ marginTop: 12 }}>
-              {FORMATS[galleryFormat].tagline}
-            </p>
-            <div className="format-gallery-list">
-              {family.probes.map((p, idx) => (
-                <article key={`${galleryFormat}-${p.id}`} className="format-gallery-item">
-                  <GalleryReveal
-                    family={family}
-                    probe={p}
-                    answer={answers[p.id] ?? p.input.initial}
-                    index={idx}
-                    total={family.probes.length}
-                    animate={false}
-                  />
-                </article>
-              ))}
-            </div>
-          </div>
-        )}
       </section>
 
       <div className="actions">
@@ -389,11 +307,11 @@ function SummaryScreen({
 
 const initialState: State = {
   family: null,
-  quizIndex: 0,
-  quizAnswers: {},
-  format: "directo",
+  age: 40,
+  format: "dashboard",
   index: 0,
-  phase: "quiz",
+  step: 0,
+  phase: "age",
   answers: {},
   dir: "forward",
 };
@@ -401,89 +319,51 @@ const initialState: State = {
 export default function App() {
   const [s, setS] = useState<State>(initialState);
 
+  // Al elegir familia se propone la edad del cliente principal; la persona puede cambiarla.
   const pickFamily = (family: Family) =>
-    setS({
-      family,
-      quizIndex: 0,
-      quizAnswers: {},
-      format: "directo",
-      index: 0,
-      phase: "quiz",
-      answers: {},
-      dir: "forward",
-    });
+    setS({ ...initialState, family, age: familyAge(family) ?? 40, dir: "forward" });
 
-  const answerQuiz = (choice: FormatId) =>
-    setS((cur) => {
-      if (!cur.family) return cur;
-      const q = QUIZ[cur.quizIndex];
-      const nextQuizAnswers = { ...cur.quizAnswers, [q.id]: choice };
-      if (cur.quizIndex < QUIZ.length - 1) {
-        return {
-          ...cur,
-          quizIndex: cur.quizIndex + 1,
-          quizAnswers: nextQuizAnswers,
-          dir: "forward",
-        };
-      }
-      return {
-        ...cur,
-        quizAnswers: nextQuizAnswers,
-        format: pickFormat(nextQuizAnswers),
-        phase: "format",
-        dir: "forward",
-      };
-    });
-
-  const startProbes = () =>
-    setS((cur) => ({
-      ...cur,
-      index: 0,
-      phase: "ask",
-      dir: "forward",
-    }));
+  const confirmAge = () =>
+    setS((cur) => ({ ...cur, format: formatForAge(cur.age), phase: "ask", index: 0, dir: "forward" }));
 
   const restart = () => setS({ ...initialState, dir: "back" });
 
   const back = () =>
     setS((cur) => {
       if (!cur.family) return cur;
-      if (cur.phase === "done") return { ...cur, phase: "reveal", dir: "back" };
-      if (cur.phase === "reveal") return { ...cur, phase: "ask", dir: "back" };
+      if (cur.phase === "done") return { ...cur, phase: "analysis", step: analysisPages(cur.family).length - 1, dir: "back" };
+      if (cur.phase === "analysis") {
+        if (cur.step > 0) return { ...cur, step: cur.step - 1, dir: "back" };
+        return { ...cur, phase: "ask", index: cur.family.probes.length - 1, dir: "back" };
+      }
       if (cur.phase === "ask") {
-        if (cur.index === 0) return { ...cur, phase: "format", dir: "back" };
-        return { ...cur, index: cur.index - 1, phase: "reveal", dir: "back" };
+        if (cur.index > 0) return { ...cur, index: cur.index - 1, dir: "back" };
+        return { ...cur, phase: "age", dir: "back" };
       }
-      if (cur.phase === "format") {
-        return { ...cur, phase: "quiz", quizIndex: QUIZ.length - 1, dir: "back" };
-      }
-      // phase === "quiz"
-      if (cur.quizIndex === 0) return { ...cur, family: null, dir: "back" };
-      return { ...cur, quizIndex: cur.quizIndex - 1, dir: "back" };
+      return { ...cur, family: null, dir: "back" };
     });
 
-  // Fija la respuesta actual (aunque no se haya movido el deslizador) y revela.
-  const reveal = () =>
+  // Fija la respuesta actual (aunque no se haya movido el deslizador) y pasa a la siguiente pregunta;
+  // tras la última empieza el análisis.
+  const nextQuestion = () =>
     setS((cur) => {
       if (!cur.family) return cur;
       const p = cur.family.probes[cur.index];
-      return {
-        ...cur,
-        phase: "reveal",
-        answers: { ...cur.answers, [p.id]: cur.answers[p.id] ?? p.input.initial },
-        dir: "forward",
-      };
+      const answers = { ...cur.answers, [p.id]: cur.answers[p.id] ?? p.input.initial };
+      if (cur.index >= cur.family.probes.length - 1) return { ...cur, answers, phase: "analysis", step: 0, dir: "forward" };
+      return { ...cur, answers, index: cur.index + 1, dir: "forward" };
     });
 
-  const next = () =>
+  const nextStep = () =>
     setS((cur) => {
       if (!cur.family) return cur;
-      if (cur.index >= cur.family.probes.length - 1) return { ...cur, phase: "done", dir: "forward" };
-      return { ...cur, index: cur.index + 1, phase: "ask", dir: "forward" };
+      if (cur.step >= analysisPages(cur.family).length - 1) return { ...cur, phase: "done", dir: "forward" };
+      return { ...cur, step: cur.step + 1, dir: "forward" };
     });
 
-  const stepIndex = s.phase === "quiz" ? s.quizIndex : s.index;
-  const screenKey = s.family ? `${s.phase}-${s.family.id}-${stepIndex}` : "family";
+  const changeFormat = (format: FormatId) => setS((cur) => ({ ...cur, format, phase: "analysis", step: 0, dir: "forward" }));
+
+  const screenKey = s.family ? `${s.phase}-${s.family.id}-${s.phase === "analysis" ? s.step : s.index}-${s.format}` : "family";
   const probe = s.family?.probes[s.index];
 
   return (
@@ -494,40 +374,20 @@ export default function App() {
       <div key={screenKey} className={`screen dir-${s.dir}`}>
         {!s.family ? (
           <FamilyScreen onPick={pickFamily} />
-        ) : s.phase === "quiz" ? (
-          <QuizScreen
-            family={s.family}
-            quizIndex={s.quizIndex}
-            selected={s.quizAnswers[QUIZ[s.quizIndex].id]}
-            onPick={answerQuiz}
-          />
-        ) : s.phase === "format" ? (
-          <FormatScreen family={s.family} format={s.format} onStart={startProbes} />
-        ) : probe && s.phase === "done" ? (
-          <SummaryScreen family={s.family} answers={s.answers} format={s.format} onRestart={restart} />
-        ) : probe && s.phase === "reveal" ? (
-          <RevealScreen
-            family={s.family}
-            index={s.index}
-            probe={probe}
-            answer={s.answers[probe.id] ?? probe.input.initial}
-            format={s.format}
-            onNext={next}
-            isLast={s.index >= s.family.probes.length - 1}
-          />
+        ) : s.phase === "age" ? (
+          <AgeScreen value={s.age} onChange={(age) => setS((cur) => ({ ...cur, age }))} onNext={confirmAge} />
+        ) : s.phase === "done" ? (
+          <SummaryScreen family={s.family} answers={s.answers} onChangeFormat={changeFormat} onRestart={restart} />
+        ) : s.phase === "analysis" ? (
+          <AnalysisScreen family={s.family} format={s.format} step={s.step} answers={s.answers} onNext={nextStep} />
         ) : probe ? (
           <QuestionScreen
             family={s.family}
             index={s.index}
             format={s.format}
             value={s.answers[probe.id] ?? probe.input.initial}
-            onChange={(v) =>
-              setS((cur) => ({
-                ...cur,
-                answers: { ...cur.answers, [s.family!.probes[cur.index].id]: v },
-              }))
-            }
-            onNext={reveal}
+            onChange={(v) => setS((cur) => ({ ...cur, answers: { ...cur.answers, [s.family!.probes[cur.index].id]: v } }))}
+            onNext={nextQuestion}
           />
         ) : null}
       </div>
