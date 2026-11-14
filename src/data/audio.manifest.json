@@ -1,2913 +1,542 @@
 {
  "model": "eleven-flash-v2.5",
- "voice": "21m00Tcm4TlvDq8ikWAM",
+ "voice": "EXAVITQu4vr4xnSDxMaL",
  "entries": {
   "q:timothy-melanie-weah:colchon": {
-   "text": "How many months could you live off your cash?"
+   "text": "How many months could you live off your cash?",
+   "file": "635f3e27640cbc53.mp3"
   },
   "plan:timothy-melanie-weah:colchon": {
-   "text": "According to your plan, your cash would cover 16 months. Recommended for you: between 8 and 9 months."
-  },
-  "ans:timothy-melanie-weah:colchon:0": {
-   "text": "You said 0 months."
-  },
-  "ans:timothy-melanie-weah:colchon:0.5": {
-   "text": "You said 0.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:1": {
-   "text": "You said 1 months."
-  },
-  "ans:timothy-melanie-weah:colchon:1.5": {
-   "text": "You said 1.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:2": {
-   "text": "You said 2 months."
-  },
-  "ans:timothy-melanie-weah:colchon:2.5": {
-   "text": "You said 2.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:3": {
-   "text": "You said 3 months."
-  },
-  "ans:timothy-melanie-weah:colchon:3.5": {
-   "text": "You said 3.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:4": {
-   "text": "You said 4 months."
-  },
-  "ans:timothy-melanie-weah:colchon:4.5": {
-   "text": "You said 4.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:5": {
-   "text": "You said 5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:5.5": {
-   "text": "You said 5.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:6": {
-   "text": "You said 6 months."
-  },
-  "ans:timothy-melanie-weah:colchon:6.5": {
-   "text": "You said 6.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:7": {
-   "text": "You said 7 months."
-  },
-  "ans:timothy-melanie-weah:colchon:7.5": {
-   "text": "You said 7.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:8": {
-   "text": "You said 8 months."
-  },
-  "ans:timothy-melanie-weah:colchon:8.5": {
-   "text": "You said 8.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:9": {
-   "text": "You said 9 months."
-  },
-  "ans:timothy-melanie-weah:colchon:9.5": {
-   "text": "You said 9.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:10": {
-   "text": "You said 10 months."
-  },
-  "ans:timothy-melanie-weah:colchon:10.5": {
-   "text": "You said 10.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:11": {
-   "text": "You said 11 months."
-  },
-  "ans:timothy-melanie-weah:colchon:11.5": {
-   "text": "You said 11.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:12": {
-   "text": "You said 12 months."
-  },
-  "ans:timothy-melanie-weah:colchon:12.5": {
-   "text": "You said 12.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:13": {
-   "text": "You said 13 months."
-  },
-  "ans:timothy-melanie-weah:colchon:13.5": {
-   "text": "You said 13.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:14": {
-   "text": "You said 14 months."
-  },
-  "ans:timothy-melanie-weah:colchon:14.5": {
-   "text": "You said 14.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:15": {
-   "text": "You said 15 months."
-  },
-  "ans:timothy-melanie-weah:colchon:15.5": {
-   "text": "You said 15.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:16": {
-   "text": "You said 16 months."
-  },
-  "ans:timothy-melanie-weah:colchon:16.5": {
-   "text": "You said 16.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:17": {
-   "text": "You said 17 months."
-  },
-  "ans:timothy-melanie-weah:colchon:17.5": {
-   "text": "You said 17.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:18": {
-   "text": "You said 18 months."
-  },
-  "ans:timothy-melanie-weah:colchon:18.5": {
-   "text": "You said 18.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:19": {
-   "text": "You said 19 months."
-  },
-  "ans:timothy-melanie-weah:colchon:19.5": {
-   "text": "You said 19.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:20": {
-   "text": "You said 20 months."
-  },
-  "ans:timothy-melanie-weah:colchon:20.5": {
-   "text": "You said 20.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:21": {
-   "text": "You said 21 months."
-  },
-  "ans:timothy-melanie-weah:colchon:21.5": {
-   "text": "You said 21.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:22": {
-   "text": "You said 22 months."
-  },
-  "ans:timothy-melanie-weah:colchon:22.5": {
-   "text": "You said 22.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:23": {
-   "text": "You said 23 months."
-  },
-  "ans:timothy-melanie-weah:colchon:23.5": {
-   "text": "You said 23.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:24": {
-   "text": "You said 24 months."
-  },
-  "ans:timothy-melanie-weah:colchon:24.5": {
-   "text": "You said 24.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:25": {
-   "text": "You said 25 months."
-  },
-  "ans:timothy-melanie-weah:colchon:25.5": {
-   "text": "You said 25.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:26": {
-   "text": "You said 26 months."
-  },
-  "ans:timothy-melanie-weah:colchon:26.5": {
-   "text": "You said 26.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:27": {
-   "text": "You said 27 months."
-  },
-  "ans:timothy-melanie-weah:colchon:27.5": {
-   "text": "You said 27.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:28": {
-   "text": "You said 28 months."
-  },
-  "ans:timothy-melanie-weah:colchon:28.5": {
-   "text": "You said 28.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:29": {
-   "text": "You said 29 months."
-  },
-  "ans:timothy-melanie-weah:colchon:29.5": {
-   "text": "You said 29.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:30": {
-   "text": "You said 30 months."
-  },
-  "ans:timothy-melanie-weah:colchon:30.5": {
-   "text": "You said 30.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:31": {
-   "text": "You said 31 months."
-  },
-  "ans:timothy-melanie-weah:colchon:31.5": {
-   "text": "You said 31.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:32": {
-   "text": "You said 32 months."
-  },
-  "ans:timothy-melanie-weah:colchon:32.5": {
-   "text": "You said 32.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:33": {
-   "text": "You said 33 months."
-  },
-  "ans:timothy-melanie-weah:colchon:33.5": {
-   "text": "You said 33.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:34": {
-   "text": "You said 34 months."
-  },
-  "ans:timothy-melanie-weah:colchon:34.5": {
-   "text": "You said 34.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:35": {
-   "text": "You said 35 months."
-  },
-  "ans:timothy-melanie-weah:colchon:35.5": {
-   "text": "You said 35.5 months."
-  },
-  "ans:timothy-melanie-weah:colchon:36": {
-   "text": "You said 36 months."
+   "text": "According to your plan, your cash would cover 16 months. Recommended for you: between 8 and 9 months.",
+   "file": "b0965629189b0efa.mp3"
   },
   "q:timothy-melanie-weah:mezcla": {
-   "text": "What % of your investments is in stocks?"
+   "text": "What % of your investments is in stocks?",
+   "file": "c3a1897ac1de0460.mp3"
   },
   "plan:timothy-melanie-weah:mezcla": {
-   "text": "According to your plan, 77 percent of your investments are in stocks. Your risk profile targets 60% in stocks."
-  },
-  "ans:timothy-melanie-weah:mezcla:0": {
-   "text": "You said 0 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:1": {
-   "text": "You said 1 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:2": {
-   "text": "You said 2 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:3": {
-   "text": "You said 3 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:4": {
-   "text": "You said 4 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:5": {
-   "text": "You said 5 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:6": {
-   "text": "You said 6 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:7": {
-   "text": "You said 7 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:8": {
-   "text": "You said 8 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:9": {
-   "text": "You said 9 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:10": {
-   "text": "You said 10 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:11": {
-   "text": "You said 11 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:12": {
-   "text": "You said 12 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:13": {
-   "text": "You said 13 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:14": {
-   "text": "You said 14 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:15": {
-   "text": "You said 15 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:16": {
-   "text": "You said 16 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:17": {
-   "text": "You said 17 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:18": {
-   "text": "You said 18 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:19": {
-   "text": "You said 19 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:20": {
-   "text": "You said 20 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:21": {
-   "text": "You said 21 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:22": {
-   "text": "You said 22 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:23": {
-   "text": "You said 23 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:24": {
-   "text": "You said 24 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:25": {
-   "text": "You said 25 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:26": {
-   "text": "You said 26 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:27": {
-   "text": "You said 27 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:28": {
-   "text": "You said 28 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:29": {
-   "text": "You said 29 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:30": {
-   "text": "You said 30 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:31": {
-   "text": "You said 31 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:32": {
-   "text": "You said 32 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:33": {
-   "text": "You said 33 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:34": {
-   "text": "You said 34 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:35": {
-   "text": "You said 35 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:36": {
-   "text": "You said 36 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:37": {
-   "text": "You said 37 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:38": {
-   "text": "You said 38 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:39": {
-   "text": "You said 39 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:40": {
-   "text": "You said 40 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:41": {
-   "text": "You said 41 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:42": {
-   "text": "You said 42 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:43": {
-   "text": "You said 43 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:44": {
-   "text": "You said 44 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:45": {
-   "text": "You said 45 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:46": {
-   "text": "You said 46 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:47": {
-   "text": "You said 47 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:48": {
-   "text": "You said 48 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:49": {
-   "text": "You said 49 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:50": {
-   "text": "You said 50 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:51": {
-   "text": "You said 51 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:52": {
-   "text": "You said 52 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:53": {
-   "text": "You said 53 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:54": {
-   "text": "You said 54 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:55": {
-   "text": "You said 55 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:56": {
-   "text": "You said 56 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:57": {
-   "text": "You said 57 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:58": {
-   "text": "You said 58 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:59": {
-   "text": "You said 59 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:60": {
-   "text": "You said 60 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:61": {
-   "text": "You said 61 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:62": {
-   "text": "You said 62 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:63": {
-   "text": "You said 63 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:64": {
-   "text": "You said 64 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:65": {
-   "text": "You said 65 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:66": {
-   "text": "You said 66 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:67": {
-   "text": "You said 67 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:68": {
-   "text": "You said 68 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:69": {
-   "text": "You said 69 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:70": {
-   "text": "You said 70 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:71": {
-   "text": "You said 71 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:72": {
-   "text": "You said 72 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:73": {
-   "text": "You said 73 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:74": {
-   "text": "You said 74 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:75": {
-   "text": "You said 75 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:76": {
-   "text": "You said 76 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:77": {
-   "text": "You said 77 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:78": {
-   "text": "You said 78 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:79": {
-   "text": "You said 79 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:80": {
-   "text": "You said 80 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:81": {
-   "text": "You said 81 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:82": {
-   "text": "You said 82 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:83": {
-   "text": "You said 83 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:84": {
-   "text": "You said 84 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:85": {
-   "text": "You said 85 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:86": {
-   "text": "You said 86 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:87": {
-   "text": "You said 87 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:88": {
-   "text": "You said 88 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:89": {
-   "text": "You said 89 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:90": {
-   "text": "You said 90 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:91": {
-   "text": "You said 91 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:92": {
-   "text": "You said 92 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:93": {
-   "text": "You said 93 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:94": {
-   "text": "You said 94 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:95": {
-   "text": "You said 95 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:96": {
-   "text": "You said 96 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:97": {
-   "text": "You said 97 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:98": {
-   "text": "You said 98 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:99": {
-   "text": "You said 99 percent."
-  },
-  "ans:timothy-melanie-weah:mezcla:100": {
-   "text": "You said 100 percent."
+   "text": "According to your plan, 77 percent of your investments are in stocks. Your risk profile targets 60% in stocks.",
+   "file": "f9e3660b3b7d6de2.mp3"
   },
   "q:timothy-melanie-weah:tarjeta": {
-   "text": "For every $300 you pay on your credit card, how much reduces your debt?"
+   "text": "For every $300 you pay on your credit card, how much reduces your debt?",
+   "file": "dcec42f2d28ff372.mp3"
   },
   "plan:timothy-melanie-weah:tarjeta": {
-   "text": "According to your plan, only 30 dollars of every 300 reduce the debt. The rest, $270, goes to interest. Your card charges 18% and you owe $18,000."
-  },
-  "ans:timothy-melanie-weah:tarjeta:0": {
-   "text": "You said 0 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:10": {
-   "text": "You said 10 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:20": {
-   "text": "You said 20 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:30": {
-   "text": "You said 30 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:40": {
-   "text": "You said 40 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:50": {
-   "text": "You said 50 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:60": {
-   "text": "You said 60 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:70": {
-   "text": "You said 70 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:80": {
-   "text": "You said 80 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:90": {
-   "text": "You said 90 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:100": {
-   "text": "You said 100 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:110": {
-   "text": "You said 110 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:120": {
-   "text": "You said 120 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:130": {
-   "text": "You said 130 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:140": {
-   "text": "You said 140 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:150": {
-   "text": "You said 150 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:160": {
-   "text": "You said 160 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:170": {
-   "text": "You said 170 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:180": {
-   "text": "You said 180 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:190": {
-   "text": "You said 190 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:200": {
-   "text": "You said 200 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:210": {
-   "text": "You said 210 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:220": {
-   "text": "You said 220 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:230": {
-   "text": "You said 230 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:240": {
-   "text": "You said 240 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:250": {
-   "text": "You said 250 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:260": {
-   "text": "You said 260 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:270": {
-   "text": "You said 270 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:280": {
-   "text": "You said 280 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:290": {
-   "text": "You said 290 dollars of every 300 would reduce the debt."
-  },
-  "ans:timothy-melanie-weah:tarjeta:300": {
-   "text": "You said 300 dollars of every 300 would reduce the debt."
+   "text": "According to your plan, only 30 dollars of every 300 reduce the debt. The rest, $270, goes to interest. Your card charges 18% and you owe $18,000.",
+   "file": "488166c57a3bc75a.mp3"
   },
   "q:timothy-melanie-weah:seguro": {
-   "text": "If you weren't here, how many years of salary would your life insurance cover?"
+   "text": "If you weren't here, how many years of salary would your life insurance cover?",
+   "file": "b2eae8e08fc779d3.mp3"
   },
   "plan:timothy-melanie-weah:seguro": {
-   "text": "According to your plan, your life insurance covers 0.9 years of salary. Your policy covers $140,000. Recommended minimum: $750,000."
-  },
-  "ans:timothy-melanie-weah:seguro:0": {
-   "text": "You said 0 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:0.1": {
-   "text": "You said 0.1 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:0.2": {
-   "text": "You said 0.2 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:0.3": {
-   "text": "You said 0.3 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:0.4": {
-   "text": "You said 0.4 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:0.5": {
-   "text": "You said 0.5 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:0.6": {
-   "text": "You said 0.6 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:0.7": {
-   "text": "You said 0.7 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:0.8": {
-   "text": "You said 0.8 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:0.9": {
-   "text": "You said 0.9 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:1": {
-   "text": "You said 1 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:1.1": {
-   "text": "You said 1.1 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:1.2": {
-   "text": "You said 1.2 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:1.3": {
-   "text": "You said 1.3 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:1.4": {
-   "text": "You said 1.4 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:1.5": {
-   "text": "You said 1.5 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:1.6": {
-   "text": "You said 1.6 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:1.7": {
-   "text": "You said 1.7 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:1.8": {
-   "text": "You said 1.8 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:1.9": {
-   "text": "You said 1.9 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:2": {
-   "text": "You said 2 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:2.1": {
-   "text": "You said 2.1 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:2.2": {
-   "text": "You said 2.2 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:2.3": {
-   "text": "You said 2.3 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:2.4": {
-   "text": "You said 2.4 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:2.5": {
-   "text": "You said 2.5 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:2.6": {
-   "text": "You said 2.6 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:2.7": {
-   "text": "You said 2.7 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:2.8": {
-   "text": "You said 2.8 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:2.9": {
-   "text": "You said 2.9 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:3": {
-   "text": "You said 3 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:3.1": {
-   "text": "You said 3.1 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:3.2": {
-   "text": "You said 3.2 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:3.3": {
-   "text": "You said 3.3 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:3.4": {
-   "text": "You said 3.4 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:3.5": {
-   "text": "You said 3.5 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:3.6": {
-   "text": "You said 3.6 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:3.7": {
-   "text": "You said 3.7 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:3.8": {
-   "text": "You said 3.8 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:3.9": {
-   "text": "You said 3.9 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:4": {
-   "text": "You said 4 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:4.1": {
-   "text": "You said 4.1 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:4.2": {
-   "text": "You said 4.2 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:4.3": {
-   "text": "You said 4.3 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:4.4": {
-   "text": "You said 4.4 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:4.5": {
-   "text": "You said 4.5 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:4.6": {
-   "text": "You said 4.6 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:4.7": {
-   "text": "You said 4.7 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:4.8": {
-   "text": "You said 4.8 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:4.9": {
-   "text": "You said 4.9 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:5": {
-   "text": "You said 5 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:5.1": {
-   "text": "You said 5.1 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:5.2": {
-   "text": "You said 5.2 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:5.3": {
-   "text": "You said 5.3 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:5.4": {
-   "text": "You said 5.4 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:5.5": {
-   "text": "You said 5.5 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:5.6": {
-   "text": "You said 5.6 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:5.7": {
-   "text": "You said 5.7 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:5.8": {
-   "text": "You said 5.8 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:5.9": {
-   "text": "You said 5.9 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:6": {
-   "text": "You said 6 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:6.1": {
-   "text": "You said 6.1 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:6.2": {
-   "text": "You said 6.2 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:6.3": {
-   "text": "You said 6.3 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:6.4": {
-   "text": "You said 6.4 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:6.5": {
-   "text": "You said 6.5 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:6.6": {
-   "text": "You said 6.6 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:6.7": {
-   "text": "You said 6.7 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:6.8": {
-   "text": "You said 6.8 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:6.9": {
-   "text": "You said 6.9 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:7": {
-   "text": "You said 7 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:7.1": {
-   "text": "You said 7.1 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:7.2": {
-   "text": "You said 7.2 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:7.3": {
-   "text": "You said 7.3 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:7.4": {
-   "text": "You said 7.4 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:7.5": {
-   "text": "You said 7.5 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:7.6": {
-   "text": "You said 7.6 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:7.7": {
-   "text": "You said 7.7 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:7.8": {
-   "text": "You said 7.8 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:7.9": {
-   "text": "You said 7.9 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:8": {
-   "text": "You said 8 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:8.1": {
-   "text": "You said 8.1 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:8.2": {
-   "text": "You said 8.2 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:8.3": {
-   "text": "You said 8.3 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:8.4": {
-   "text": "You said 8.4 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:8.5": {
-   "text": "You said 8.5 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:8.6": {
-   "text": "You said 8.6 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:8.7": {
-   "text": "You said 8.7 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:8.8": {
-   "text": "You said 8.8 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:8.9": {
-   "text": "You said 8.9 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:9": {
-   "text": "You said 9 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:9.1": {
-   "text": "You said 9.1 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:9.2": {
-   "text": "You said 9.2 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:9.3": {
-   "text": "You said 9.3 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:9.4": {
-   "text": "You said 9.4 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:9.5": {
-   "text": "You said 9.5 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:9.6": {
-   "text": "You said 9.6 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:9.7": {
-   "text": "You said 9.7 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:9.8": {
-   "text": "You said 9.8 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:9.9": {
-   "text": "You said 9.9 years of salary."
-  },
-  "ans:timothy-melanie-weah:seguro:10": {
-   "text": "You said 10 years of salary."
+   "text": "According to your plan, your life insurance covers 0.9 years of salary. Your policy covers $140,000. Recommended minimum: $750,000.",
+   "file": "383e4e89fed2fcc4.mp3"
   },
   "q:michael-carter:colchon": {
-   "text": "How many months could you live off your cash?"
+   "text": "How many months could you live off your cash?",
+   "file": "635f3e27640cbc53.mp3"
   },
   "plan:michael-carter:colchon": {
-   "text": "According to your plan, your cash would cover 3.2 months. Recommended for you: between 5 and 6 months."
-  },
-  "ans:michael-carter:colchon:0": {
-   "text": "You said 0 months."
-  },
-  "ans:michael-carter:colchon:0.5": {
-   "text": "You said 0.5 months."
-  },
-  "ans:michael-carter:colchon:1": {
-   "text": "You said 1 months."
-  },
-  "ans:michael-carter:colchon:1.5": {
-   "text": "You said 1.5 months."
-  },
-  "ans:michael-carter:colchon:2": {
-   "text": "You said 2 months."
-  },
-  "ans:michael-carter:colchon:2.5": {
-   "text": "You said 2.5 months."
-  },
-  "ans:michael-carter:colchon:3": {
-   "text": "You said 3 months."
-  },
-  "ans:michael-carter:colchon:3.5": {
-   "text": "You said 3.5 months."
-  },
-  "ans:michael-carter:colchon:4": {
-   "text": "You said 4 months."
-  },
-  "ans:michael-carter:colchon:4.5": {
-   "text": "You said 4.5 months."
-  },
-  "ans:michael-carter:colchon:5": {
-   "text": "You said 5 months."
-  },
-  "ans:michael-carter:colchon:5.5": {
-   "text": "You said 5.5 months."
-  },
-  "ans:michael-carter:colchon:6": {
-   "text": "You said 6 months."
-  },
-  "ans:michael-carter:colchon:6.5": {
-   "text": "You said 6.5 months."
-  },
-  "ans:michael-carter:colchon:7": {
-   "text": "You said 7 months."
-  },
-  "ans:michael-carter:colchon:7.5": {
-   "text": "You said 7.5 months."
-  },
-  "ans:michael-carter:colchon:8": {
-   "text": "You said 8 months."
-  },
-  "ans:michael-carter:colchon:8.5": {
-   "text": "You said 8.5 months."
-  },
-  "ans:michael-carter:colchon:9": {
-   "text": "You said 9 months."
-  },
-  "ans:michael-carter:colchon:9.5": {
-   "text": "You said 9.5 months."
-  },
-  "ans:michael-carter:colchon:10": {
-   "text": "You said 10 months."
-  },
-  "ans:michael-carter:colchon:10.5": {
-   "text": "You said 10.5 months."
-  },
-  "ans:michael-carter:colchon:11": {
-   "text": "You said 11 months."
-  },
-  "ans:michael-carter:colchon:11.5": {
-   "text": "You said 11.5 months."
-  },
-  "ans:michael-carter:colchon:12": {
-   "text": "You said 12 months."
-  },
-  "ans:michael-carter:colchon:12.5": {
-   "text": "You said 12.5 months."
-  },
-  "ans:michael-carter:colchon:13": {
-   "text": "You said 13 months."
-  },
-  "ans:michael-carter:colchon:13.5": {
-   "text": "You said 13.5 months."
-  },
-  "ans:michael-carter:colchon:14": {
-   "text": "You said 14 months."
-  },
-  "ans:michael-carter:colchon:14.5": {
-   "text": "You said 14.5 months."
-  },
-  "ans:michael-carter:colchon:15": {
-   "text": "You said 15 months."
-  },
-  "ans:michael-carter:colchon:15.5": {
-   "text": "You said 15.5 months."
-  },
-  "ans:michael-carter:colchon:16": {
-   "text": "You said 16 months."
-  },
-  "ans:michael-carter:colchon:16.5": {
-   "text": "You said 16.5 months."
-  },
-  "ans:michael-carter:colchon:17": {
-   "text": "You said 17 months."
-  },
-  "ans:michael-carter:colchon:17.5": {
-   "text": "You said 17.5 months."
-  },
-  "ans:michael-carter:colchon:18": {
-   "text": "You said 18 months."
-  },
-  "ans:michael-carter:colchon:18.5": {
-   "text": "You said 18.5 months."
-  },
-  "ans:michael-carter:colchon:19": {
-   "text": "You said 19 months."
-  },
-  "ans:michael-carter:colchon:19.5": {
-   "text": "You said 19.5 months."
-  },
-  "ans:michael-carter:colchon:20": {
-   "text": "You said 20 months."
-  },
-  "ans:michael-carter:colchon:20.5": {
-   "text": "You said 20.5 months."
-  },
-  "ans:michael-carter:colchon:21": {
-   "text": "You said 21 months."
-  },
-  "ans:michael-carter:colchon:21.5": {
-   "text": "You said 21.5 months."
-  },
-  "ans:michael-carter:colchon:22": {
-   "text": "You said 22 months."
-  },
-  "ans:michael-carter:colchon:22.5": {
-   "text": "You said 22.5 months."
-  },
-  "ans:michael-carter:colchon:23": {
-   "text": "You said 23 months."
-  },
-  "ans:michael-carter:colchon:23.5": {
-   "text": "You said 23.5 months."
-  },
-  "ans:michael-carter:colchon:24": {
-   "text": "You said 24 months."
-  },
-  "ans:michael-carter:colchon:24.5": {
-   "text": "You said 24.5 months."
-  },
-  "ans:michael-carter:colchon:25": {
-   "text": "You said 25 months."
-  },
-  "ans:michael-carter:colchon:25.5": {
-   "text": "You said 25.5 months."
-  },
-  "ans:michael-carter:colchon:26": {
-   "text": "You said 26 months."
-  },
-  "ans:michael-carter:colchon:26.5": {
-   "text": "You said 26.5 months."
-  },
-  "ans:michael-carter:colchon:27": {
-   "text": "You said 27 months."
-  },
-  "ans:michael-carter:colchon:27.5": {
-   "text": "You said 27.5 months."
-  },
-  "ans:michael-carter:colchon:28": {
-   "text": "You said 28 months."
-  },
-  "ans:michael-carter:colchon:28.5": {
-   "text": "You said 28.5 months."
-  },
-  "ans:michael-carter:colchon:29": {
-   "text": "You said 29 months."
-  },
-  "ans:michael-carter:colchon:29.5": {
-   "text": "You said 29.5 months."
-  },
-  "ans:michael-carter:colchon:30": {
-   "text": "You said 30 months."
-  },
-  "ans:michael-carter:colchon:30.5": {
-   "text": "You said 30.5 months."
-  },
-  "ans:michael-carter:colchon:31": {
-   "text": "You said 31 months."
-  },
-  "ans:michael-carter:colchon:31.5": {
-   "text": "You said 31.5 months."
-  },
-  "ans:michael-carter:colchon:32": {
-   "text": "You said 32 months."
-  },
-  "ans:michael-carter:colchon:32.5": {
-   "text": "You said 32.5 months."
-  },
-  "ans:michael-carter:colchon:33": {
-   "text": "You said 33 months."
-  },
-  "ans:michael-carter:colchon:33.5": {
-   "text": "You said 33.5 months."
-  },
-  "ans:michael-carter:colchon:34": {
-   "text": "You said 34 months."
-  },
-  "ans:michael-carter:colchon:34.5": {
-   "text": "You said 34.5 months."
-  },
-  "ans:michael-carter:colchon:35": {
-   "text": "You said 35 months."
-  },
-  "ans:michael-carter:colchon:35.5": {
-   "text": "You said 35.5 months."
-  },
-  "ans:michael-carter:colchon:36": {
-   "text": "You said 36 months."
+   "text": "According to your plan, your cash would cover 3.2 months. Recommended for you: between 5 and 6 months.",
+   "file": "2d8e52fd441af9fc.mp3"
   },
   "q:michael-carter:tarjeta": {
-   "text": "For every $200 you pay on your credit card, how much reduces your debt?"
+   "text": "For every $200 you pay on your credit card, how much reduces your debt?",
+   "file": "fa34e9e8053e3212.mp3"
   },
   "plan:michael-carter:tarjeta": {
-   "text": "According to your plan, only 142 dollars of every 200 reduce the debt. The rest, $58, goes to interest. Your card charges 20% and you owe $3,500."
-  },
-  "ans:michael-carter:tarjeta:0": {
-   "text": "You said 0 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:5": {
-   "text": "You said 5 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:10": {
-   "text": "You said 10 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:15": {
-   "text": "You said 15 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:20": {
-   "text": "You said 20 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:25": {
-   "text": "You said 25 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:30": {
-   "text": "You said 30 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:35": {
-   "text": "You said 35 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:40": {
-   "text": "You said 40 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:45": {
-   "text": "You said 45 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:50": {
-   "text": "You said 50 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:55": {
-   "text": "You said 55 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:60": {
-   "text": "You said 60 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:65": {
-   "text": "You said 65 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:70": {
-   "text": "You said 70 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:75": {
-   "text": "You said 75 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:80": {
-   "text": "You said 80 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:85": {
-   "text": "You said 85 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:90": {
-   "text": "You said 90 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:95": {
-   "text": "You said 95 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:100": {
-   "text": "You said 100 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:105": {
-   "text": "You said 105 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:110": {
-   "text": "You said 110 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:115": {
-   "text": "You said 115 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:120": {
-   "text": "You said 120 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:125": {
-   "text": "You said 125 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:130": {
-   "text": "You said 130 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:135": {
-   "text": "You said 135 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:140": {
-   "text": "You said 140 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:145": {
-   "text": "You said 145 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:150": {
-   "text": "You said 150 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:155": {
-   "text": "You said 155 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:160": {
-   "text": "You said 160 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:165": {
-   "text": "You said 165 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:170": {
-   "text": "You said 170 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:175": {
-   "text": "You said 175 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:180": {
-   "text": "You said 180 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:185": {
-   "text": "You said 185 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:190": {
-   "text": "You said 190 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:195": {
-   "text": "You said 195 dollars of every 200 would reduce the debt."
-  },
-  "ans:michael-carter:tarjeta:200": {
-   "text": "You said 200 dollars of every 200 would reduce the debt."
+   "text": "According to your plan, only 142 dollars of every 200 reduce the debt. The rest, $58, goes to interest. Your card charges 20% and you owe $3,500.",
+   "file": "a7856be89eb087ab.mp3"
   },
   "q:michael-carter:ahorros": {
-   "text": "At what age do you think your savings would run out?"
+   "text": "At what age do you think your savings would run out?",
+   "file": "ef650821683a1b23.mp3"
   },
   "plan:michael-carter:ahorros": {
-   "text": "According to your plan, your savings run out at age 85. Your plan runs until age 91."
-  },
-  "ans:michael-carter:ahorros:60": {
-   "text": "You said your savings would run out at age 60."
-  },
-  "ans:michael-carter:ahorros:61": {
-   "text": "You said your savings would run out at age 61."
-  },
-  "ans:michael-carter:ahorros:62": {
-   "text": "You said your savings would run out at age 62."
-  },
-  "ans:michael-carter:ahorros:63": {
-   "text": "You said your savings would run out at age 63."
-  },
-  "ans:michael-carter:ahorros:64": {
-   "text": "You said your savings would run out at age 64."
-  },
-  "ans:michael-carter:ahorros:65": {
-   "text": "You said your savings would run out at age 65."
-  },
-  "ans:michael-carter:ahorros:66": {
-   "text": "You said your savings would run out at age 66."
-  },
-  "ans:michael-carter:ahorros:67": {
-   "text": "You said your savings would run out at age 67."
-  },
-  "ans:michael-carter:ahorros:68": {
-   "text": "You said your savings would run out at age 68."
-  },
-  "ans:michael-carter:ahorros:69": {
-   "text": "You said your savings would run out at age 69."
-  },
-  "ans:michael-carter:ahorros:70": {
-   "text": "You said your savings would run out at age 70."
-  },
-  "ans:michael-carter:ahorros:71": {
-   "text": "You said your savings would run out at age 71."
-  },
-  "ans:michael-carter:ahorros:72": {
-   "text": "You said your savings would run out at age 72."
-  },
-  "ans:michael-carter:ahorros:73": {
-   "text": "You said your savings would run out at age 73."
-  },
-  "ans:michael-carter:ahorros:74": {
-   "text": "You said your savings would run out at age 74."
-  },
-  "ans:michael-carter:ahorros:75": {
-   "text": "You said your savings would run out at age 75."
-  },
-  "ans:michael-carter:ahorros:76": {
-   "text": "You said your savings would run out at age 76."
-  },
-  "ans:michael-carter:ahorros:77": {
-   "text": "You said your savings would run out at age 77."
-  },
-  "ans:michael-carter:ahorros:78": {
-   "text": "You said your savings would run out at age 78."
-  },
-  "ans:michael-carter:ahorros:79": {
-   "text": "You said your savings would run out at age 79."
-  },
-  "ans:michael-carter:ahorros:80": {
-   "text": "You said your savings would run out at age 80."
-  },
-  "ans:michael-carter:ahorros:81": {
-   "text": "You said your savings would run out at age 81."
-  },
-  "ans:michael-carter:ahorros:82": {
-   "text": "You said your savings would run out at age 82."
-  },
-  "ans:michael-carter:ahorros:83": {
-   "text": "You said your savings would run out at age 83."
-  },
-  "ans:michael-carter:ahorros:84": {
-   "text": "You said your savings would run out at age 84."
-  },
-  "ans:michael-carter:ahorros:85": {
-   "text": "You said your savings would run out at age 85."
-  },
-  "ans:michael-carter:ahorros:86": {
-   "text": "You said your savings would run out at age 86."
-  },
-  "ans:michael-carter:ahorros:87": {
-   "text": "You said your savings would run out at age 87."
-  },
-  "ans:michael-carter:ahorros:88": {
-   "text": "You said your savings would run out at age 88."
-  },
-  "ans:michael-carter:ahorros:89": {
-   "text": "You said your savings would run out at age 89."
-  },
-  "ans:michael-carter:ahorros:90": {
-   "text": "You said your savings would run out at age 90."
-  },
-  "ans:michael-carter:ahorros:91": {
-   "text": "You said your savings would run out at age 91."
-  },
-  "ans:michael-carter:ahorros:92": {
-   "text": "You said your savings would run out at age 92."
-  },
-  "ans:michael-carter:ahorros:93": {
-   "text": "You said your savings would run out at age 93."
-  },
-  "ans:michael-carter:ahorros:94": {
-   "text": "You said your savings would run out at age 94."
-  },
-  "ans:michael-carter:ahorros:95": {
-   "text": "You said your savings would run out at age 95."
-  },
-  "ans:michael-carter:ahorros:96": {
-   "text": "You said your savings would run out at age 96."
-  },
-  "ans:michael-carter:ahorros:97": {
-   "text": "You said your savings would run out at age 97."
-  },
-  "ans:michael-carter:ahorros:98": {
-   "text": "You said your savings would run out at age 98."
-  },
-  "ans:michael-carter:ahorros:99": {
-   "text": "You said your savings would run out at age 99."
-  },
-  "ans:michael-carter:ahorros:100": {
-   "text": "You said your savings would run out at age 100."
+   "text": "According to your plan, your savings run out at age 85. Your plan runs until age 91.",
+   "file": "b4c910f914b0faf1.mp3"
   },
   "q:michael-carter:seguro": {
-   "text": "If you weren't here, how many years of salary would your life insurance cover?"
+   "text": "If you weren't here, how many years of salary would your life insurance cover?",
+   "file": "b2eae8e08fc779d3.mp3"
   },
   "plan:michael-carter:seguro": {
-   "text": "According to your plan, your life insurance covers 1 years of salary. Your policy covers $180,000. Recommended minimum: $900,000."
-  },
-  "ans:michael-carter:seguro:0": {
-   "text": "You said 0 years of salary."
-  },
-  "ans:michael-carter:seguro:0.1": {
-   "text": "You said 0.1 years of salary."
-  },
-  "ans:michael-carter:seguro:0.2": {
-   "text": "You said 0.2 years of salary."
-  },
-  "ans:michael-carter:seguro:0.3": {
-   "text": "You said 0.3 years of salary."
-  },
-  "ans:michael-carter:seguro:0.4": {
-   "text": "You said 0.4 years of salary."
-  },
-  "ans:michael-carter:seguro:0.5": {
-   "text": "You said 0.5 years of salary."
-  },
-  "ans:michael-carter:seguro:0.6": {
-   "text": "You said 0.6 years of salary."
-  },
-  "ans:michael-carter:seguro:0.7": {
-   "text": "You said 0.7 years of salary."
-  },
-  "ans:michael-carter:seguro:0.8": {
-   "text": "You said 0.8 years of salary."
-  },
-  "ans:michael-carter:seguro:0.9": {
-   "text": "You said 0.9 years of salary."
-  },
-  "ans:michael-carter:seguro:1": {
-   "text": "You said 1 years of salary."
-  },
-  "ans:michael-carter:seguro:1.1": {
-   "text": "You said 1.1 years of salary."
-  },
-  "ans:michael-carter:seguro:1.2": {
-   "text": "You said 1.2 years of salary."
-  },
-  "ans:michael-carter:seguro:1.3": {
-   "text": "You said 1.3 years of salary."
-  },
-  "ans:michael-carter:seguro:1.4": {
-   "text": "You said 1.4 years of salary."
-  },
-  "ans:michael-carter:seguro:1.5": {
-   "text": "You said 1.5 years of salary."
-  },
-  "ans:michael-carter:seguro:1.6": {
-   "text": "You said 1.6 years of salary."
-  },
-  "ans:michael-carter:seguro:1.7": {
-   "text": "You said 1.7 years of salary."
-  },
-  "ans:michael-carter:seguro:1.8": {
-   "text": "You said 1.8 years of salary."
-  },
-  "ans:michael-carter:seguro:1.9": {
-   "text": "You said 1.9 years of salary."
-  },
-  "ans:michael-carter:seguro:2": {
-   "text": "You said 2 years of salary."
-  },
-  "ans:michael-carter:seguro:2.1": {
-   "text": "You said 2.1 years of salary."
-  },
-  "ans:michael-carter:seguro:2.2": {
-   "text": "You said 2.2 years of salary."
-  },
-  "ans:michael-carter:seguro:2.3": {
-   "text": "You said 2.3 years of salary."
-  },
-  "ans:michael-carter:seguro:2.4": {
-   "text": "You said 2.4 years of salary."
-  },
-  "ans:michael-carter:seguro:2.5": {
-   "text": "You said 2.5 years of salary."
-  },
-  "ans:michael-carter:seguro:2.6": {
-   "text": "You said 2.6 years of salary."
-  },
-  "ans:michael-carter:seguro:2.7": {
-   "text": "You said 2.7 years of salary."
-  },
-  "ans:michael-carter:seguro:2.8": {
-   "text": "You said 2.8 years of salary."
-  },
-  "ans:michael-carter:seguro:2.9": {
-   "text": "You said 2.9 years of salary."
-  },
-  "ans:michael-carter:seguro:3": {
-   "text": "You said 3 years of salary."
-  },
-  "ans:michael-carter:seguro:3.1": {
-   "text": "You said 3.1 years of salary."
-  },
-  "ans:michael-carter:seguro:3.2": {
-   "text": "You said 3.2 years of salary."
-  },
-  "ans:michael-carter:seguro:3.3": {
-   "text": "You said 3.3 years of salary."
-  },
-  "ans:michael-carter:seguro:3.4": {
-   "text": "You said 3.4 years of salary."
-  },
-  "ans:michael-carter:seguro:3.5": {
-   "text": "You said 3.5 years of salary."
-  },
-  "ans:michael-carter:seguro:3.6": {
-   "text": "You said 3.6 years of salary."
-  },
-  "ans:michael-carter:seguro:3.7": {
-   "text": "You said 3.7 years of salary."
-  },
-  "ans:michael-carter:seguro:3.8": {
-   "text": "You said 3.8 years of salary."
-  },
-  "ans:michael-carter:seguro:3.9": {
-   "text": "You said 3.9 years of salary."
-  },
-  "ans:michael-carter:seguro:4": {
-   "text": "You said 4 years of salary."
-  },
-  "ans:michael-carter:seguro:4.1": {
-   "text": "You said 4.1 years of salary."
-  },
-  "ans:michael-carter:seguro:4.2": {
-   "text": "You said 4.2 years of salary."
-  },
-  "ans:michael-carter:seguro:4.3": {
-   "text": "You said 4.3 years of salary."
-  },
-  "ans:michael-carter:seguro:4.4": {
-   "text": "You said 4.4 years of salary."
-  },
-  "ans:michael-carter:seguro:4.5": {
-   "text": "You said 4.5 years of salary."
-  },
-  "ans:michael-carter:seguro:4.6": {
-   "text": "You said 4.6 years of salary."
-  },
-  "ans:michael-carter:seguro:4.7": {
-   "text": "You said 4.7 years of salary."
-  },
-  "ans:michael-carter:seguro:4.8": {
-   "text": "You said 4.8 years of salary."
-  },
-  "ans:michael-carter:seguro:4.9": {
-   "text": "You said 4.9 years of salary."
-  },
-  "ans:michael-carter:seguro:5": {
-   "text": "You said 5 years of salary."
-  },
-  "ans:michael-carter:seguro:5.1": {
-   "text": "You said 5.1 years of salary."
-  },
-  "ans:michael-carter:seguro:5.2": {
-   "text": "You said 5.2 years of salary."
-  },
-  "ans:michael-carter:seguro:5.3": {
-   "text": "You said 5.3 years of salary."
-  },
-  "ans:michael-carter:seguro:5.4": {
-   "text": "You said 5.4 years of salary."
-  },
-  "ans:michael-carter:seguro:5.5": {
-   "text": "You said 5.5 years of salary."
-  },
-  "ans:michael-carter:seguro:5.6": {
-   "text": "You said 5.6 years of salary."
-  },
-  "ans:michael-carter:seguro:5.7": {
-   "text": "You said 5.7 years of salary."
-  },
-  "ans:michael-carter:seguro:5.8": {
-   "text": "You said 5.8 years of salary."
-  },
-  "ans:michael-carter:seguro:5.9": {
-   "text": "You said 5.9 years of salary."
-  },
-  "ans:michael-carter:seguro:6": {
-   "text": "You said 6 years of salary."
-  },
-  "ans:michael-carter:seguro:6.1": {
-   "text": "You said 6.1 years of salary."
-  },
-  "ans:michael-carter:seguro:6.2": {
-   "text": "You said 6.2 years of salary."
-  },
-  "ans:michael-carter:seguro:6.3": {
-   "text": "You said 6.3 years of salary."
-  },
-  "ans:michael-carter:seguro:6.4": {
-   "text": "You said 6.4 years of salary."
-  },
-  "ans:michael-carter:seguro:6.5": {
-   "text": "You said 6.5 years of salary."
-  },
-  "ans:michael-carter:seguro:6.6": {
-   "text": "You said 6.6 years of salary."
-  },
-  "ans:michael-carter:seguro:6.7": {
-   "text": "You said 6.7 years of salary."
-  },
-  "ans:michael-carter:seguro:6.8": {
-   "text": "You said 6.8 years of salary."
-  },
-  "ans:michael-carter:seguro:6.9": {
-   "text": "You said 6.9 years of salary."
-  },
-  "ans:michael-carter:seguro:7": {
-   "text": "You said 7 years of salary."
-  },
-  "ans:michael-carter:seguro:7.1": {
-   "text": "You said 7.1 years of salary."
-  },
-  "ans:michael-carter:seguro:7.2": {
-   "text": "You said 7.2 years of salary."
-  },
-  "ans:michael-carter:seguro:7.3": {
-   "text": "You said 7.3 years of salary."
-  },
-  "ans:michael-carter:seguro:7.4": {
-   "text": "You said 7.4 years of salary."
-  },
-  "ans:michael-carter:seguro:7.5": {
-   "text": "You said 7.5 years of salary."
-  },
-  "ans:michael-carter:seguro:7.6": {
-   "text": "You said 7.6 years of salary."
-  },
-  "ans:michael-carter:seguro:7.7": {
-   "text": "You said 7.7 years of salary."
-  },
-  "ans:michael-carter:seguro:7.8": {
-   "text": "You said 7.8 years of salary."
-  },
-  "ans:michael-carter:seguro:7.9": {
-   "text": "You said 7.9 years of salary."
-  },
-  "ans:michael-carter:seguro:8": {
-   "text": "You said 8 years of salary."
-  },
-  "ans:michael-carter:seguro:8.1": {
-   "text": "You said 8.1 years of salary."
-  },
-  "ans:michael-carter:seguro:8.2": {
-   "text": "You said 8.2 years of salary."
-  },
-  "ans:michael-carter:seguro:8.3": {
-   "text": "You said 8.3 years of salary."
-  },
-  "ans:michael-carter:seguro:8.4": {
-   "text": "You said 8.4 years of salary."
-  },
-  "ans:michael-carter:seguro:8.5": {
-   "text": "You said 8.5 years of salary."
-  },
-  "ans:michael-carter:seguro:8.6": {
-   "text": "You said 8.6 years of salary."
-  },
-  "ans:michael-carter:seguro:8.7": {
-   "text": "You said 8.7 years of salary."
-  },
-  "ans:michael-carter:seguro:8.8": {
-   "text": "You said 8.8 years of salary."
-  },
-  "ans:michael-carter:seguro:8.9": {
-   "text": "You said 8.9 years of salary."
-  },
-  "ans:michael-carter:seguro:9": {
-   "text": "You said 9 years of salary."
-  },
-  "ans:michael-carter:seguro:9.1": {
-   "text": "You said 9.1 years of salary."
-  },
-  "ans:michael-carter:seguro:9.2": {
-   "text": "You said 9.2 years of salary."
-  },
-  "ans:michael-carter:seguro:9.3": {
-   "text": "You said 9.3 years of salary."
-  },
-  "ans:michael-carter:seguro:9.4": {
-   "text": "You said 9.4 years of salary."
-  },
-  "ans:michael-carter:seguro:9.5": {
-   "text": "You said 9.5 years of salary."
-  },
-  "ans:michael-carter:seguro:9.6": {
-   "text": "You said 9.6 years of salary."
-  },
-  "ans:michael-carter:seguro:9.7": {
-   "text": "You said 9.7 years of salary."
-  },
-  "ans:michael-carter:seguro:9.8": {
-   "text": "You said 9.8 years of salary."
-  },
-  "ans:michael-carter:seguro:9.9": {
-   "text": "You said 9.9 years of salary."
-  },
-  "ans:michael-carter:seguro:10": {
-   "text": "You said 10 years of salary."
+   "text": "According to your plan, your life insurance covers 1 years of salary. Your policy covers $180,000. Recommended minimum: $900,000.",
+   "file": "257979e5e7891fe6.mp3"
   },
   "q:daniel-emily-johnson:colchon": {
-   "text": "How many months could you live off your cash?"
+   "text": "How many months could you live off your cash?",
+   "file": "635f3e27640cbc53.mp3"
   },
   "plan:daniel-emily-johnson:colchon": {
-   "text": "According to your plan, your cash would cover 1.4 months. Recommended for you: between 8 and 9 months."
-  },
-  "ans:daniel-emily-johnson:colchon:0": {
-   "text": "You said 0 months."
-  },
-  "ans:daniel-emily-johnson:colchon:0.5": {
-   "text": "You said 0.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:1": {
-   "text": "You said 1 months."
-  },
-  "ans:daniel-emily-johnson:colchon:1.5": {
-   "text": "You said 1.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:2": {
-   "text": "You said 2 months."
-  },
-  "ans:daniel-emily-johnson:colchon:2.5": {
-   "text": "You said 2.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:3": {
-   "text": "You said 3 months."
-  },
-  "ans:daniel-emily-johnson:colchon:3.5": {
-   "text": "You said 3.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:4": {
-   "text": "You said 4 months."
-  },
-  "ans:daniel-emily-johnson:colchon:4.5": {
-   "text": "You said 4.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:5": {
-   "text": "You said 5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:5.5": {
-   "text": "You said 5.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:6": {
-   "text": "You said 6 months."
-  },
-  "ans:daniel-emily-johnson:colchon:6.5": {
-   "text": "You said 6.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:7": {
-   "text": "You said 7 months."
-  },
-  "ans:daniel-emily-johnson:colchon:7.5": {
-   "text": "You said 7.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:8": {
-   "text": "You said 8 months."
-  },
-  "ans:daniel-emily-johnson:colchon:8.5": {
-   "text": "You said 8.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:9": {
-   "text": "You said 9 months."
-  },
-  "ans:daniel-emily-johnson:colchon:9.5": {
-   "text": "You said 9.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:10": {
-   "text": "You said 10 months."
-  },
-  "ans:daniel-emily-johnson:colchon:10.5": {
-   "text": "You said 10.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:11": {
-   "text": "You said 11 months."
-  },
-  "ans:daniel-emily-johnson:colchon:11.5": {
-   "text": "You said 11.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:12": {
-   "text": "You said 12 months."
-  },
-  "ans:daniel-emily-johnson:colchon:12.5": {
-   "text": "You said 12.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:13": {
-   "text": "You said 13 months."
-  },
-  "ans:daniel-emily-johnson:colchon:13.5": {
-   "text": "You said 13.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:14": {
-   "text": "You said 14 months."
-  },
-  "ans:daniel-emily-johnson:colchon:14.5": {
-   "text": "You said 14.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:15": {
-   "text": "You said 15 months."
-  },
-  "ans:daniel-emily-johnson:colchon:15.5": {
-   "text": "You said 15.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:16": {
-   "text": "You said 16 months."
-  },
-  "ans:daniel-emily-johnson:colchon:16.5": {
-   "text": "You said 16.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:17": {
-   "text": "You said 17 months."
-  },
-  "ans:daniel-emily-johnson:colchon:17.5": {
-   "text": "You said 17.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:18": {
-   "text": "You said 18 months."
-  },
-  "ans:daniel-emily-johnson:colchon:18.5": {
-   "text": "You said 18.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:19": {
-   "text": "You said 19 months."
-  },
-  "ans:daniel-emily-johnson:colchon:19.5": {
-   "text": "You said 19.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:20": {
-   "text": "You said 20 months."
-  },
-  "ans:daniel-emily-johnson:colchon:20.5": {
-   "text": "You said 20.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:21": {
-   "text": "You said 21 months."
-  },
-  "ans:daniel-emily-johnson:colchon:21.5": {
-   "text": "You said 21.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:22": {
-   "text": "You said 22 months."
-  },
-  "ans:daniel-emily-johnson:colchon:22.5": {
-   "text": "You said 22.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:23": {
-   "text": "You said 23 months."
-  },
-  "ans:daniel-emily-johnson:colchon:23.5": {
-   "text": "You said 23.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:24": {
-   "text": "You said 24 months."
-  },
-  "ans:daniel-emily-johnson:colchon:24.5": {
-   "text": "You said 24.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:25": {
-   "text": "You said 25 months."
-  },
-  "ans:daniel-emily-johnson:colchon:25.5": {
-   "text": "You said 25.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:26": {
-   "text": "You said 26 months."
-  },
-  "ans:daniel-emily-johnson:colchon:26.5": {
-   "text": "You said 26.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:27": {
-   "text": "You said 27 months."
-  },
-  "ans:daniel-emily-johnson:colchon:27.5": {
-   "text": "You said 27.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:28": {
-   "text": "You said 28 months."
-  },
-  "ans:daniel-emily-johnson:colchon:28.5": {
-   "text": "You said 28.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:29": {
-   "text": "You said 29 months."
-  },
-  "ans:daniel-emily-johnson:colchon:29.5": {
-   "text": "You said 29.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:30": {
-   "text": "You said 30 months."
-  },
-  "ans:daniel-emily-johnson:colchon:30.5": {
-   "text": "You said 30.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:31": {
-   "text": "You said 31 months."
-  },
-  "ans:daniel-emily-johnson:colchon:31.5": {
-   "text": "You said 31.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:32": {
-   "text": "You said 32 months."
-  },
-  "ans:daniel-emily-johnson:colchon:32.5": {
-   "text": "You said 32.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:33": {
-   "text": "You said 33 months."
-  },
-  "ans:daniel-emily-johnson:colchon:33.5": {
-   "text": "You said 33.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:34": {
-   "text": "You said 34 months."
-  },
-  "ans:daniel-emily-johnson:colchon:34.5": {
-   "text": "You said 34.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:35": {
-   "text": "You said 35 months."
-  },
-  "ans:daniel-emily-johnson:colchon:35.5": {
-   "text": "You said 35.5 months."
-  },
-  "ans:daniel-emily-johnson:colchon:36": {
-   "text": "You said 36 months."
+   "text": "According to your plan, your cash would cover 1.4 months. Recommended for you: between 8 and 9 months.",
+   "file": "5d63d915db1775bd.mp3"
   },
   "q:daniel-emily-johnson:ahorros": {
-   "text": "At what age do you think your savings would run out?"
+   "text": "At what age do you think your savings would run out?",
+   "file": "ef650821683a1b23.mp3"
   },
   "plan:daniel-emily-johnson:ahorros": {
-   "text": "According to your plan, your savings never run out. At age 91, you'd still have $260,272 left."
-  },
-  "ans:daniel-emily-johnson:ahorros:60": {
-   "text": "You said your savings would run out at age 60."
-  },
-  "ans:daniel-emily-johnson:ahorros:61": {
-   "text": "You said your savings would run out at age 61."
-  },
-  "ans:daniel-emily-johnson:ahorros:62": {
-   "text": "You said your savings would run out at age 62."
-  },
-  "ans:daniel-emily-johnson:ahorros:63": {
-   "text": "You said your savings would run out at age 63."
-  },
-  "ans:daniel-emily-johnson:ahorros:64": {
-   "text": "You said your savings would run out at age 64."
-  },
-  "ans:daniel-emily-johnson:ahorros:65": {
-   "text": "You said your savings would run out at age 65."
-  },
-  "ans:daniel-emily-johnson:ahorros:66": {
-   "text": "You said your savings would run out at age 66."
-  },
-  "ans:daniel-emily-johnson:ahorros:67": {
-   "text": "You said your savings would run out at age 67."
-  },
-  "ans:daniel-emily-johnson:ahorros:68": {
-   "text": "You said your savings would run out at age 68."
-  },
-  "ans:daniel-emily-johnson:ahorros:69": {
-   "text": "You said your savings would run out at age 69."
-  },
-  "ans:daniel-emily-johnson:ahorros:70": {
-   "text": "You said your savings would run out at age 70."
-  },
-  "ans:daniel-emily-johnson:ahorros:71": {
-   "text": "You said your savings would run out at age 71."
-  },
-  "ans:daniel-emily-johnson:ahorros:72": {
-   "text": "You said your savings would run out at age 72."
-  },
-  "ans:daniel-emily-johnson:ahorros:73": {
-   "text": "You said your savings would run out at age 73."
-  },
-  "ans:daniel-emily-johnson:ahorros:74": {
-   "text": "You said your savings would run out at age 74."
-  },
-  "ans:daniel-emily-johnson:ahorros:75": {
-   "text": "You said your savings would run out at age 75."
-  },
-  "ans:daniel-emily-johnson:ahorros:76": {
-   "text": "You said your savings would run out at age 76."
-  },
-  "ans:daniel-emily-johnson:ahorros:77": {
-   "text": "You said your savings would run out at age 77."
-  },
-  "ans:daniel-emily-johnson:ahorros:78": {
-   "text": "You said your savings would run out at age 78."
-  },
-  "ans:daniel-emily-johnson:ahorros:79": {
-   "text": "You said your savings would run out at age 79."
-  },
-  "ans:daniel-emily-johnson:ahorros:80": {
-   "text": "You said your savings would run out at age 80."
-  },
-  "ans:daniel-emily-johnson:ahorros:81": {
-   "text": "You said your savings would run out at age 81."
-  },
-  "ans:daniel-emily-johnson:ahorros:82": {
-   "text": "You said your savings would run out at age 82."
-  },
-  "ans:daniel-emily-johnson:ahorros:83": {
-   "text": "You said your savings would run out at age 83."
-  },
-  "ans:daniel-emily-johnson:ahorros:84": {
-   "text": "You said your savings would run out at age 84."
-  },
-  "ans:daniel-emily-johnson:ahorros:85": {
-   "text": "You said your savings would run out at age 85."
-  },
-  "ans:daniel-emily-johnson:ahorros:86": {
-   "text": "You said your savings would run out at age 86."
-  },
-  "ans:daniel-emily-johnson:ahorros:87": {
-   "text": "You said your savings would run out at age 87."
-  },
-  "ans:daniel-emily-johnson:ahorros:88": {
-   "text": "You said your savings would run out at age 88."
-  },
-  "ans:daniel-emily-johnson:ahorros:89": {
-   "text": "You said your savings would run out at age 89."
-  },
-  "ans:daniel-emily-johnson:ahorros:90": {
-   "text": "You said your savings would run out at age 90."
-  },
-  "ans:daniel-emily-johnson:ahorros:91": {
-   "text": "You said your savings would run out at age 91."
-  },
-  "ans:daniel-emily-johnson:ahorros:92": {
-   "text": "You said your savings would run out at age 92."
-  },
-  "ans:daniel-emily-johnson:ahorros:93": {
-   "text": "You said your savings would run out at age 93."
-  },
-  "ans:daniel-emily-johnson:ahorros:94": {
-   "text": "You said your savings would run out at age 94."
-  },
-  "ans:daniel-emily-johnson:ahorros:95": {
-   "text": "You said your savings would run out at age 95."
-  },
-  "ans:daniel-emily-johnson:ahorros:96": {
-   "text": "You said your savings would run out at age 96."
-  },
-  "ans:daniel-emily-johnson:ahorros:97": {
-   "text": "You said your savings would run out at age 97."
-  },
-  "ans:daniel-emily-johnson:ahorros:98": {
-   "text": "You said your savings would run out at age 98."
-  },
-  "ans:daniel-emily-johnson:ahorros:99": {
-   "text": "You said your savings would run out at age 99."
-  },
-  "ans:daniel-emily-johnson:ahorros:100": {
-   "text": "You said your savings would run out at age 100."
+   "text": "According to your plan, your savings never run out. At age 91, you'd still have $260,272 left.",
+   "file": "d00ecf1d487b3507.mp3"
   },
   "q:daniel-emily-johnson:tarjeta": {
-   "text": "For every $450 you pay on your credit card, how much reduces your debt?"
+   "text": "For every $450 you pay on your credit card, how much reduces your debt?",
+   "file": "e3ae11fddbfca337.mp3"
   },
   "plan:daniel-emily-johnson:tarjeta": {
-   "text": "According to your plan, only 77 dollars of every 450 reduce the debt. The rest, $374, goes to interest. Your card charges 24.9% and you owe $18,000."
-  },
-  "ans:daniel-emily-johnson:tarjeta:0": {
-   "text": "You said 0 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:10": {
-   "text": "You said 10 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:20": {
-   "text": "You said 20 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:30": {
-   "text": "You said 30 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:40": {
-   "text": "You said 40 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:50": {
-   "text": "You said 50 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:60": {
-   "text": "You said 60 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:70": {
-   "text": "You said 70 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:80": {
-   "text": "You said 80 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:90": {
-   "text": "You said 90 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:100": {
-   "text": "You said 100 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:110": {
-   "text": "You said 110 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:120": {
-   "text": "You said 120 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:130": {
-   "text": "You said 130 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:140": {
-   "text": "You said 140 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:150": {
-   "text": "You said 150 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:160": {
-   "text": "You said 160 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:170": {
-   "text": "You said 170 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:180": {
-   "text": "You said 180 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:190": {
-   "text": "You said 190 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:200": {
-   "text": "You said 200 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:210": {
-   "text": "You said 210 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:220": {
-   "text": "You said 220 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:230": {
-   "text": "You said 230 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:240": {
-   "text": "You said 240 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:250": {
-   "text": "You said 250 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:260": {
-   "text": "You said 260 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:270": {
-   "text": "You said 270 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:280": {
-   "text": "You said 280 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:290": {
-   "text": "You said 290 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:300": {
-   "text": "You said 300 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:310": {
-   "text": "You said 310 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:320": {
-   "text": "You said 320 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:330": {
-   "text": "You said 330 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:340": {
-   "text": "You said 340 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:350": {
-   "text": "You said 350 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:360": {
-   "text": "You said 360 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:370": {
-   "text": "You said 370 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:380": {
-   "text": "You said 380 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:390": {
-   "text": "You said 390 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:400": {
-   "text": "You said 400 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:410": {
-   "text": "You said 410 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:420": {
-   "text": "You said 420 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:430": {
-   "text": "You said 430 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:440": {
-   "text": "You said 440 dollars of every 450 would reduce the debt."
-  },
-  "ans:daniel-emily-johnson:tarjeta:450": {
-   "text": "You said 450 dollars of every 450 would reduce the debt."
+   "text": "According to your plan, only 77 dollars of every 450 reduce the debt. The rest, $374, goes to interest. Your card charges 24.9% and you owe $18,000.",
+   "file": "362a0839e21b4956.mp3"
   },
   "q:daniel-emily-johnson:destino": {
-   "text": "For every $100 you save, how much goes toward retirement?"
+   "text": "For every $100 you save, how much goes toward retirement?",
+   "file": "24ca927d0db4591c.mp3"
   },
   "plan:daniel-emily-johnson:destino": {
-   "text": "According to your plan, 0 dollars out of every 100 you save go toward retirement. You save $26,000 a year; $0 goes toward retirement."
-  },
-  "ans:daniel-emily-johnson:destino:0": {
-   "text": "You said 0 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:5": {
-   "text": "You said 5 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:10": {
-   "text": "You said 10 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:15": {
-   "text": "You said 15 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:20": {
-   "text": "You said 20 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:25": {
-   "text": "You said 25 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:30": {
-   "text": "You said 30 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:35": {
-   "text": "You said 35 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:40": {
-   "text": "You said 40 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:45": {
-   "text": "You said 45 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:50": {
-   "text": "You said 50 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:55": {
-   "text": "You said 55 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:60": {
-   "text": "You said 60 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:65": {
-   "text": "You said 65 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:70": {
-   "text": "You said 70 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:75": {
-   "text": "You said 75 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:80": {
-   "text": "You said 80 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:85": {
-   "text": "You said 85 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:90": {
-   "text": "You said 90 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:95": {
-   "text": "You said 95 dollars out of every 100."
-  },
-  "ans:daniel-emily-johnson:destino:100": {
-   "text": "You said 100 dollars out of every 100."
+   "text": "According to your plan, 0 dollars out of every 100 you save go toward retirement. You save $26,000 a year; $0 goes toward retirement.",
+   "file": "d91f53e031307f8a.mp3"
   },
   "q:samantha-lewis:colchon": {
-   "text": "How many months could you live off your cash?"
+   "text": "How many months could you live off your cash?",
+   "file": "635f3e27640cbc53.mp3"
   },
   "plan:samantha-lewis:colchon": {
-   "text": "According to your plan, your cash would cover 7.9 months. Recommended for you: between 5 and 6 months."
-  },
-  "ans:samantha-lewis:colchon:0": {
-   "text": "You said 0 months."
-  },
-  "ans:samantha-lewis:colchon:0.5": {
-   "text": "You said 0.5 months."
-  },
-  "ans:samantha-lewis:colchon:1": {
-   "text": "You said 1 months."
-  },
-  "ans:samantha-lewis:colchon:1.5": {
-   "text": "You said 1.5 months."
-  },
-  "ans:samantha-lewis:colchon:2": {
-   "text": "You said 2 months."
-  },
-  "ans:samantha-lewis:colchon:2.5": {
-   "text": "You said 2.5 months."
-  },
-  "ans:samantha-lewis:colchon:3": {
-   "text": "You said 3 months."
-  },
-  "ans:samantha-lewis:colchon:3.5": {
-   "text": "You said 3.5 months."
-  },
-  "ans:samantha-lewis:colchon:4": {
-   "text": "You said 4 months."
-  },
-  "ans:samantha-lewis:colchon:4.5": {
-   "text": "You said 4.5 months."
-  },
-  "ans:samantha-lewis:colchon:5": {
-   "text": "You said 5 months."
-  },
-  "ans:samantha-lewis:colchon:5.5": {
-   "text": "You said 5.5 months."
-  },
-  "ans:samantha-lewis:colchon:6": {
-   "text": "You said 6 months."
-  },
-  "ans:samantha-lewis:colchon:6.5": {
-   "text": "You said 6.5 months."
-  },
-  "ans:samantha-lewis:colchon:7": {
-   "text": "You said 7 months."
-  },
-  "ans:samantha-lewis:colchon:7.5": {
-   "text": "You said 7.5 months."
-  },
-  "ans:samantha-lewis:colchon:8": {
-   "text": "You said 8 months."
-  },
-  "ans:samantha-lewis:colchon:8.5": {
-   "text": "You said 8.5 months."
-  },
-  "ans:samantha-lewis:colchon:9": {
-   "text": "You said 9 months."
-  },
-  "ans:samantha-lewis:colchon:9.5": {
-   "text": "You said 9.5 months."
-  },
-  "ans:samantha-lewis:colchon:10": {
-   "text": "You said 10 months."
-  },
-  "ans:samantha-lewis:colchon:10.5": {
-   "text": "You said 10.5 months."
-  },
-  "ans:samantha-lewis:colchon:11": {
-   "text": "You said 11 months."
-  },
-  "ans:samantha-lewis:colchon:11.5": {
-   "text": "You said 11.5 months."
-  },
-  "ans:samantha-lewis:colchon:12": {
-   "text": "You said 12 months."
-  },
-  "ans:samantha-lewis:colchon:12.5": {
-   "text": "You said 12.5 months."
-  },
-  "ans:samantha-lewis:colchon:13": {
-   "text": "You said 13 months."
-  },
-  "ans:samantha-lewis:colchon:13.5": {
-   "text": "You said 13.5 months."
-  },
-  "ans:samantha-lewis:colchon:14": {
-   "text": "You said 14 months."
-  },
-  "ans:samantha-lewis:colchon:14.5": {
-   "text": "You said 14.5 months."
-  },
-  "ans:samantha-lewis:colchon:15": {
-   "text": "You said 15 months."
-  },
-  "ans:samantha-lewis:colchon:15.5": {
-   "text": "You said 15.5 months."
-  },
-  "ans:samantha-lewis:colchon:16": {
-   "text": "You said 16 months."
-  },
-  "ans:samantha-lewis:colchon:16.5": {
-   "text": "You said 16.5 months."
-  },
-  "ans:samantha-lewis:colchon:17": {
-   "text": "You said 17 months."
-  },
-  "ans:samantha-lewis:colchon:17.5": {
-   "text": "You said 17.5 months."
-  },
-  "ans:samantha-lewis:colchon:18": {
-   "text": "You said 18 months."
-  },
-  "ans:samantha-lewis:colchon:18.5": {
-   "text": "You said 18.5 months."
-  },
-  "ans:samantha-lewis:colchon:19": {
-   "text": "You said 19 months."
-  },
-  "ans:samantha-lewis:colchon:19.5": {
-   "text": "You said 19.5 months."
-  },
-  "ans:samantha-lewis:colchon:20": {
-   "text": "You said 20 months."
-  },
-  "ans:samantha-lewis:colchon:20.5": {
-   "text": "You said 20.5 months."
-  },
-  "ans:samantha-lewis:colchon:21": {
-   "text": "You said 21 months."
-  },
-  "ans:samantha-lewis:colchon:21.5": {
-   "text": "You said 21.5 months."
-  },
-  "ans:samantha-lewis:colchon:22": {
-   "text": "You said 22 months."
-  },
-  "ans:samantha-lewis:colchon:22.5": {
-   "text": "You said 22.5 months."
-  },
-  "ans:samantha-lewis:colchon:23": {
-   "text": "You said 23 months."
-  },
-  "ans:samantha-lewis:colchon:23.5": {
-   "text": "You said 23.5 months."
-  },
-  "ans:samantha-lewis:colchon:24": {
-   "text": "You said 24 months."
-  },
-  "ans:samantha-lewis:colchon:24.5": {
-   "text": "You said 24.5 months."
-  },
-  "ans:samantha-lewis:colchon:25": {
-   "text": "You said 25 months."
-  },
-  "ans:samantha-lewis:colchon:25.5": {
-   "text": "You said 25.5 months."
-  },
-  "ans:samantha-lewis:colchon:26": {
-   "text": "You said 26 months."
-  },
-  "ans:samantha-lewis:colchon:26.5": {
-   "text": "You said 26.5 months."
-  },
-  "ans:samantha-lewis:colchon:27": {
-   "text": "You said 27 months."
-  },
-  "ans:samantha-lewis:colchon:27.5": {
-   "text": "You said 27.5 months."
-  },
-  "ans:samantha-lewis:colchon:28": {
-   "text": "You said 28 months."
-  },
-  "ans:samantha-lewis:colchon:28.5": {
-   "text": "You said 28.5 months."
-  },
-  "ans:samantha-lewis:colchon:29": {
-   "text": "You said 29 months."
-  },
-  "ans:samantha-lewis:colchon:29.5": {
-   "text": "You said 29.5 months."
-  },
-  "ans:samantha-lewis:colchon:30": {
-   "text": "You said 30 months."
-  },
-  "ans:samantha-lewis:colchon:30.5": {
-   "text": "You said 30.5 months."
-  },
-  "ans:samantha-lewis:colchon:31": {
-   "text": "You said 31 months."
-  },
-  "ans:samantha-lewis:colchon:31.5": {
-   "text": "You said 31.5 months."
-  },
-  "ans:samantha-lewis:colchon:32": {
-   "text": "You said 32 months."
-  },
-  "ans:samantha-lewis:colchon:32.5": {
-   "text": "You said 32.5 months."
-  },
-  "ans:samantha-lewis:colchon:33": {
-   "text": "You said 33 months."
-  },
-  "ans:samantha-lewis:colchon:33.5": {
-   "text": "You said 33.5 months."
-  },
-  "ans:samantha-lewis:colchon:34": {
-   "text": "You said 34 months."
-  },
-  "ans:samantha-lewis:colchon:34.5": {
-   "text": "You said 34.5 months."
-  },
-  "ans:samantha-lewis:colchon:35": {
-   "text": "You said 35 months."
-  },
-  "ans:samantha-lewis:colchon:35.5": {
-   "text": "You said 35.5 months."
-  },
-  "ans:samantha-lewis:colchon:36": {
-   "text": "You said 36 months."
+   "text": "According to your plan, your cash would cover 7.9 months. Recommended for you: between 5 and 6 months.",
+   "file": "cdd138fee00254b2.mp3"
   },
   "q:samantha-lewis:destino": {
-   "text": "For every $100 you save, how much goes toward retirement?"
+   "text": "For every $100 you save, how much goes toward retirement?",
+   "file": "24ca927d0db4591c.mp3"
   },
   "plan:samantha-lewis:destino": {
-   "text": "According to your plan, 0 dollars out of every 100 you save go toward retirement. You save $60,000 a year; $0 goes toward retirement."
-  },
-  "ans:samantha-lewis:destino:0": {
-   "text": "You said 0 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:5": {
-   "text": "You said 5 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:10": {
-   "text": "You said 10 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:15": {
-   "text": "You said 15 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:20": {
-   "text": "You said 20 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:25": {
-   "text": "You said 25 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:30": {
-   "text": "You said 30 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:35": {
-   "text": "You said 35 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:40": {
-   "text": "You said 40 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:45": {
-   "text": "You said 45 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:50": {
-   "text": "You said 50 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:55": {
-   "text": "You said 55 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:60": {
-   "text": "You said 60 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:65": {
-   "text": "You said 65 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:70": {
-   "text": "You said 70 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:75": {
-   "text": "You said 75 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:80": {
-   "text": "You said 80 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:85": {
-   "text": "You said 85 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:90": {
-   "text": "You said 90 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:95": {
-   "text": "You said 95 dollars out of every 100."
-  },
-  "ans:samantha-lewis:destino:100": {
-   "text": "You said 100 dollars out of every 100."
+   "text": "According to your plan, 0 dollars out of every 100 you save go toward retirement. You save $60,000 a year; $0 goes toward retirement.",
+   "file": "d662c05842c3da71.mp3"
   },
   "q:samantha-lewis:ahorros": {
-   "text": "At what age do you think your savings would run out?"
+   "text": "At what age do you think your savings would run out?",
+   "file": "ef650821683a1b23.mp3"
   },
   "plan:samantha-lewis:ahorros": {
-   "text": "According to your plan, your savings run out at age 73. Your plan runs until age 91."
+   "text": "According to your plan, your savings run out at age 73. Your plan runs until age 91.",
+   "file": "c28bf904aaa31dc6.mp3"
   },
-  "ans:samantha-lewis:ahorros:60": {
-   "text": "You said your savings would run out at age 60."
+  "verdict:colchon:close": {
+   "text": "You guessed your cash cushion almost exactly.",
+   "file": "e7717080772c2c6f.mp3"
   },
-  "ans:samantha-lewis:ahorros:61": {
-   "text": "You said your savings would run out at age 61."
+  "verdict:colchon:better": {
+   "text": "Good news: your cash cushion lasts longer than you thought.",
+   "file": "076a78c689ae8114.mp3"
   },
-  "ans:samantha-lewis:ahorros:62": {
-   "text": "You said your savings would run out at age 62."
+  "verdict:colchon:worse": {
+   "text": "Your cash cushion is a bit shorter than you thought.",
+   "file": "2f3f9ad5c7d7d0ca.mp3"
   },
-  "ans:samantha-lewis:ahorros:63": {
-   "text": "You said your savings would run out at age 63."
+  "verdict:colchon:much_worse": {
+   "text": "Your cash cushion is much shorter than you thought.",
+   "file": "163abdf403be0df3.mp3"
   },
-  "ans:samantha-lewis:ahorros:64": {
-   "text": "You said your savings would run out at age 64."
+  "cmp:colchon:agree": {
+   "text": "On your cash cushion, you both guessed about the same.",
+   "file": "cf89c36fca896eeb.mp3"
   },
-  "ans:samantha-lewis:ahorros:65": {
-   "text": "You said your savings would run out at age 65."
+  "cmp:colchon:differ": {
+   "text": "On your cash cushion, you see it differently.",
+   "file": "50f7ec9e1efd613d.mp3"
   },
-  "ans:samantha-lewis:ahorros:66": {
-   "text": "You said your savings would run out at age 66."
+  "verdict:mezcla:close": {
+   "text": "You guessed your mix of investments almost exactly.",
+   "file": "6525bbfa11ebd8bb.mp3"
   },
-  "ans:samantha-lewis:ahorros:67": {
-   "text": "You said your savings would run out at age 67."
+  "verdict:mezcla:different": {
+   "text": "Your mix of investments is different from what you expected.",
+   "file": "3df212bcffc58886.mp3"
   },
-  "ans:samantha-lewis:ahorros:68": {
-   "text": "You said your savings would run out at age 68."
+  "cmp:mezcla:agree": {
+   "text": "On your investment mix, you both guessed about the same.",
+   "file": "d5d3c328782835c5.mp3"
   },
-  "ans:samantha-lewis:ahorros:69": {
-   "text": "You said your savings would run out at age 69."
+  "cmp:mezcla:differ": {
+   "text": "On your investment mix, you see it differently.",
+   "file": "3cabbb5ba92b8877.mp3"
   },
-  "ans:samantha-lewis:ahorros:70": {
-   "text": "You said your savings would run out at age 70."
+  "verdict:tarjeta:close": {
+   "text": "You guessed how much of each payment goes to the debt almost exactly.",
+   "file": "ed8e5511284a77c7.mp3"
   },
-  "ans:samantha-lewis:ahorros:71": {
-   "text": "You said your savings would run out at age 71."
+  "verdict:tarjeta:better": {
+   "text": "Good news: more of each payment goes to the debt than you thought.",
+   "file": "a77865bf12c92482.mp3"
   },
-  "ans:samantha-lewis:ahorros:72": {
-   "text": "You said your savings would run out at age 72."
+  "verdict:tarjeta:worse": {
+   "text": "A bit less of each payment goes to the debt than you thought.",
+   "file": "c3967f426249e391.mp3"
   },
-  "ans:samantha-lewis:ahorros:73": {
-   "text": "You said your savings would run out at age 73."
+  "verdict:tarjeta:much_worse": {
+   "text": "Much less of each payment goes to the debt than you thought. The rest is interest.",
+   "file": "48f11347a77d1492.mp3"
   },
-  "ans:samantha-lewis:ahorros:74": {
-   "text": "You said your savings would run out at age 74."
+  "cmp:tarjeta:agree": {
+   "text": "On paying down your card, you both guessed about the same.",
+   "file": "611a1f525730213b.mp3"
   },
-  "ans:samantha-lewis:ahorros:75": {
-   "text": "You said your savings would run out at age 75."
+  "cmp:tarjeta:differ": {
+   "text": "On paying down your card, you see it differently.",
+   "file": "a4f1449cf43c32e9.mp3"
   },
-  "ans:samantha-lewis:ahorros:76": {
-   "text": "You said your savings would run out at age 76."
+  "verdict:seguro:close": {
+   "text": "You guessed your life insurance cover almost exactly.",
+   "file": "530d1158391664fd.mp3"
   },
-  "ans:samantha-lewis:ahorros:77": {
-   "text": "You said your savings would run out at age 77."
+  "verdict:seguro:better": {
+   "text": "Good news: your life insurance covers more years than you thought.",
+   "file": "463775f7630f35b7.mp3"
   },
-  "ans:samantha-lewis:ahorros:78": {
-   "text": "You said your savings would run out at age 78."
+  "verdict:seguro:worse": {
+   "text": "Your life insurance covers a few fewer years than you thought.",
+   "file": "04313e2c4d282c1c.mp3"
   },
-  "ans:samantha-lewis:ahorros:79": {
-   "text": "You said your savings would run out at age 79."
+  "verdict:seguro:much_worse": {
+   "text": "Your life insurance covers many fewer years than you thought.",
+   "file": "c66d4fb5d6db16d1.mp3"
   },
-  "ans:samantha-lewis:ahorros:80": {
-   "text": "You said your savings would run out at age 80."
+  "cmp:seguro:agree": {
+   "text": "On life insurance, you both guessed about the same.",
+   "file": "dea0d21736b39917.mp3"
   },
-  "ans:samantha-lewis:ahorros:81": {
-   "text": "You said your savings would run out at age 81."
+  "cmp:seguro:differ": {
+   "text": "On life insurance, you see it differently.",
+   "file": "9235cb444d599fb8.mp3"
   },
-  "ans:samantha-lewis:ahorros:82": {
-   "text": "You said your savings would run out at age 82."
+  "verdict:ahorros:close": {
+   "text": "You guessed how long your savings last almost exactly.",
+   "file": "87acec8e106e1628.mp3"
   },
-  "ans:samantha-lewis:ahorros:83": {
-   "text": "You said your savings would run out at age 83."
+  "verdict:ahorros:better": {
+   "text": "Good news: your savings last longer than you thought.",
+   "file": "9bd42b5e7d22e2d3.mp3"
   },
-  "ans:samantha-lewis:ahorros:84": {
-   "text": "You said your savings would run out at age 84."
+  "verdict:ahorros:worse": {
+   "text": "Your savings run out a bit sooner than you thought.",
+   "file": "29bf907c7a3fb5ef.mp3"
   },
-  "ans:samantha-lewis:ahorros:85": {
-   "text": "You said your savings would run out at age 85."
+  "verdict:ahorros:much_worse": {
+   "text": "Your savings run out much sooner than you thought.",
+   "file": "b8946d6a91fc83d8.mp3"
   },
-  "ans:samantha-lewis:ahorros:86": {
-   "text": "You said your savings would run out at age 86."
+  "cmp:ahorros:agree": {
+   "text": "On how long your savings last, you both guessed about the same.",
+   "file": "9387fcee51f74f0b.mp3"
   },
-  "ans:samantha-lewis:ahorros:87": {
-   "text": "You said your savings would run out at age 87."
+  "cmp:ahorros:differ": {
+   "text": "On how long your savings last, you see it differently.",
+   "file": "dab847147fd3b197.mp3"
   },
-  "ans:samantha-lewis:ahorros:88": {
-   "text": "You said your savings would run out at age 88."
+  "verdict:destino:close": {
+   "text": "You guessed how much of your savings goes to retirement almost exactly.",
+   "file": "be8f37f3d1f813bd.mp3"
   },
-  "ans:samantha-lewis:ahorros:89": {
-   "text": "You said your savings would run out at age 89."
+  "verdict:destino:better": {
+   "text": "Good news: more of your savings goes to retirement than you thought.",
+   "file": "08109036e57a4379.mp3"
   },
-  "ans:samantha-lewis:ahorros:90": {
-   "text": "You said your savings would run out at age 90."
+  "verdict:destino:worse": {
+   "text": "A bit less of your savings goes to retirement than you thought.",
+   "file": "a23de554a6fe7471.mp3"
   },
-  "ans:samantha-lewis:ahorros:91": {
-   "text": "You said your savings would run out at age 91."
+  "verdict:destino:much_worse": {
+   "text": "Much less of your savings goes to retirement than you thought.",
+   "file": "bb66c2789b8922b9.mp3"
   },
-  "ans:samantha-lewis:ahorros:92": {
-   "text": "You said your savings would run out at age 92."
+  "cmp:destino:agree": {
+   "text": "On saving for retirement, you both guessed about the same.",
+   "file": "131dbe30075a6910.mp3"
   },
-  "ans:samantha-lewis:ahorros:93": {
-   "text": "You said your savings would run out at age 93."
+  "cmp:destino:differ": {
+   "text": "On saving for retirement, you see it differently.",
+   "file": "522273b73c4f7cdf.mp3"
   },
-  "ans:samantha-lewis:ahorros:94": {
-   "text": "You said your savings would run out at age 94."
+  "cmp:intro": {
+   "text": "Let's see where you agree and where you see things differently.",
+   "file": "1c3928bfe6c0f569.mp3"
   },
-  "ans:samantha-lewis:ahorros:95": {
-   "text": "You said your savings would run out at age 95."
+  "turn:Timothy:ask": {
+   "text": "Timothy, it's your turn to answer.",
+   "file": "09b73388dcda4bdd.mp3"
   },
-  "ans:samantha-lewis:ahorros:96": {
-   "text": "You said your savings would run out at age 96."
+  "turn:Timothy:results": {
+   "text": "Timothy, here is your plan.",
+   "file": "0760ac101da5ebb2.mp3"
   },
-  "ans:samantha-lewis:ahorros:97": {
-   "text": "You said your savings would run out at age 97."
+  "turn:Melanie:ask": {
+   "text": "Melanie, it's your turn to answer.",
+   "file": "51b523ecfe0e0437.mp3"
   },
-  "ans:samantha-lewis:ahorros:98": {
-   "text": "You said your savings would run out at age 98."
+  "turn:Melanie:results": {
+   "text": "Melanie, here is your plan.",
+   "file": "c5cdbc56770fc392.mp3"
   },
-  "ans:samantha-lewis:ahorros:99": {
-   "text": "You said your savings would run out at age 99."
+  "turn:Daniel:ask": {
+   "text": "Daniel, it's your turn to answer.",
+   "file": "c29190a02b99eb79.mp3"
   },
-  "ans:samantha-lewis:ahorros:100": {
-   "text": "You said your savings would run out at age 100."
+  "turn:Daniel:results": {
+   "text": "Daniel, here is your plan.",
+   "file": "9819ceab9172dfc8.mp3"
+  },
+  "turn:Emily:ask": {
+   "text": "Emily, it's your turn to answer.",
+   "file": "6b2e09206c879979.mp3"
+  },
+  "turn:Emily:results": {
+   "text": "Emily, here is your plan.",
+   "file": "5abb13eedc18650f.mp3"
   },
   "cover:timothy-melanie-weah:0": {
-   "text": "Your financial health score is 60 out of 100, which we call stable."
+   "text": "Your financial health score is 60 out of 100, which we call stable.",
+   "file": "25143937dd2b65b8.mp3"
   },
   "cover:timothy-melanie-weah:1": {
-   "text": "Your first suggested step: pay down revolving card."
+   "text": "Your first suggested step: pay down revolving card.",
+   "file": "65e41a61a722ad7d.mp3"
   },
   "sec:timothy-melanie-weah:retirement:0": {
-   "text": "Your plan covers about 93 percent of the income you will need in retirement."
+   "text": "Your plan covers about 93 percent of the income you will need in retirement.",
+   "file": "fd98f7e4f3556c28.mp3"
   },
   "sec:timothy-melanie-weah:retirement:1": {
-   "text": "Your savings should last until the end of the plan, at age 91."
+   "text": "Your savings should last until the end of the plan, at age 91.",
+   "file": "f8d4dae3954ae818.mp3"
   },
   "sec:timothy-melanie-weah:wealth:0": {
-   "text": "Your net worth is about 696 thousand dollars."
+   "text": "Your net worth is about 696 thousand dollars.",
+   "file": "ebf32681dd1264fe.mp3"
   },
   "sec:timothy-melanie-weah:wealth:1": {
-   "text": "Your biggest asset is your real estate, about 44 percent of everything you own."
+   "text": "Your biggest asset is your real estate, about 44 percent of everything you own.",
+   "file": "bb187091d26bccbe.mp3"
   },
   "sec:timothy-melanie-weah:debt:0": {
-   "text": "You owe about 93 thousand dollars in total."
+   "text": "You owe about 93 thousand dollars in total.",
+   "file": "bb13cc970551a2b8.mp3"
   },
   "sec:timothy-melanie-weah:debt:1": {
-   "text": "Your debt payments take about 13 percent of your income."
+   "text": "Your debt payments take about 13 percent of your income.",
+   "file": "e8811cf4518cb8d8.mp3"
   },
   "sec:timothy-melanie-weah:debt:2": {
-   "text": "The costliest one is your Chase CC, at 18 percent interest."
+   "text": "The costliest one is your Chase CC, at 18 percent interest.",
+   "file": "86662caf4d4aa54b.mp3"
   },
   "sec:timothy-melanie-weah:savings:0": {
-   "text": "You save about 62 thousand dollars a year, which is 23 percent of your income."
+   "text": "You save about 62 thousand dollars a year, which is 23 percent of your income.",
+   "file": "5bf5fb489119cca9.mp3"
   },
   "sec:timothy-melanie-weah:savings:1": {
-   "text": "After all your spending, about 37 thousand dollars a year is left over."
+   "text": "After all your spending, about 37 thousand dollars a year is left over.",
+   "file": "59b130af51d17f9d.mp3"
   },
   "sec:timothy-melanie-weah:protection:0": {
-   "text": "Your cash would cover about 16 months of essential expenses."
+   "text": "Your cash would cover about 16 months of essential expenses.",
+   "file": "96bf93f11df11e0e.mp3"
   },
   "sec:timothy-melanie-weah:protection:1": {
-   "text": "Your life insurance is 140 thousand dollars, and we recommend at least 750 thousand dollars."
+   "text": "Your life insurance is 140 thousand dollars, and we recommend at least 750 thousand dollars.",
+   "file": "12a3facdf0eb48df.mp3"
   },
   "sec:timothy-melanie-weah:protection:2": {
-   "text": "You do not have an umbrella policy."
+   "text": "You do not have an umbrella policy.",
+   "file": "33c6f60ea0b93e90.mp3"
   },
   "sec:timothy-melanie-weah:portfolio:0": {
-   "text": "Your investments have grown about 12 percent a year over the last three years."
+   "text": "Your investments have grown about 12 percent a year over the last three years.",
+   "file": "503be9fe736f6799.mp3"
   },
   "sec:timothy-melanie-weah:portfolio:1": {
-   "text": "About 44 percent of your money is sitting in cash."
+   "text": "About 44 percent of your money is sitting in cash.",
+   "file": "25b0aaddc29a8797.mp3"
   },
   "cover:michael-carter:0": {
-   "text": "Your financial health score is 26 out of 100, which we call critical."
+   "text": "Your financial health score is 26 out of 100, which we call critical.",
+   "file": "408ddd3826a72f74.mp3"
   },
   "cover:michael-carter:1": {
-   "text": "Your first suggested step: add umbrella cover."
+   "text": "Your first suggested step: add umbrella cover.",
+   "file": "0d98b36293203c72.mp3"
   },
   "sec:michael-carter:retirement:0": {
-   "text": "Your plan covers about 34 percent of the income you will need in retirement."
+   "text": "Your plan covers about 34 percent of the income you will need in retirement.",
+   "file": "ad8e9d6a493ec126.mp3"
   },
   "sec:michael-carter:retirement:1": {
-   "text": "At the current pace, your savings would run out at age 85."
+   "text": "At the current pace, your savings would run out at age 85.",
+   "file": "d661b23877ddebbc.mp3"
   },
   "sec:michael-carter:wealth:0": {
-   "text": "Your net worth is about 219 thousand dollars."
+   "text": "Your net worth is about 219 thousand dollars.",
+   "file": "e56fab866cb28be8.mp3"
   },
   "sec:michael-carter:wealth:1": {
-   "text": "Your biggest asset is your investment account, about 59 percent of everything you own."
+   "text": "Your biggest asset is your investment account, about 59 percent of everything you own.",
+   "file": "996f6b0e221d5b1d.mp3"
   },
   "sec:michael-carter:debt:0": {
-   "text": "You owe about 29 thousand dollars in total."
+   "text": "You owe about 29 thousand dollars in total.",
+   "file": "ece8659af2c32683.mp3"
   },
   "sec:michael-carter:debt:1": {
-   "text": "Your debt payments take about 6 percent of your income."
+   "text": "Your debt payments take about 6 percent of your income.",
+   "file": "6c759baf674fbb0a.mp3"
   },
   "sec:michael-carter:debt:2": {
-   "text": "The costliest one is your Amex Platinum, at 20 percent interest."
+   "text": "The costliest one is your Amex Platinum, at 20 percent interest.",
+   "file": "d30513e94ad4a41d.mp3"
   },
   "sec:michael-carter:savings:0": {
-   "text": "You save about 43 thousand dollars a year, which is 24 percent of your income."
+   "text": "You save about 43 thousand dollars a year, which is 24 percent of your income.",
+   "file": "e7c25f40181f4c42.mp3"
   },
   "sec:michael-carter:savings:1": {
-   "text": "Your spending is about 8.3 thousand dollars a year more than what comes in."
+   "text": "Your spending is about 8.3 thousand dollars a year more than what comes in.",
+   "file": "8f94d08598a0bdea.mp3"
   },
   "sec:michael-carter:protection:0": {
-   "text": "Your cash would cover about 3 months of essential expenses."
+   "text": "Your cash would cover about 3 months of essential expenses.",
+   "file": "a2a83307d96ba81f.mp3"
   },
   "sec:michael-carter:protection:1": {
-   "text": "Your life insurance is 180 thousand dollars, and we recommend at least 900 thousand dollars."
+   "text": "Your life insurance is 180 thousand dollars, and we recommend at least 900 thousand dollars.",
+   "file": "6243d1451dd4d5b1.mp3"
   },
   "sec:michael-carter:protection:2": {
-   "text": "You do not have an umbrella policy."
+   "text": "You do not have an umbrella policy.",
+   "file": "33c6f60ea0b93e90.mp3"
   },
   "sec:michael-carter:portfolio:0": {
-   "text": "Your investments have grown about 14 percent a year over the last three years."
+   "text": "Your investments have grown about 14 percent a year over the last three years.",
+   "file": "943ee0a1ce0c606e.mp3"
   },
   "sec:michael-carter:portfolio:1": {
-   "text": "About 59 percent of your money is in stocks."
+   "text": "About 59 percent of your money is in stocks.",
+   "file": "302d244566776b58.mp3"
   },
   "cover:daniel-emily-johnson:0": {
-   "text": "Your financial health score is 52 out of 100, which we call vulnerable."
+   "text": "Your financial health score is 52 out of 100, which we call vulnerable.",
+   "file": "4ff61f10eb37801d.mp3"
   },
   "cover:daniel-emily-johnson:1": {
-   "text": "Your first suggested step: raise mortality coverage."
+   "text": "Your first suggested step: raise mortality coverage.",
+   "file": "2eb85765c4acfc67.mp3"
   },
   "sec:daniel-emily-johnson:retirement:0": {
-   "text": "Your plan covers about 49 percent of the income you will need in retirement."
+   "text": "Your plan covers about 49 percent of the income you will need in retirement.",
+   "file": "ca09a34dafb4997c.mp3"
   },
   "sec:daniel-emily-johnson:retirement:1": {
-   "text": "Your savings should last until the end of the plan, at age 91."
+   "text": "Your savings should last until the end of the plan, at age 91.",
+   "file": "f8d4dae3954ae818.mp3"
   },
   "sec:daniel-emily-johnson:wealth:0": {
-   "text": "Your net worth is about 511 thousand dollars."
+   "text": "Your net worth is about 511 thousand dollars.",
+   "file": "7f69baf622217c76.mp3"
   },
   "sec:daniel-emily-johnson:wealth:1": {
-   "text": "Your biggest asset is your real estate, about 66 percent of everything you own."
+   "text": "Your biggest asset is your real estate, about 66 percent of everything you own.",
+   "file": "acacadb86a506f24.mp3"
   },
   "sec:daniel-emily-johnson:debt:0": {
-   "text": "You owe about 618 thousand dollars in total."
+   "text": "You owe about 618 thousand dollars in total.",
+   "file": "05329b151c7717ad.mp3"
   },
   "sec:daniel-emily-johnson:debt:1": {
-   "text": "Your debt payments take about 23 percent of your income."
+   "text": "Your debt payments take about 23 percent of your income.",
+   "file": "56a6eaf6ee190a8f.mp3"
   },
   "sec:daniel-emily-johnson:debt:2": {
-   "text": "The costliest one is your Chase Sapphire, at 25 percent interest."
+   "text": "The costliest one is your Chase Sapphire, at 25 percent interest.",
+   "file": "43028345e2afc845.mp3"
   },
   "sec:daniel-emily-johnson:savings:0": {
-   "text": "You save about 26 thousand dollars a year, which is 9 percent of your income."
+   "text": "You save about 26 thousand dollars a year, which is 9 percent of your income.",
+   "file": "a828f02918d79487.mp3"
   },
   "sec:daniel-emily-johnson:savings:1": {
-   "text": "After all your spending, about 15 thousand dollars a year is left over."
+   "text": "After all your spending, about 15 thousand dollars a year is left over.",
+   "file": "c203f324b6e9977e.mp3"
   },
   "sec:daniel-emily-johnson:protection:0": {
-   "text": "Your cash would cover about 1 month of essential expenses."
+   "text": "Your cash would cover about 1 month of essential expenses.",
+   "file": "efda1de9bba782d9.mp3"
   },
   "sec:daniel-emily-johnson:protection:1": {
-   "text": "Your life insurance is 250 thousand dollars, and we recommend at least 1.6 million dollars."
+   "text": "Your life insurance is 250 thousand dollars, and we recommend at least 1.6 million dollars.",
+   "file": "ca3d13973075259c.mp3"
   },
   "sec:daniel-emily-johnson:protection:2": {
-   "text": "You do not have an umbrella policy."
+   "text": "You do not have an umbrella policy.",
+   "file": "33c6f60ea0b93e90.mp3"
   },
   "sec:daniel-emily-johnson:portfolio:0": {
-   "text": "Your investments have grown about 14 percent a year over the last three years."
+   "text": "Your investments have grown about 14 percent a year over the last three years.",
+   "file": "943ee0a1ce0c606e.mp3"
   },
   "sec:daniel-emily-johnson:portfolio:1": {
-   "text": "About 54 percent of your money is in stocks."
+   "text": "About 54 percent of your money is in stocks.",
+   "file": "fbe84c98e67e8ec9.mp3"
   },
   "cover:samantha-lewis:0": {
-   "text": "Your financial health score is 82 out of 100, which we call strong."
+   "text": "Your financial health score is 82 out of 100, which we call strong.",
+   "file": "ea45c3b6d5f1f884.mp3"
   },
   "cover:samantha-lewis:1": {
-   "text": "Your first suggested step: close a coverage gap."
+   "text": "Your first suggested step: close a coverage gap.",
+   "file": "391533f32760112a.mp3"
   },
   "sec:samantha-lewis:retirement:0": {
-   "text": "Your plan covers about 25 percent of the income you will need in retirement."
+   "text": "Your plan covers about 25 percent of the income you will need in retirement.",
+   "file": "145e8969f62e5270.mp3"
   },
   "sec:samantha-lewis:retirement:1": {
-   "text": "At the current pace, your savings would run out at age 73."
+   "text": "At the current pace, your savings would run out at age 73.",
+   "file": "4d388a29c0bf5f60.mp3"
   },
   "sec:samantha-lewis:wealth:0": {
-   "text": "Your net worth is about 1.4 million dollars."
+   "text": "Your net worth is about 1.4 million dollars.",
+   "file": "8afa02b509685cd9.mp3"
   },
   "sec:samantha-lewis:wealth:1": {
-   "text": "Your biggest asset is your real estate, about 65 percent of everything you own."
+   "text": "Your biggest asset is your real estate, about 65 percent of everything you own.",
+   "file": "67a98d43a6b5412a.mp3"
   },
   "sec:samantha-lewis:debt:0": {
-   "text": "You have no debt."
+   "text": "You have no debt.",
+   "file": "1abef86aa1e5ac20.mp3"
   },
   "sec:samantha-lewis:savings:0": {
-   "text": "You save about 60 thousand dollars a year, which is 24 percent of your income."
+   "text": "You save about 60 thousand dollars a year, which is 24 percent of your income.",
+   "file": "c14075ca0a40e45f.mp3"
   },
   "sec:samantha-lewis:savings:1": {
-   "text": "Your spending is about 6.4 thousand dollars a year more than what comes in."
+   "text": "Your spending is about 6.4 thousand dollars a year more than what comes in.",
+   "file": "a21e9f87143fe063.mp3"
   },
   "sec:samantha-lewis:protection:0": {
-   "text": "Your cash would cover about 8 months of essential expenses."
+   "text": "Your cash would cover about 8 months of essential expenses.",
+   "file": "dda36ac83b67f040.mp3"
   },
   "sec:samantha-lewis:protection:1": {
-   "text": "Your life insurance is 2 million dollars, which is at or above the recommended level."
+   "text": "Your life insurance is 2 million dollars, which is at or above the recommended level.",
+   "file": "d44c8b2b7e69be34.mp3"
   },
   "sec:samantha-lewis:portfolio:0": {
-   "text": "Your investments have grown about 16 percent a year over the last three years."
+   "text": "Your investments have grown about 16 percent a year over the last three years.",
+   "file": "d5d5ca50352b4c2c.mp3"
   },
   "sec:samantha-lewis:portfolio:1": {
-   "text": "About 68 percent of your money is in stocks."
+   "text": "About 68 percent of your money is in stocks.",
+   "file": "7557407a1f16428b.mp3"
   }
  }
 }

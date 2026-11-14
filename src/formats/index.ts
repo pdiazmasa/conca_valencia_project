@@ -6,7 +6,7 @@ import { Informe } from "./Informe";
 import { Historia } from "./Historia";
 import { Futuro } from "./Futuro";
 import { Visual } from "./Visual";
-import { AudioAsk, AudioPage, AudioReveal } from "./Audio";
+import { AudioAsk, AudioCompare, AudioPage, AudioReveal } from "./Audio";
 
 export const FORMATS: Record<FormatId, FormatDef> = {
   wrapped: {
@@ -48,6 +48,7 @@ export const FORMATS: Record<FormatId, FormatDef> = {
     tagline: "We read it out to you, nice and clear.",
     Reveal: AudioReveal,
     Page: AudioPage,
+    Compare: AudioCompare,
     Ask: AudioAsk,
   },
   informe: {
