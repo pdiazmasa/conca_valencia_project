@@ -1,6 +1,6 @@
 import type { FormatDef, FormatId } from "./types";
 import { Wrapped, WrappedPage } from "./Wrapped";
-import { DashboardPage } from "./DashboardPage";
+import { DashboardFull } from "../dashboard/DashboardFull";
 import { Dashboard } from "./Dashboard";
 import { Informe } from "./Informe";
 import { Historia } from "./Historia";
@@ -21,7 +21,7 @@ export const FORMATS: Record<FormatId, FormatDef> = {
     name: "Dashboard",
     tagline: "Clear numbers and a chart, straight to the point.",
     Reveal: Dashboard,
-    Page: DashboardPage,
+    Page: DashboardFull,
   },
   historia: {
     id: "historia",
