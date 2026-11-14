@@ -1,0 +1,708 @@
+/* Formato Wrapped: tarjetas vivas con cifra enorme. Todo bajo .wrapped / .wr-* para no afectar a otros formatos. */
+
+.wrapped.wr-card {
+  --wr-a: #4c1d95;
+  --wr-b: #6d28d9;
+  --wr-c: #22d3ee;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 78vh;
+  min-height: 78dvh;
+  margin: 12px 0;
+  border-radius: 28px;
+  overflow: hidden;
+  color: #ffffff;
+  background: linear-gradient(160deg, var(--wr-a) 0%, var(--wr-b) 75%);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+  box-sizing: border-box;
+  isolation: isolate;
+}
+.wrapped.wr-good {
+  --wr-a: #052e2b;
+  --wr-b: #047857;
+  --wr-c: #a3e635;
+}
+.wrapped.wr-bad {
+  --wr-a: #450a0a;
+  --wr-b: #b91c1c;
+  --wr-c: #fb923c;
+}
+.wrapped.wr-neutral {
+  --wr-a: #1e1b4b;
+  --wr-b: #4338ca;
+  --wr-c: #22d3ee;
+}
+
+/* Manchas de color que se mueven despacio por detrás */
+.wrapped .wr-blobs {
+  position: absolute;
+  inset: -20%;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 20% 15%, var(--wr-c) 0%, transparent 38%),
+    radial-gradient(circle at 85% 80%, rgba(255, 255, 255, 0.28) 0%, transparent 34%);
+  opacity: 0.55;
+  animation: wr-drift 14s ease-in-out infinite alternate;
+}
+
+.wrapped .wr-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 22px 22px 18px;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.wrapped .wr-stage:focus-visible {
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.85);
+  border-radius: 28px;
+}
+
+.wrapped .wr-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wrapped .wr-count {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+}
+.wrapped .wr-dots {
+  display: flex;
+  gap: 6px;
+}
+.wrapped .wr-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  transition: transform 0.3s var(--ease), background 0.3s var(--ease);
+}
+.wrapped .wr-dot.is-on {
+  background: #ffffff;
+  transform: scale(1.35);
+}
+
+.wrapped .wr-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 24px 0;
+  animation: wr-pop 0.55s var(--ease) both;
+}
+.wrapped.is-static .wr-body {
+  animation: none;
+}
+
+.wrapped .wr-eyebrow {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.wrapped .wr-value {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 12px;
+  line-height: 0.95;
+}
+.wrapped .wr-num {
+  font-size: clamp(72px, 26vw, 150px);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+}
+.wrapped .wr-unit {
+  font-size: clamp(22px, 7vw, 36px);
+  font-weight: 700;
+}
+.wrapped .wr-never {
+  font-size: clamp(40px, 13vw, 76px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.wrapped .wr-question {
+  margin: 0;
+  max-width: 34ch;
+  font-size: 17px;
+  line-height: 1.4;
+  opacity: 0.9;
+}
+.wrapped .wr-meaning {
+  margin: 0;
+  max-width: 24ch;
+  font-size: clamp(26px, 7.5vw, 40px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.wrapped .wr-badge {
+  display: inline-block;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  font-size: 14px;
+  font-weight: 700;
+}
+.wrapped .wr-verdict {
+  background: #ffffff;
+  color: #111111;
+  border-color: #ffffff;
+  animation: wr-stamp 0.5s var(--ease) 0.15s both;
+}
+
+.wrapped .wr-hint {
+  margin: 0;
+  text-align: center;
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+/* Capa "enséñame los números" */
+.wrapped .wr-foot {
+  padding: 0 22px 20px;
+}
+.wrapped .wr-link {
+  background: none;
+  border: 0;
+  padding: 6px 0;
+  color: #ffffff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.wrapped .wr-link:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.wrapped .wr-numbers {
+  margin: 10px 0 0;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.32);
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 2px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.wrapped .wr-numbers dt {
+  margin-top: 8px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+.wrapped .wr-numbers dd {
+  margin: 0;
+}
+
+@keyframes wr-pop {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes wr-stamp {
+  from {
+    opacity: 0;
+    transform: scale(1.8) rotate(-6deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes wr-drift {
+  from {
+    transform: translate3d(-3%, -2%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(4%, 3%, 0) scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wrapped .wr-blobs,
+  .wrapped .wr-body,
+  .wrapped .wr-verdict {
+    animation: none;
+  }
+  .wrapped .wr-dot {
+    transition: none;
+  }
+}
+
+/* ---- Fase 2: marcas Tú/Plan, efectos según acierto y pantalla de arranque ---- */
+.wrapped .wr-body {
+  position: relative;
+}
+.wr-deck {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.wrapped .wr-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.wrapped .wr-dirchip {
+  animation: wr-fade 0.5s ease 1.6s both;
+}
+
+/* Línea con tu marca (anillo) y la del plan (punto), que se desliza hasta la cifra real */
+.wrapped .wr-rail {
+  position: relative;
+  width: 100%;
+  height: 64px;
+  margin-top: 8px;
+}
+.wrapped .wr-rail-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 30px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.3);
+}
+.wrapped .wr-mark {
+  position: absolute;
+  top: 24px;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  border-radius: 50%;
+}
+.wrapped .wr-mark-you {
+  border: 2px solid #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+}
+.wrapped .wr-mark-plan {
+  background: #ffffff;
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.25);
+}
+.wrapped .wr-mark em {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.wrapped .wr-mark-you em {
+  bottom: 24px;
+}
+.wrapped .wr-mark-plan em {
+  top: 26px;
+}
+
+/* Reacción de la última tarjeta según lo cerca que estuviste */
+.wrapped .wr-fx-surprise {
+  animation: wr-pop 0.55s var(--ease) both, wr-shake 0.5s ease 0.6s both;
+}
+.wrapped .wr-fx-near .wr-verdict {
+  animation: wr-stamp 0.5s var(--ease) 0.15s both, wr-ring 1.4s ease-out 0.7s 2;
+}
+.wrapped .wr-confetti {
+  position: absolute;
+  left: 70px;
+  top: 16px;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.wrapped .wr-confetti i {
+  position: absolute;
+  width: 8px;
+  height: 14px;
+  border-radius: 2px;
+  background: #ffffff;
+  opacity: 0;
+  animation: wr-burst 1.1s var(--ease) calc(var(--i) * 18ms + 250ms) both;
+}
+.wrapped .wr-confetti i:nth-child(3n + 2) {
+  background: var(--wr-c);
+}
+.wrapped .wr-confetti i:nth-child(3n) {
+  background: #fde047;
+}
+.wrapped.is-static .wr-fx-surprise,
+.wrapped.is-static .wr-fx-near .wr-verdict,
+.wrapped.is-static .wr-dirchip {
+  animation: none;
+}
+.wrapped.is-static .wr-confetti {
+  display: none;
+}
+
+/* Portada y cabeceras de sección */
+.wrapped.wr-card.wr-hero {
+  min-height: 0;
+  margin: 0;
+}
+.wrapped .wr-hero-in {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 28px 22px 26px;
+  text-align: center;
+}
+.wrapped .wr-hero-in .wr-eyebrow {
+  opacity: 0.9;
+}
+.wrapped .wr-ring {
+  position: relative;
+  width: min(62vw, 240px);
+  aspect-ratio: 1;
+}
+.wrapped .wr-ring svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.wrapped .wr-ring-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.2);
+  stroke-width: 14;
+}
+.wrapped .wr-ring-fill {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 14;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.45));
+}
+.wrapped .wr-ring-num {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.wrapped .wr-score {
+  font-size: clamp(64px, 20vw, 96px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.wrapped .wr-of {
+  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  opacity: 0.85;
+}
+.wrapped .wr-glass {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 18px;
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+.wrapped .wr-sec-in {
+  align-items: flex-start;
+  text-align: left;
+}
+.wrapped .wr-sec-title {
+  margin: 0;
+  font-size: clamp(30px, 8vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.wrapped .wr-sec-value {
+  margin: 0;
+  font-size: clamp(48px, 14vw, 76px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+/* Paneles de la portada */
+.wrapped.wr-panel {
+  padding: 22px;
+  border-radius: 28px;
+  color: #ffffff;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+  box-sizing: border-box;
+}
+.wrapped.wr-dark {
+  background: linear-gradient(160deg, #3f3f46 0%, #18181b 100%);
+}
+.wrapped.wr-violet {
+  background: linear-gradient(160deg, #4c1d95 0%, #1e1b4b 100%);
+}
+.wrapped .wr-pillars {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.wrapped .wr-pillar-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+.wrapped .wr-pillar-score {
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.wrapped .wr-pillar-track {
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+}
+.wrapped .wr-pillar-fill {
+  display: block;
+  height: 100%;
+  min-width: 0;
+  border-radius: 999px;
+}
+.wrapped .wr-pillar-fill.is-low {
+  background: linear-gradient(90deg, #ef4444, #fb923c);
+}
+.wrapped .wr-pillar-fill.is-mid {
+  background: linear-gradient(90deg, #f59e0b, #fde047);
+}
+.wrapped .wr-pillar-fill.is-high {
+  background: linear-gradient(90deg, #22c55e, #a3e635);
+}
+.wrapped .wr-moves {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.wrapped .wr-moves li {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  line-height: 1.45;
+  font-size: 15px;
+}
+.wrapped .wr-step {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-weight: 800;
+  color: #1e1b4b;
+  background: linear-gradient(135deg, #fde047, #fb923c);
+}
+.wrapped .wr-combined {
+  margin-top: 18px;
+}
+
+/* Pantalla de arranque */
+.wrapped.wr-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 24px;
+  box-sizing: border-box;
+  color: #ffffff;
+  background: #000000;
+  cursor: pointer;
+  animation: wr-fade 0.5s ease both;
+}
+.wrapped.wr-intro.is-out {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease 0.9s; /* se desvanece cuando el punto ya ha desaparecido */
+}
+.wrapped.wr-intro.is-out .wr-intro-text,
+.wrapped.wr-intro.is-out .wr-intro-skip {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.wrapped .wr-orb-wrap {
+  width: min(52vw, 220px);
+  aspect-ratio: 1;
+  animation: wr-breathe 2.6s ease-in-out infinite;
+}
+.wrapped.is-out .wr-orb-wrap {
+  animation: wr-shrink 1s ease-in both; /* se encoge hasta ser un punto */
+}
+/* El resplandor toma el color de la figura (lo actualiza el componente) */
+.wrapped .wr-glow {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 34px rgba(255, 59, 59, 0.55));
+}
+/* El contorno (clip-path) lo actualiza el componente en cada fotograma */
+.wrapped .wr-orb {
+  width: 100%;
+  height: 100%;
+  background: #ff3b3b; /* color y giro los actualiza el componente en cada fotograma */
+}
+.wrapped .wr-intro-text {
+  margin: 0;
+  max-width: 16em;
+  text-align: center;
+  font-size: clamp(20px, 5.5vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  animation: wr-fadeup 0.8s ease 0.4s both;
+}
+.wrapped .wr-intro-skip {
+  margin: 0;
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+@keyframes wr-hue {
+  0%,
+  10% {
+    filter: drop-shadow(0 0 36px rgba(255, 40, 40, 0.7)) hue-rotate(0deg) brightness(1) saturate(1);
+  }
+  40%,
+  55% {
+    filter: drop-shadow(0 0 36px rgba(255, 40, 40, 0.7)) hue-rotate(-120deg) brightness(1.3) saturate(1);
+  }
+  90%,
+  100% {
+    filter: drop-shadow(0 0 36px rgba(255, 40, 40, 0.7)) hue-rotate(-240deg) brightness(1.75) saturate(1.05);
+  }
+}
+@keyframes wr-shrink {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  to {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+@keyframes wr-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes wr-fadeup {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes wr-shake {
+  0%,
+  100% {
+    transform: none;
+  }
+  20% {
+    transform: translateX(-7px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+}
+@keyframes wr-ring {
+  from {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  }
+  to {
+    box-shadow: 0 0 0 16px rgba(255, 255, 255, 0);
+  }
+}
+@keyframes wr-burst {
+  0% {
+    opacity: 1;
+    transform: rotate(var(--a)) translateX(0) scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--a)) translateX(var(--d)) rotate(220deg) scale(1);
+  }
+}
+@keyframes wr-breathe {
+  0%,
+  100% {
+    transform: scale(0.92);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+@keyframes wr-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wrapped .wr-fx-surprise,
+  .wrapped .wr-fx-near .wr-verdict,
+  .wrapped .wr-dirchip,
+  .wrapped .wr-confetti i,
+  .wrapped .wr-orb-wrap,
+  .wrapped .wr-orb,
+  .wrapped .wr-glow,
+  .wrapped .wr-intro-text {
+    animation: none;
+  }
+}
