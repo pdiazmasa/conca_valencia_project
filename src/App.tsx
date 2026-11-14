@@ -1,22 +1,30 @@
 import { useState } from "react";
-import { ANALYSIS, FAMILIES, SECTION_OF_PROBE, familyAge, formatValue, truthValue, type Family } from "./data";
+import { ANALYSIS, FAMILIES, SECTION_OF_PROBE, formatValue, peopleOf, truthValue, type Family, type Person } from "./data";
 import { FORMATS, FORMAT_ORDER, formatForAge, type FormatId } from "./formats";
 import { DashboardPage } from "./formats/DashboardPage";
 import type { AnalysisPage } from "./formats/types";
 import { StatValue, toneLabel } from "./formats/Dashboard";
+import { AudioTurn } from "./formats/Audio";
+import { Comparison } from "./analysis/Comparison";
+import LoadingScreen from "./LoadingScreen";
 
 type Dir = "forward" | "back";
-// age: edad (decide el formato) · ask: las preguntas de intuición · analysis: análisis completo · done: resumen y otros formatos
-type Phase = "age" | "ask" | "analysis" | "done";
+// turn: "X, responde" (solo con varias personas) · age: edad (decide el formato) · ask: preguntas de intuición ·
+// loading: carga corta · analysis: análisis completo de una persona · compare: comparación entre personas · done: resumen
+type Phase = "turn" | "age" | "ask" | "loading" | "analysis" | "compare" | "done";
 type State = {
   family: Family | null;
-  age: number;
-  format: FormatId;
+  people: Person[];
+  person: number; // persona que responde o cuyo análisis se ve
+  ages: number[];
+  turnFor: "ask" | "results";
+  formatOverride: FormatId | null; // formato elegido al final con "See it another way"
   index: number;
   step: number;
   phase: Phase;
-  answers: Record<string, number>;
+  answers: Record<number, Record<string, number>>;
   dir: Dir;
+  history: State[];
 };
 
 const initials = (name: string) =>
@@ -214,25 +222,43 @@ function AnalysisScreen({
   );
 }
 
+function TurnScreen({ person, kind, format, onNext }: { person: Person; kind: "ask" | "results"; format: FormatId; onNext: () => void }) {
+  return (
+    <main className="content">
+      <div className="turn">
+        <h1>{kind === "ask" ? `${person.name}, it's your turn` : `${person.name}, here is your plan`}</h1>
+        {format === "audio" && <AudioTurn name={person.name} kind={kind} />}
+      </div>
+      <div className="actions">
+        <button type="button" className="pill pill-filled" onClick={onNext}>
+          {kind === "ask" ? "Start" : "Show me"}
+        </button>
+      </div>
+    </main>
+  );
+}
+
 function SummaryScreen({
   family,
+  people,
   answers,
   onChangeFormat,
   onRestart,
 }: {
   family: Family;
-  answers: Record<string, number>;
+  people: Person[];
+  answers: Record<number, Record<string, number>>;
   onChangeFormat: (f: FormatId) => void;
   onRestart: () => void;
 }) {
-
   // Sondas con valor real numérico para contabilizar aciertos (margen <= 10 % del rango).
   const scorable = family.probes.filter((p) => truthValue(p) !== null);
-  const hits = scorable.filter((p) => {
-    const real = truthValue(p)!;
-    const a = answers[p.id] ?? p.input.initial;
-    return Math.abs(a - real) <= 0.1 * (p.input.max - p.input.min);
-  }).length;
+  const hitsOf = (i: number) =>
+    scorable.filter((p) => {
+      const real = truthValue(p)!;
+      const a = answers[i]?.[p.id] ?? p.input.initial;
+      return Math.abs(a - real) <= 0.1 * (p.input.max - p.input.min);
+    }).length;
 
   const clampPct = (v: number, min: number, max: number) =>
     Math.min(100, Math.max(0, ((v - min) / (max - min)) * 100));
@@ -243,16 +269,17 @@ function SummaryScreen({
 
       <section className="card summary-score" style={{ marginTop: 24 }}>
         <p className="eyebrow">CLOSE GUESSES</p>
-        <p className="stat-value">
-          {hits} <span className="stat-unit">of {scorable.length}</span>
-        </p>
+        {people.map((person, i) => (
+          <p key={person.name} className="stat-value">
+            {people.length > 1 && <span className="stat-unit" style={{ marginRight: 8 }}>{person.name}</span>}
+            {hitsOf(i)} <span className="stat-unit">of {scorable.length}</span>
+          </p>
+        ))}
       </section>
 
       <ul className="summary-list">
         {family.probes.map((p) => {
           const real = truthValue(p);
-          const a = answers[p.id] ?? p.input.initial;
-          const youPct = clampPct(a, p.input.min, p.input.max);
           const realPct = real !== null ? clampPct(real, p.input.min, p.input.max) : 0;
           const badgeTone =
             p.tone === "bad" ? "badge-outline" : p.tone === "good" ? "badge-solid" : "badge-soft";
@@ -266,14 +293,17 @@ function SummaryScreen({
               <StatValue probe={p} v={real} className={`sm tone-${p.tone}`} />
               {real !== null && (
                 <div className="summary-bar" aria-hidden="true">
-                  <span className="summary-mark summary-mark-you" style={{ left: `${youPct}%` }} />
-                  <span
-                    className={`summary-mark summary-mark-plan tone-${p.tone}`}
-                    style={{ left: `${realPct}%` }}
-                  />
+                  {people.map((_, i) => (
+                    <span key={i} className="summary-mark summary-mark-you" style={{ left: `${clampPct(answers[i]?.[p.id] ?? p.input.initial, p.input.min, p.input.max)}%` }} />
+                  ))}
+                  <span className={`summary-mark summary-mark-plan tone-${p.tone}`} style={{ left: `${realPct}%` }} />
                 </div>
               )}
-              <p className="summary-you">You: {formatValue(p.input, a)}</p>
+              {people.map((person, i) => (
+                <p key={person.name} className="summary-you">
+                  {people.length > 1 ? person.name : "You"}: {formatValue(p.input, answers[i]?.[p.id] ?? p.input.initial)}
+                </p>
+              ))}
             </li>
           );
         })}
@@ -283,17 +313,11 @@ function SummaryScreen({
         <h2 className="section-title">See it another way</h2>
         <div className="format-pills" role="group" aria-label="See in other formats">
           {FORMAT_ORDER.map((id) => (
-            <button
-              key={id}
-              type="button"
-              className="format-pill"
-              onClick={() => onChangeFormat(id)}
-            >
+            <button key={id} type="button" className="format-pill" onClick={() => onChangeFormat(id)}>
               {FORMATS[id].name}
             </button>
           ))}
         </div>
-
       </section>
 
       <div className="actions">
@@ -305,88 +329,129 @@ function SummaryScreen({
   );
 }
 
+function CompareScreen({ family, people, ages, answers, onNext }: { family: Family; people: Person[]; ages: number[]; answers: Record<number, Record<string, number>>; onNext: () => void }) {
+  // Si alguien usa Audio, la comparación se escucha.
+  const oldest = ages.indexOf(Math.max(...ages));
+  const def = FORMATS[formatForAge(ages[oldest])];
+  const View = def.Compare ?? Comparison;
+  return (
+    <main className="content">
+      <div className="reveal-slot">
+        <View family={family} analysis={ANALYSIS[family.id]} people={people} answers={answers} />
+      </div>
+      <div className="actions">
+        <button type="button" className="pill pill-filled" onClick={onNext}>Finish</button>
+      </div>
+    </main>
+  );
+}
+
 const initialState: State = {
   family: null,
-  age: 40,
-  format: "dashboard",
+  people: [],
+  person: 0,
+  ages: [],
+  turnFor: "ask",
+  formatOverride: null,
   index: 0,
   step: 0,
   phase: "age",
   answers: {},
   dir: "forward",
+  history: [],
 };
 
 export default function App() {
   const [s, setS] = useState<State>(initialState);
 
-  // Al elegir familia se propone la edad del cliente principal; la persona puede cambiarla.
-  const pickFamily = (family: Family) =>
-    setS({ ...initialState, family, age: familyAge(family) ?? 40, dir: "forward" });
+  const formatOf = (st: State): FormatId => st.formatOverride ?? formatForAge(st.ages[st.person] ?? 40);
 
-  const confirmAge = () =>
-    setS((cur) => ({ ...cur, format: formatForAge(cur.age), phase: "ask", index: 0, dir: "forward" }));
+  // Avanza a un nuevo estado guardando el actual para poder volver con la flecha.
+  const go = (next: (cur: State) => Partial<State>) =>
+    setS((cur) => ({ ...cur, ...next(cur), dir: "forward", history: [...cur.history, cur] }));
 
-  const restart = () => setS({ ...initialState, dir: "back" });
+  // Avanza sin guardar historial (la pantalla de carga no debe quedar en la pila).
+  const replace = (next: (cur: State) => Partial<State>) => setS((cur) => ({ ...cur, ...next(cur), dir: "forward" }));
 
   const back = () =>
     setS((cur) => {
-      if (!cur.family) return cur;
-      if (cur.phase === "done") return { ...cur, phase: "analysis", step: analysisPages(cur.family).length - 1, dir: "back" };
-      if (cur.phase === "analysis") {
-        if (cur.step > 0) return { ...cur, step: cur.step - 1, dir: "back" };
-        return { ...cur, phase: "ask", index: cur.family.probes.length - 1, dir: "back" };
-      }
-      if (cur.phase === "ask") {
-        if (cur.index > 0) return { ...cur, index: cur.index - 1, dir: "back" };
-        return { ...cur, phase: "age", dir: "back" };
-      }
-      return { ...cur, family: null, dir: "back" };
+      const prev = cur.history[cur.history.length - 1];
+      if (!prev) return cur;
+      // Se conservan las respuestas y edades más recientes.
+      return { ...prev, answers: cur.answers, ages: cur.ages, dir: "back" };
     });
 
-  // Fija la respuesta actual (aunque no se haya movido el deslizador) y pasa a la siguiente pregunta;
-  // tras la última empieza el análisis.
+  const pickFamily = (family: Family) => {
+    const people = peopleOf(family);
+    setS({ ...initialState, family, people, ages: people.map((p) => p.age), phase: people.length > 1 ? "turn" : "age", turnFor: "ask", history: [initialState] });
+  };
+
+  const restart = () => setS({ ...initialState, dir: "back" });
+
+  const confirmAge = () => go(() => ({ phase: "ask", index: 0 }));
+
   const nextQuestion = () =>
-    setS((cur) => {
-      if (!cur.family) return cur;
-      const p = cur.family.probes[cur.index];
-      const answers = { ...cur.answers, [p.id]: cur.answers[p.id] ?? p.input.initial };
-      if (cur.index >= cur.family.probes.length - 1) return { ...cur, answers, phase: "analysis", step: 0, dir: "forward" };
-      return { ...cur, answers, index: cur.index + 1, dir: "forward" };
+    go((cur) => {
+      const family = cur.family!;
+      const p = family.probes[cur.index];
+      const mine = { ...(cur.answers[cur.person] ?? {}) };
+      mine[p.id] = mine[p.id] ?? p.input.initial;
+      const answers = { ...cur.answers, [cur.person]: mine };
+      if (cur.index < family.probes.length - 1) return { answers, index: cur.index + 1 };
+      if (cur.person < cur.people.length - 1) return { answers, person: cur.person + 1, phase: "turn" as Phase, turnFor: "ask" as const, index: 0 };
+      return { answers, person: 0, phase: "loading" as Phase, index: 0 };
     });
+
+  const afterLoading = () =>
+    replace((cur) => (cur.people.length > 1 ? { phase: "turn", turnFor: "results", person: 0, step: 0 } : { phase: "analysis", step: 0 }));
 
   const nextStep = () =>
-    setS((cur) => {
-      if (!cur.family) return cur;
-      if (cur.step >= analysisPages(cur.family).length - 1) return { ...cur, phase: "done", dir: "forward" };
-      return { ...cur, step: cur.step + 1, dir: "forward" };
+    go((cur) => {
+      const pages = analysisPages(cur.family!).length;
+      if (cur.step < pages - 1) return { step: cur.step + 1 };
+      if (cur.person < cur.people.length - 1) return { person: cur.person + 1, phase: "turn" as Phase, turnFor: "results" as const, step: 0 };
+      return { phase: (cur.people.length > 1 ? "compare" : "done") as Phase };
     });
 
-  const changeFormat = (format: FormatId) => setS((cur) => ({ ...cur, format, phase: "analysis", step: 0, dir: "forward" }));
+  const startTurn = () => go((cur) => (cur.turnFor === "ask" ? { phase: "age" as Phase } : { phase: "analysis" as Phase, step: 0 }));
 
-  const screenKey = s.family ? `${s.phase}-${s.family.id}-${s.phase === "analysis" ? s.step : s.index}-${s.format}` : "family";
-  const probe = s.family?.probes[s.index];
+  const changeFormat = (format: FormatId) => go(() => ({ formatOverride: format, person: 0, phase: "analysis" as Phase, step: 0 }));
+
+  const family = s.family;
+  const format = formatOf(s);
+  const screenKey = family ? `${s.phase}-${family.id}-${s.person}-${s.phase === "analysis" ? s.step : s.index}-${format}-${s.turnFor}` : "family";
+  const probe = family?.probes[s.index];
+  const answers = s.answers[s.person] ?? {};
 
   return (
     <div className="app">
       <header className="topbar">
-        <BackButton onClick={back} disabled={!s.family} />
+        <BackButton onClick={back} disabled={!family || s.history.length === 0} />
       </header>
       <div key={screenKey} className={`screen dir-${s.dir}`}>
-        {!s.family ? (
+        {!family ? (
           <FamilyScreen onPick={pickFamily} />
+        ) : s.phase === "turn" ? (
+          <TurnScreen person={s.people[s.person]} kind={s.turnFor} format={format} onNext={startTurn} />
         ) : s.phase === "age" ? (
-          <AgeScreen value={s.age} onChange={(age) => setS((cur) => ({ ...cur, age }))} onNext={confirmAge} />
-        ) : s.phase === "done" ? (
-          <SummaryScreen family={s.family} answers={s.answers} onChangeFormat={changeFormat} onRestart={restart} />
+          <AgeScreen value={s.ages[s.person]} onChange={(age) => setS((cur) => ({ ...cur, ages: cur.ages.map((a, i) => (i === cur.person ? age : a)) }))} onNext={confirmAge} />
+        ) : s.phase === "loading" ? (
+          <LoadingScreen onDone={afterLoading} />
         ) : s.phase === "analysis" ? (
-          <AnalysisScreen family={s.family} format={s.format} step={s.step} answers={s.answers} onNext={nextStep} />
+          <AnalysisScreen family={family} format={format} step={s.step} answers={answers} onNext={nextStep} />
+        ) : s.phase === "compare" ? (
+          <CompareScreen family={family} people={s.people} ages={s.ages} answers={s.answers} onNext={() => go(() => ({ phase: "done" as Phase }))} />
+        ) : s.phase === "done" ? (
+          <SummaryScreen family={family} people={s.people} answers={s.answers} onChangeFormat={changeFormat} onRestart={restart} />
         ) : probe ? (
           <QuestionScreen
-            family={s.family}
+            family={family}
             index={s.index}
-            format={s.format}
-            value={s.answers[probe.id] ?? probe.input.initial}
-            onChange={(v) => setS((cur) => ({ ...cur, answers: { ...cur.answers, [s.family!.probes[cur.index].id]: v } }))}
+            format={format}
+            value={answers[probe.id] ?? probe.input.initial}
+            onChange={(v) =>
+              setS((cur) => ({ ...cur, answers: { ...cur.answers, [cur.person]: { ...(cur.answers[cur.person] ?? {}), [family.probes[cur.index].id]: v } } }))
+            }
             onNext={nextQuestion}
           />
         ) : null}

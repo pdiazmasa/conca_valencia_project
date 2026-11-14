@@ -1,12 +1,12 @@
 import type { FormatDef, FormatId } from "./types";
 import { Wrapped, WrappedPage } from "./Wrapped";
-import { DashboardPage } from "./DashboardPage";
+import { DashboardFull } from "../dashboard/DashboardFull";
 import { Dashboard } from "./Dashboard";
 import { Informe } from "./Informe";
 import { Historia } from "./Historia";
 import { Futuro } from "./Futuro";
 import { Visual } from "./Visual";
-import { AudioAsk, AudioPage, AudioReveal } from "./Audio";
+import { AudioAsk, AudioCompare, AudioPage, AudioReveal } from "./Audio";
 
 export const FORMATS: Record<FormatId, FormatDef> = {
   wrapped: {
@@ -21,7 +21,7 @@ export const FORMATS: Record<FormatId, FormatDef> = {
     name: "Dashboard",
     tagline: "Clear numbers and a chart, straight to the point.",
     Reveal: Dashboard,
-    Page: DashboardPage,
+    Page: DashboardFull,
   },
   historia: {
     id: "historia",
@@ -48,6 +48,7 @@ export const FORMATS: Record<FormatId, FormatDef> = {
     tagline: "We read it out to you, nice and clear.",
     Reveal: AudioReveal,
     Page: AudioPage,
+    Compare: AudioCompare,
     Ask: AudioAsk,
   },
   informe: {

@@ -177,3 +177,106 @@ export function formatStat(kind: StatKind, v: number | string): string {
       return String(v);
   }
 }
+
+// ---- Personas del hogar (los adultos responden por turnos) ----
+export type Person = { name: string; role: string; age: number };
+
+export function peopleOf(f: Family): Person[] {
+  const adults = (f.household ?? []).filter((m) => m.role === "client" || m.role === "co-client");
+  return adults.length > 0 ? adults : [{ name: f.name, role: "client", age: 40 }];
+}
+
+// ---- Veredicto: cómo de lejos estaba la intuición de la realidad ----
+// Se decide solo con la dirección y la distancia (sin la cifra), para que la voz pueda
+// ser un clip precalculado por pregunta.
+export type Verdict = "much_worse" | "worse" | "close" | "better" | "different";
+
+// Para cada pregunta: ¿es bueno que la realidad sea MAYOR que lo esperado? null = ni bueno ni malo.
+const BETTER_WHEN_REALITY_HIGHER: Record<string, boolean | null> = {
+  colchon: true,
+  tarjeta: true,
+  ahorros: true,
+  destino: true,
+  seguro: true,
+  fiscal: true,
+  mezcla: null,
+};
+
+const CLOSE_GAP = 0.1; // ≤ 10 % del rango del deslizador = acierto
+const FAR_GAP = 0.25; // > 25 % = "mucho"
+
+export function verdictFor(p: Probe, answer: number): Verdict {
+  const real = truthValue(p) ?? p.input.max; // "nunca se agota" = lo mejor posible
+  const gap = (real - answer) / (p.input.max - p.input.min);
+  if (Math.abs(gap) <= CLOSE_GAP) return "close";
+  const higherIsGood = BETTER_WHEN_REALITY_HIGHER[p.id];
+  if (higherIsGood === null || higherIsGood === undefined) return "different";
+  const good = higherIsGood ? gap > 0 : gap < 0;
+  if (good) return "better";
+  return Math.abs(gap) > FAR_GAP ? "much_worse" : "worse";
+}
+
+export function agreeOn(p: Probe, a: number, b: number): boolean {
+  return Math.abs(a - b) <= CLOSE_GAP * (p.input.max - p.input.min);
+}
+
+// Frases de la voz (sin cifras): una por pregunta y veredicto.
+export const VERDICT_TEXT: Record<string, Partial<Record<Verdict, string>>> = {
+  colchon: {
+    close: "You guessed your cash cushion almost exactly.",
+    better: "Good news: your cash cushion lasts longer than you thought.",
+    worse: "Your cash cushion is a bit shorter than you thought.",
+    much_worse: "Your cash cushion is much shorter than you thought.",
+  },
+  tarjeta: {
+    close: "You guessed how much of each payment goes to the debt almost exactly.",
+    better: "Good news: more of each payment goes to the debt than you thought.",
+    worse: "A bit less of each payment goes to the debt than you thought.",
+    much_worse: "Much less of each payment goes to the debt than you thought. The rest is interest.",
+  },
+  ahorros: {
+    close: "You guessed how long your savings last almost exactly.",
+    better: "Good news: your savings last longer than you thought.",
+    worse: "Your savings run out a bit sooner than you thought.",
+    much_worse: "Your savings run out much sooner than you thought.",
+  },
+  destino: {
+    close: "You guessed how much of your savings goes to retirement almost exactly.",
+    better: "Good news: more of your savings goes to retirement than you thought.",
+    worse: "A bit less of your savings goes to retirement than you thought.",
+    much_worse: "Much less of your savings goes to retirement than you thought.",
+  },
+  seguro: {
+    close: "You guessed your life insurance cover almost exactly.",
+    better: "Good news: your life insurance covers more years than you thought.",
+    worse: "Your life insurance covers a few fewer years than you thought.",
+    much_worse: "Your life insurance covers many fewer years than you thought.",
+  },
+  mezcla: {
+    close: "You guessed your mix of investments almost exactly.",
+    different: "Your mix of investments is different from what you expected.",
+  },
+  fiscal: {
+    close: "You guessed the tax saving almost exactly.",
+    better: "Good news: you could save more on taxes than you thought.",
+    worse: "You could save a bit less on taxes than you thought.",
+    much_worse: "You could save much less on taxes than you thought.",
+  },
+};
+
+// Tema de cada pregunta, para la comparación entre personas.
+const TOPIC: Record<string, string> = {
+  colchon: "your cash cushion",
+  tarjeta: "paying down your card",
+  ahorros: "how long your savings last",
+  destino: "saving for retirement",
+  seguro: "life insurance",
+  mezcla: "your investment mix",
+  fiscal: "taxes",
+};
+export const agreeText = (probeId: string, agree: boolean) =>
+  agree ? `On ${TOPIC[probeId] ?? "this one"}, you both guessed about the same.` : `On ${TOPIC[probeId] ?? "this one"}, you see it differently.`;
+
+export const compareIntroText = "Let's see where you agree and where you see things differently.";
+export const turnText = (name: string, kind: "ask" | "results") =>
+  kind === "ask" ? `${name}, it's your turn to answer.` : `${name}, here is your plan.`;

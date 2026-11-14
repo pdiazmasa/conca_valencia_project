@@ -1,0 +1,888 @@
+/* Estilos del Dashboard extendido (prefijo dbx-).
+   Usa únicamente los tokens de :root definidos en src/styles.css. */
+
+.dbx-root {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  font-size: 15px;
+}
+
+.dbx-root .card + .card,
+.dbx-root .card + .dbx-more-card {
+  margin-top: 0;
+}
+
+/* Pie de gráfica de una frase corta en texto pequeño muted */
+.dbx-caption {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+/* Desplegable "Read more" cerrado por defecto */
+.dbx-more {
+  margin-top: 4px;
+  border-top: 1px solid var(--hairline);
+  padding-top: 10px;
+}
+
+.dbx-more-card {
+  border-top: 1px solid var(--hairline);
+  padding: 14px 20px;
+}
+
+.dbx-more > summary {
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+}
+
+.dbx-more > summary::-webkit-details-marker {
+  display: none;
+}
+
+.dbx-more > summary::after {
+  content: "+";
+  font-size: 15px;
+  line-height: 1;
+  color: var(--muted);
+}
+
+.dbx-more[open] > summary::after {
+  content: "−";
+}
+
+.dbx-more-body {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dbx-more-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dbx-more-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+/* ---- 0. GuessGap ("Your guesses vs your plan") ---- */
+.dbx-guess-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dbx-guess-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dbx-guess-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dbx-guess-title {
+  margin-top: 4px;
+  font-size: 20px;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+.dbx-guess-badge {
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.dbx-guess-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dbx-guess-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.dbx-guess-row:last-child {
+  padding-bottom: 2px;
+}
+
+.dbx-guess-question {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.dbx-guess-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-guess-track {
+  stroke: var(--hairline);
+  stroke-width: 4px;
+}
+
+.dbx-guess-segment {
+  stroke: var(--ink);
+  stroke-width: 4px;
+}
+
+.dbx-guess-segment.dbx-is-bad {
+  stroke: var(--ember);
+}
+
+.dbx-guess-you-dot {
+  fill: var(--paper);
+  stroke: var(--ink-soft);
+  stroke-width: 2px;
+}
+
+.dbx-guess-plan-dot {
+  fill: var(--ink);
+  stroke: var(--paper);
+  stroke-width: 1.5px;
+}
+
+.dbx-guess-plan-dot.dbx-is-bad-dot {
+  fill: var(--ember);
+}
+
+.dbx-guess-dot-label {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--ink-soft);
+}
+
+.dbx-guess-plan-label {
+  fill: var(--ink);
+}
+
+.dbx-guess-whole-plan {
+  margin-top: 2px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--surface-alt);
+  border: 1px solid var(--hairline);
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+/* Mini-leyenda gráfica de GuessGap */
+.dbx-guess-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 8px;
+  border-top: 1px solid var(--hairline);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.dbx-guess-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dbx-guess-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dbx-guess-legend-you {
+  background: var(--paper);
+  border: 2px solid var(--ink-soft);
+}
+
+.dbx-guess-legend-plan {
+  background: var(--ink);
+}
+
+/* ---- Portada (Cover) ---- */
+.dbx-hero-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dbx-hero-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.dbx-cover-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+.dbx-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.dbx-wf-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dbx-wf-unlock {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-cap-chips {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.dbx-cap-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-right: 2px;
+}
+
+.dbx-cap-chip {
+  font-size: 12px;
+  padding: 2px 8px;
+}
+
+/* Lista de acciones (moves) dentro de Read more */
+.dbx-moves-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dbx-move-item {
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: var(--surface-alt);
+  border: 1px solid var(--hairline);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dbx-move-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dbx-move-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.dbx-move-badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.dbx-move-action {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.dbx-combined-note {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--muted);
+  padding-top: 6px;
+  border-top: 1px solid var(--hairline);
+}
+
+/* ---- Vista de Sección ---- */
+.dbx-section-header {
+  padding-top: 4px;
+}
+
+.dbx-main-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dbx-split-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.dbx-headline-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.dbx-headline-value {
+  font-size: 38px;
+  word-break: break-word;
+}
+
+.dbx-kpi-card {
+  padding: 16px 20px;
+}
+
+.dbx-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 12px;
+}
+
+.dbx-table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.dbx-look-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.dbx-recs-list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dbx-rec-item {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+/* Escalona los hitos de LineChart en jubilación */
+.dbx-chart-card .line-chart-marker-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+.dbx-chart-card .line-chart-stage > .line-chart-marker:nth-of-type(2) .line-chart-marker-label {
+  top: 22px;
+}
+
+.dbx-chart-card .line-chart-stage > .line-chart-marker:nth-of-type(3) .line-chart-marker-label {
+  top: 42px;
+}
+
+.dbx-chart-card .line-chart-stage > .line-chart-marker:nth-of-type(4) .line-chart-marker-label {
+  top: 62px;
+}
+
+/* ---- Gráficas SVG ---- */
+.dbx-chart-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.dbx-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: var(--font);
+}
+
+.dbx-svg-axis-label {
+  font-size: 12px;
+  fill: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 1. ScoreGauge */
+.dbx-gauge-track {
+  stroke: var(--hairline);
+  stroke-width: 14px;
+}
+
+.dbx-gauge-potential {
+  stroke: var(--muted);
+  stroke-width: 14px;
+  stroke-dasharray: 4 6;
+}
+
+.dbx-gauge-fill {
+  stroke: var(--ink);
+  stroke-width: 14px;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: dbx-arc-in 750ms var(--ease) forwards;
+}
+
+.dbx-gauge-fill.dbx-is-bad {
+  stroke: var(--ember);
+}
+
+.dbx-gauge-cap-line {
+  stroke: var(--ember);
+  stroke-width: 2.5px;
+  stroke-linecap: round;
+}
+
+.dbx-gauge-up-to {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-gauge-score {
+  font-size: 44px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  fill: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-is-bad-text {
+  fill: var(--ember);
+}
+
+.dbx-gauge-band {
+  font-size: 13px;
+  font-weight: 500;
+  fill: var(--muted);
+}
+
+/* 2. PillarRadar */
+.dbx-radar-ring {
+  fill: none;
+  stroke: var(--hairline);
+  stroke-width: 1px;
+}
+
+.dbx-radar-axis {
+  stroke: var(--hairline);
+  stroke-width: 1px;
+}
+
+.dbx-radar-area {
+  fill: var(--ink);
+  fill-opacity: 0.08;
+  stroke: var(--ink);
+  stroke-width: 2px;
+  stroke-linejoin: round;
+  transform-origin: 160px 122px;
+  animation: dbx-scale-in 650ms var(--ease) both;
+}
+
+.dbx-radar-dot {
+  fill: var(--ink);
+  stroke: var(--paper);
+  stroke-width: 1.5px;
+}
+
+.dbx-radar-dot.dbx-is-bad-dot {
+  fill: var(--ember);
+}
+
+.dbx-radar-label {
+  font-size: 12px;
+  font-weight: 500;
+  fill: var(--ink-soft);
+}
+
+.dbx-radar-value {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 3. MovesWaterfall */
+.dbx-wf-grid {
+  stroke: var(--hairline);
+  stroke-width: 1px;
+}
+
+.dbx-wf-connector {
+  stroke: var(--muted);
+  stroke-width: 1px;
+  stroke-dasharray: 2 3;
+}
+
+.dbx-wf-bar {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: dbx-bar-up 600ms var(--ease) both;
+}
+
+.dbx-wf-bar-base {
+  fill: var(--muted);
+}
+
+.dbx-wf-bar-step {
+  fill: var(--ink);
+}
+
+.dbx-wf-bar-zero {
+  fill: var(--muted);
+}
+
+.dbx-wf-bar-total {
+  fill: var(--ink-soft);
+}
+
+.dbx-wf-value {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-wf-label {
+  font-size: 11px;
+  fill: var(--ink-soft);
+}
+
+.dbx-wf-effort-pill {
+  fill: var(--canvas);
+  stroke: var(--hairline);
+  stroke-width: 1px;
+}
+
+.dbx-wf-effort-text {
+  font-size: 10px;
+  font-weight: 500;
+  fill: var(--muted);
+}
+
+/* 4. TargetBars / VsBar / DebtBars */
+.dbx-tbar-label {
+  font-size: 13px;
+  font-weight: 500;
+  fill: var(--ink);
+}
+
+.dbx-tbar-amount {
+  font-size: 13px;
+  font-weight: 500;
+  fill: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-tbar-target-text {
+  fill: var(--muted);
+  font-weight: 400;
+}
+
+.dbx-tbar-track {
+  fill: var(--hairline);
+}
+
+.dbx-tbar-fill {
+  fill: var(--ink);
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: dbx-bar-right 650ms var(--ease) both;
+}
+
+.dbx-tbar-fill.dbx-is-bad-fill {
+  fill: var(--ember);
+}
+
+.dbx-tbar-target-line,
+.dbx-vs-rec-line {
+  stroke: var(--ink-soft);
+  stroke-width: 2.5px;
+  stroke-linecap: round;
+}
+
+.dbx-vs-rec-line.dbx-is-bad {
+  stroke: var(--ember);
+}
+
+.dbx-dbar-rate {
+  font-size: 13px;
+  font-weight: 600;
+  fill: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-dbar-rate.dbx-is-bad-text {
+  fill: var(--ember);
+}
+
+/* 5. Ring */
+.dbx-ring-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dbx-ring-svg {
+  width: 76px;
+  height: 76px;
+  flex-shrink: 0;
+}
+
+.dbx-ring-track {
+  stroke: var(--hairline);
+  stroke-width: 9px;
+}
+
+.dbx-ring-fill {
+  stroke: var(--ink);
+  stroke-width: 9px;
+}
+
+.dbx-ring-fill.dbx-is-bad {
+  stroke: var(--ember);
+}
+
+.dbx-ring-value {
+  font-size: 18px;
+  font-weight: 600;
+  fill: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-ring-label {
+  max-width: 140px;
+}
+
+/* 6. MonthBoxes */
+.dbx-mboxes-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dbx-mboxes-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.dbx-mboxes-val {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-mbox-off {
+  fill: var(--hairline);
+}
+
+.dbx-mbox-on {
+  fill: var(--ink);
+}
+
+.dbx-mbox-bad {
+  fill: var(--ember);
+}
+
+/* 7. StackBar & BalanceBar */
+.dbx-portfolio-stacks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dbx-stack-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dbx-stack-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dbx-stack-row-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.dbx-stack-legend {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+}
+
+.dbx-stack-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-stack-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.dbx-stack-legend-pct {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.dbx-balance-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.dbx-balance-headline {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dbx-balance-debt-fill {
+  fill: var(--muted);
+}
+
+/* ---- Animaciones ---- */
+@keyframes dbx-arc-in {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes dbx-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.75);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes dbx-bar-up {
+  from {
+    opacity: 0;
+    transform: scaleY(0.15);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes dbx-bar-right {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ---- Escritorio (>= 900px) ---- */
+@media (min-width: 900px) {
+  .dbx-cover-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .dbx-stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+}
+
+/* ---- Accesibilidad: movimiento reducido ---- */
+@media (prefers-reduced-motion: reduce) {
+  .dbx-gauge-fill,
+  .dbx-radar-area,
+  .dbx-wf-bar,
+  .dbx-tbar-fill {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+    transform: none !important;
+  }
+}

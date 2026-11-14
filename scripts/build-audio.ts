@@ -3,18 +3,21 @@
 //
 // Qué se locuta (todo en inglés, "según tu plan"):
 //   q:    la pregunta de cada sonda
-//   ans:  "You said …" para CADA valor posible del deslizador (clips de números)
+//   verdict: veredicto cualitativo por sonda (nunca dice el número del usuario)
+//   turn: "Juan, responde" / "Juan, este es tu plan" (hogares con 2 adultos)
+//   cmp:  introducción y coincide/difiere por sonda (comparación)
 //   plan: lo que dice el plan + su contexto, por familia y sonda
 //
 // Uso:
 //   npm run build:audio -- --dry-run        cuenta clips y caracteres, NO llama a la API
 //   npm run build:audio -- --limit=3        genera solo 3 clips nuevos (para probar la voz)
 //   npm run build:audio                     genera los que falten (los ya hechos se reutilizan)
+//   ELEVENLABS_API_KEY=…  (en .env) usa tu propia cuenta de ElevenLabs en lugar del proxy de Sherpas
 //   --check   comprueba la clave contra el proxy (GET /models) sin generar nada ni gastar
 //   --yes     confirma un gasto estimado superior a 0,50 $
 //   --force   regenera todo aunque exista
 //   --prune   borra de public/audio los mp3 que el manifest ya no usa (p. ej. de una voz anterior)
-//   --only=q|ans|plan|sec   limita el tipo de clip (sec = portada y secciones del análisis)
+//   --only=q|verdict|turn|cmp|plan|sec   limita el tipo de clip (sec = portada y secciones del análisis)
 //
 // La clave del equipo (SHERPAS_AI_KEY o IA_TOKEN en .env / .env.txt) solo la usa este script:
 // no se escribe en ningún archivo ni llega al navegador.
@@ -22,7 +25,7 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { ANALYSIS, FAMILIES, revealContext, truthValue, type Probe } from "../src/data";
+import { ANALYSIS, FAMILIES, VERDICT_TEXT, agreeText, compareIntroText, peopleOf, revealContext, truthValue, turnText, type Probe } from "../src/data";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const audioDir = join(root, "public", "audio");
@@ -52,6 +55,10 @@ const MODEL = process.env.AUDIO_MODEL ?? "eleven-flash-v2.5";
 // Voz por defecto: "Rachel", voz nativa en inglés de ElevenLabs. Una voz en español leyendo inglés suena mal:
 // usa siempre una voz nativa en inglés (AUDIO_VOICE=<voice_id> en .env).
 const VOICE = process.env.AUDIO_VOICE ?? "21m00Tcm4TlvDq8ikWAM";
+// Opción B: cuenta propia de ElevenLabs (p. ej. el plan gratis para estudiantes). Si ELEVENLABS_API_KEY existe,
+// se habla directamente con ElevenLabs y NO se gasta el presupuesto de ElevenLabs de Sherpas.
+const EL_KEY = process.env.ELEVENLABS_API_KEY;
+const EL_MODEL = MODEL.replace(/[-.]/g, "_"); // eleven-flash-v2.5 → eleven_flash_v2_5
 const LANGUAGE = process.env.AUDIO_LANGUAGE; // opcional, p. ej. "en": se envía como language_code
 const PRICE_PER_1K = MODEL === "eleven-flash-v2.5" ? 0.04 : 0.08; // $ por 1.000 caracteres (README de Sherpas)
 
@@ -73,7 +80,9 @@ function intWords(n: number): string {
   return intWords(Math.floor(n / 1e6)) + " million" + (n % 1e6 ? " " + intWords(n % 1e6) : "");
 }
 export function spokenize(text: string): string {
-  return text.replace(/\d[\d,]*(?:\.\d+)?/g, (tok) => {
+  // "$300" → "300 dollars" (la voz lee mejor el importe con la unidad detrás)
+  const withUnits = text.replace(/\$(\d[\d,]*(?:\.\d+)?)/g, "$1 dollars");
+  return withUnits.replace(/\d[\d,]*(?:\.\d+)?/g, (tok) => {
     const [i, d] = tok.replace(/,/g, "").split(".");
     const base = intWords(Number(i));
     return d ? `${base} point ${d.split("").map((c) => ONES[Number(c)]).join(" ")}` : base;
@@ -81,21 +90,6 @@ export function spokenize(text: string): string {
 }
 
 const fmt = (p: Probe, v: number) => new Intl.NumberFormat("en-US", { maximumFractionDigits: p.input.step < 1 ? 1 : 0 }).format(v);
-const round2 = (v: number) => Math.round(v * 100) / 100;
-
-function saidSentence(p: Probe, v: number): string {
-  const n = fmt(p, v);
-  switch (p.id) {
-    case "colchon": return `You said ${n} months.`;
-    case "tarjeta": return `You said ${n} dollars of every ${p.input.max} would reduce the debt.`;
-    case "ahorros": return `You said your savings would run out at age ${n}.`;
-    case "destino": return `You said ${n} dollars out of every 100.`;
-    case "seguro": return `You said ${n} years of salary.`;
-    case "mezcla": return `You said ${n} percent.`;
-    case "fiscal": return `You said ${n} dollars less in taxes.`;
-    default: return `You said ${n}.`;
-  }
-}
 
 function planSentence(p: Probe): string {
   const real = truthValue(p);
@@ -112,18 +106,30 @@ function planSentence(p: Probe): string {
   }
 }
 
-const grid = (p: Probe) => {
-  const steps = Math.round((p.input.max - p.input.min) / p.input.step);
-  return Array.from({ length: steps + 1 }, (_, i) => round2(p.input.min + i * p.input.step));
-};
-
-type Wanted = { key: string; kind: "q" | "ans" | "plan" | "sec"; text: string };
+type Wanted = { key: string; kind: "q" | "verdict" | "turn" | "cmp" | "plan" | "sec"; text: string };
 const wanted: Wanted[] = [];
 for (const f of FAMILIES) {
   for (const p of f.probes) {
     wanted.push({ key: `q:${f.id}:${p.id}`, kind: "q", text: p.question });
     wanted.push({ key: `plan:${f.id}:${p.id}`, kind: "plan", text: `${planSentence(p)} ${revealContext(p)}`.trim() });
-    for (const v of grid(p)) wanted.push({ key: `ans:${f.id}:${p.id}:${v}`, kind: "ans", text: saidSentence(p, v) });
+  }
+}
+
+// Veredictos cualitativos (se eligen en la app comparando respuesta y plan) y textos de turno/comparación.
+const probeIds = new Set(FAMILIES.flatMap((f) => f.probes.map((p) => p.id)));
+for (const id of probeIds) {
+  for (const [verdict, text] of Object.entries(VERDICT_TEXT[id] ?? {})) {
+    if (text) wanted.push({ key: `verdict:${id}:${verdict}`, kind: "verdict", text });
+  }
+  wanted.push({ key: `cmp:${id}:agree`, kind: "cmp", text: agreeText(id, true) });
+  wanted.push({ key: `cmp:${id}:differ`, kind: "cmp", text: agreeText(id, false) });
+}
+wanted.push({ key: "cmp:intro", kind: "cmp", text: compareIntroText });
+for (const f of FAMILIES) {
+  for (const person of peopleOf(f).slice(0, 2)) {
+    if (peopleOf(f).length < 2) continue;
+    wanted.push({ key: `turn:${person.name}:ask`, kind: "turn", text: turnText(person.name, "ask") });
+    wanted.push({ key: `turn:${person.name}:results`, kind: "turn", text: turnText(person.name, "results") });
   }
 }
 
@@ -154,9 +160,9 @@ function writeManifest() {
   writeFileSync(manifestFile, JSON.stringify({ model: MODEL, voice: VOICE, entries }, null, 1) + "\n");
 }
 
-console.log(`Modelo: ${MODEL} · voz: ${VOICE}${LANGUAGE ? ` · idioma: ${LANGUAGE}` : ""}`);
+console.log(`${EL_KEY ? "ElevenLabs DIRECTO (cuenta propia)" : "Proxy de Sherpas"} · modelo: ${MODEL} · voz: ${VOICE}${LANGUAGE ? ` · idioma: ${LANGUAGE}` : ""}`);
 const count = (k: string) => wanted.filter((w) => w.kind === k).length;
-console.log(`Clips pedidos: ${count("q")} preguntas, ${count("plan")} del plan, ${count("sec")} del análisis, ${count("ans")} de "You said" (${uniqueTexts.size} únicos).`);
+console.log(`Clips pedidos: ${count("q")} preguntas, ${count("plan")} del plan, ${count("sec")} del análisis, ${count("verdict")} de veredicto, ${count("turn")} de turno, ${count("cmp")} de comparación (${uniqueTexts.size} únicos).`);
 console.log(`Pendientes de generar: ${missing.length} (${missingChars} caracteres) con ${MODEL} → coste estimado ${cost.toFixed(2)} $ de los 1,40 $ de ElevenLabs del equipo.`);
 
 function prune() {
@@ -167,6 +173,13 @@ function prune() {
   console.log(`Prune: ${n} mp3 sin uso borrados de public/audio.`);
 }
 const selectedAll = wanted;
+
+if (has("check") && EL_KEY) {
+  const r = await fetch("https://api.elevenlabs.io/v1/user", { headers: { "xi-api-key": EL_KEY } });
+  console.log(`ElevenLabs directo: ${r.status} ${r.statusText}`);
+  if (!r.ok) console.log((await r.text()).replace(EL_KEY, "***").slice(0, 300));
+  process.exit(r.ok ? 0 : 1);
+}
 
 if (has("check")) {
   if (!KEY) throw new Error("No hay clave: pon TEAM_KEY, SHERPAS_AI_KEY o IA_TOKEN en .env / .env.txt.");
@@ -185,7 +198,7 @@ if (dry) {
   process.exit(0);
 }
 
-if (!KEY) throw new Error("Falta la clave del equipo: pon TEAM_KEY (o SHERPAS_AI_KEY / IA_TOKEN) en .env / .env.txt.");
+if (!KEY && !EL_KEY) throw new Error("Falta la clave del equipo: pon TEAM_KEY (o SHERPAS_AI_KEY / IA_TOKEN) en .env / .env.txt.");
 if (cost > 0.5 && !has("yes") && Number.isFinite(limit) === false) {
   throw new Error(`El gasto estimado (${cost.toFixed(2)} $) supera 0,50 $. Repite con --yes si estás seguro, o prueba antes con --limit=3.`);
 }
@@ -195,14 +208,20 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 async function synth(text: string): Promise<Buffer> {
   for (let attempt = 1; attempt <= 5; attempt++) {
-    const res = await fetch(`${BASE}/audio/speech`, {
+    const res = EL_KEY
+      ? await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE}?output_format=mp3_44100_128`, {
+          method: "POST",
+          headers: { "xi-api-key": EL_KEY, "Content-Type": "application/json" },
+          body: JSON.stringify({ text, model_id: EL_MODEL, ...(LANGUAGE ? { language_code: LANGUAGE } : {}) }),
+        })
+      : await fetch(`${BASE}/audio/speech`, {
       method: "POST",
       headers: { Authorization: `Bearer ${KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({ model: MODEL, voice: VOICE, input: text, response_format: "mp3", ...(LANGUAGE ? { language_code: LANGUAGE } : {}) }),
     });
     if (res.ok) return Buffer.from(await res.arrayBuffer());
     const body = (await res.text()).slice(0, 200);
-    if (res.status === 401) throw new Error(`El proxy respondió 401 al generar audio: ${body.replace(KEY ?? "", "***")}  (prueba \`npm run build:audio -- --check\` para saber si es la clave o la voz/modelo)`);
+    if (res.status === 401) throw new Error(`${EL_KEY ? "ElevenLabs" : "El proxy"} respondió 401 al generar audio: ${body.replace(KEY ?? "", "***").replace(EL_KEY ?? "", "***")}  (prueba \`npm run build:audio -- --check\` para saber si es la clave o la voz/modelo)`);
     if (res.status === 402 || res.status === 403) throw new Error(`ElevenLabs rechazó la petición (${res.status}); puede que se haya agotado el presupuesto de 1,40 $. ${body}`);
     if (res.status === 429 || res.status >= 500) {
       const wait = Number(res.headers.get("retry-after")) * 1000 || 2000 * attempt;

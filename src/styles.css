@@ -169,3 +169,22 @@ h1.question { font-size: 28px; line-height: 1.2; letter-spacing: -0.02em; }
   .screen, .screen.dir-back { animation: none; }
   * { transition: none !important; }
 }
+
+/* Turno de persona */
+.turn { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+.turn h1 { margin: 0; }
+
+/* Pantalla de carga */
+.loading { display: flex; align-items: center; min-height: 60vh; }
+.loading-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 18px; font-size: 20px; }
+.loading-steps li { display: flex; align-items: center; gap: 12px; color: var(--muted); transition: color .3s var(--ease); }
+.loading-steps li.active, .loading-steps li.done { color: var(--ink); }
+.loading-dot { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--hairline); display: grid; place-items: center; font-size: 13px; color: #fff; transition: background .3s var(--ease), border-color .3s var(--ease); }
+.loading-steps li.active .loading-dot { border-color: var(--ink); animation: pulse 1s var(--ease) infinite; }
+.loading-steps li.done .loading-dot { background: var(--ink); border-color: var(--ink); }
+@keyframes pulse { 50% { opacity: .4; } }
+@media (prefers-reduced-motion: reduce) { .loading-steps li.active .loading-dot { animation: none; } }
+
+/* Comparación */
+.cmp-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+.cmp-move { margin: 8px 0 0; line-height: 1.45; }
