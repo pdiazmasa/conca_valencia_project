@@ -1,0 +1,383 @@
+/* Formato "Visual": pictogramas de unidades contables, estética monocroma shadcn / Trade Republic */
+
+.visual-reveal {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.visual-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.visual-question {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+.visual-card {
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  border-radius: 24px;
+  box-shadow: var(--card-shadow);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.visual-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.visual-row + .visual-row {
+  padding-top: 16px;
+  border-top: 1px solid var(--hairline);
+}
+
+.visual-row-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.visual-row-label {
+  font-size: 12px;
+  line-height: 1.33;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.visual-row-plan .visual-row-label {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.visual-row-plan.is-bad .visual-row-label {
+  color: var(--ember);
+}
+
+.visual-row-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.visual-picto-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.visual-figure {
+  flex: none;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.visual-figure-num {
+  font-size: 24px;
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+.visual-figure-unit {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.visual-row-you .visual-figure-num {
+  color: var(--muted);
+}
+
+.visual-row-plan .visual-figure-num {
+  color: var(--ink);
+}
+
+.visual-row-plan.is-bad .visual-figure-num {
+  color: var(--ember);
+}
+
+/* ---- Texto grande cuando truthValue es null ("No se acaban") ---- */
+.visual-infinite {
+  font-size: 32px;
+  line-height: 1.08;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  padding: 4px 0;
+}
+
+.visual-row-plan.is-bad .visual-infinite {
+  color: var(--ember);
+}
+
+/* ---- 1. Unidad "meses": cuadraditos de calendario ---- */
+.visual-grid-months {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 3px;
+  width: 100%;
+  max-width: 240px;
+}
+
+.visual-cell-month {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  position: relative;
+  overflow: hidden;
+}
+
+.visual-cell-month::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 25%;
+  background: var(--hairline);
+  opacity: 0.7;
+}
+
+.visual-row-you .visual-cell-month.is-on {
+  background: var(--muted);
+  border-color: var(--muted);
+}
+
+.visual-row-you .visual-cell-month.is-on::before {
+  background: var(--paper);
+  opacity: 0.35;
+}
+
+.visual-row-plan .visual-cell-month.is-on {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.visual-row-plan .visual-cell-month.is-on::before {
+  background: var(--paper);
+  opacity: 0.3;
+}
+
+.visual-row-plan.is-bad .visual-cell-month.is-on {
+  background: var(--ember);
+  border-color: var(--ember);
+}
+
+/* ---- 2. Unidad "%": rejilla 10x10 de 100 puntos ---- */
+.visual-grid-pct {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 4px;
+  width: 100%;
+  max-width: 156px;
+}
+
+.visual-dot {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+}
+
+.visual-row-you .visual-dot.is-on {
+  background: var(--muted);
+  border-color: var(--muted);
+}
+
+.visual-row-plan .visual-dot.is-on {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.visual-row-plan.is-bad .visual-dot.is-on {
+  background: var(--ember);
+  border-color: var(--ember);
+}
+
+/* ---- 3. Unidad "$": 10 monedas (círculos) ---- */
+.visual-coins-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.visual-grid-coins {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 4px;
+  width: 100%;
+  max-width: 240px;
+}
+
+.visual-coin {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--canvas);
+  border: 1.5px solid var(--hairline);
+  display: grid;
+  place-items: center;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1;
+  color: transparent;
+  user-select: none;
+}
+
+.visual-row-you .visual-coin.is-on {
+  background: var(--muted);
+  border-color: var(--muted);
+  color: var(--paper);
+}
+
+.visual-row-plan .visual-coin.is-on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.visual-row-plan.is-bad .visual-coin.is-on {
+  background: var(--ember);
+  border-color: var(--ember);
+  color: var(--paper);
+}
+
+/* En tarjeta, las monedas llenas (reducen deuda) contrastan con las no llenas en --ember (intereses) */
+.visual-row-plan.is-card .visual-coin.is-on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.visual-coin.is-interest {
+  background: var(--paper);
+  border: 1.5px solid var(--ember);
+  color: var(--ember);
+}
+
+.visual-interest-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 500;
+  color: var(--ember);
+}
+
+.visual-interest-swatch {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ember);
+  background: var(--paper);
+  flex: none;
+}
+
+/* ---- 4. Unidad "años" y "años de sueldo": barra de bloques ---- */
+.visual-bar-blocks {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  max-width: 240px;
+}
+
+.visual-bar-blocks.is-compact {
+  grid-template-columns: repeat(20, minmax(0, 1fr));
+}
+
+.visual-bar-blocks.is-century {
+  grid-template-columns: repeat(25, minmax(0, 1fr));
+}
+
+.visual-block {
+  height: 18px;
+  border-radius: 2px;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+}
+
+.visual-bar-blocks.is-century .visual-block {
+  height: 9px;
+  border-radius: 1.5px;
+}
+
+.visual-row-you .visual-block.is-on {
+  background: var(--muted);
+  border-color: var(--muted);
+}
+
+.visual-row-plan .visual-block.is-on {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.visual-row-plan.is-bad .visual-block.is-on {
+  background: var(--ember);
+  border-color: var(--ember);
+}
+
+/* ---- Frase de contexto ---- */
+.visual-context {
+  padding-top: 14px;
+  border-top: 1px solid var(--hairline);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+/* ---- Animación escalonada (< 1,2 s total) para la fila del plan ---- */
+@keyframes visual-pop-in {
+  0% {
+    opacity: 0.2;
+    transform: scale(0.72);
+    background: var(--canvas);
+    border-color: var(--hairline);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.visual-animate .visual-cell-month.is-on,
+.visual-animate .visual-dot.is-on,
+.visual-animate .visual-coin.is-on,
+.visual-animate .visual-coin.is-interest,
+.visual-animate .visual-block.is-on {
+  animation: visual-pop-in 0.22s var(--ease) var(--stagger, 0s) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .visual-animate .visual-cell-month.is-on,
+  .visual-animate .visual-dot.is-on,
+  .visual-animate .visual-coin.is-on,
+  .visual-animate .visual-coin.is-interest,
+  .visual-animate .visual-block.is-on {
+    animation: none !important;
+  }
+}

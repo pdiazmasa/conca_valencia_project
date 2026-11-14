@@ -3,7 +3,7 @@
   "families": [
     {
       "id": "timothy-melanie-weah",
-      "name": "Timothy y Melanie Weah",
+      "name": "Timothy & Melanie Weah",
       "household": [
         {
           "name": "Timothy",
@@ -30,13 +30,13 @@
       "probes": [
         {
           "id": "colchon",
-          "question": "¿Cuántos meses podrías vivir con tu efectivo?",
+          "question": "How many months could you live off your cash?",
           "input": {
             "min": 0,
             "max": 36,
             "step": 0.5,
             "initial": 6,
-            "unit": "meses"
+            "unit": "months"
           },
           "truth": {
             "value": 16,
@@ -49,7 +49,7 @@
         },
         {
           "id": "mezcla",
-          "question": "¿Qué % de tu inversión está en bolsa?",
+          "question": "What % of your investments is in stocks?",
           "input": {
             "min": 0,
             "max": 100,
@@ -67,7 +67,7 @@
         },
         {
           "id": "tarjeta",
-          "question": "De cada 300 $ que pagas a la tarjeta, ¿cuánto reduce la deuda?",
+          "question": "For every $300 you pay on your credit card, how much reduces your debt?",
           "input": {
             "min": 0,
             "max": 300,
@@ -88,19 +88,20 @@
         },
         {
           "id": "seguro",
-          "question": "Si faltaras, ¿cuántos años de sueldo cubriría tu seguro de vida?",
+          "question": "If you weren't here, how many years of salary would your life insurance cover?",
           "input": {
             "min": 0,
             "max": 10,
             "step": 0.1,
             "initial": 3,
-            "unit": "años de sueldo"
+            "unit": "years of salary"
           },
           "truth": {
             "value": 0.93,
             "coverage": 140000,
             "income": 150000,
-            "recommendedMin": 750000
+            "recommendedMin": 750000,
+            "recommendedYears": 5
           },
           "tone": "bad",
           "strength": 3.41,
@@ -142,13 +143,13 @@
       "probes": [
         {
           "id": "colchon",
-          "question": "¿Cuántos meses podrías vivir con tu efectivo?",
+          "question": "How many months could you live off your cash?",
           "input": {
             "min": 0,
             "max": 36,
             "step": 0.5,
             "initial": 6,
-            "unit": "meses"
+            "unit": "months"
           },
           "truth": {
             "value": 3.2,
@@ -161,7 +162,7 @@
         },
         {
           "id": "tarjeta",
-          "question": "De cada 200 $ que pagas a la tarjeta, ¿cuánto reduce la deuda?",
+          "question": "For every $200 you pay on your credit card, how much reduces your debt?",
           "input": {
             "min": 0,
             "max": 200,
@@ -182,18 +183,240 @@
         },
         {
           "id": "ahorros",
-          "question": "¿A qué edad crees que se acabarían tus ahorros?",
+          "question": "At what age do you think your savings would run out?",
           "input": {
             "min": 60,
             "max": 100,
             "step": 1,
             "initial": 80,
-            "unit": "años"
+            "unit": "years"
           },
           "truth": {
             "depletes": true,
             "age": 85,
-            "endOfPlanAge": 91
+            "endOfPlanAge": 91,
+            "series": [
+              {
+                "x": 37,
+                "y": 178717
+              },
+              {
+                "x": 38,
+                "y": 81172
+              },
+              {
+                "x": 39,
+                "y": 95902
+              },
+              {
+                "x": 40,
+                "y": 125852
+              },
+              {
+                "x": 41,
+                "y": 168253
+              },
+              {
+                "x": 42,
+                "y": 220835
+              },
+              {
+                "x": 43,
+                "y": 279056
+              },
+              {
+                "x": 44,
+                "y": 343382
+              },
+              {
+                "x": 45,
+                "y": 414064
+              },
+              {
+                "x": 46,
+                "y": 490947
+              },
+              {
+                "x": 47,
+                "y": 574395
+              },
+              {
+                "x": 48,
+                "y": 664934
+              },
+              {
+                "x": 49,
+                "y": 763133
+              },
+              {
+                "x": 50,
+                "y": 869605
+              },
+              {
+                "x": 51,
+                "y": 985008
+              },
+              {
+                "x": 52,
+                "y": 1110046
+              },
+              {
+                "x": 53,
+                "y": 1245478
+              },
+              {
+                "x": 54,
+                "y": 1392123
+              },
+              {
+                "x": 55,
+                "y": 1550861
+              },
+              {
+                "x": 56,
+                "y": 1722644
+              },
+              {
+                "x": 57,
+                "y": 1908497
+              },
+              {
+                "x": 58,
+                "y": 1949763
+              },
+              {
+                "x": 59,
+                "y": 1915159
+              },
+              {
+                "x": 60,
+                "y": 1873361
+              },
+              {
+                "x": 61,
+                "y": 1823675
+              },
+              {
+                "x": 62,
+                "y": 1760504
+              },
+              {
+                "x": 63,
+                "y": 1663937
+              },
+              {
+                "x": 64,
+                "y": 1548941
+              },
+              {
+                "x": 65,
+                "y": 1405516
+              },
+              {
+                "x": 66,
+                "y": 1237402
+              },
+              {
+                "x": 67,
+                "y": 1125478
+              },
+              {
+                "x": 68,
+                "y": 1066679
+              },
+              {
+                "x": 69,
+                "y": 1008458
+              },
+              {
+                "x": 70,
+                "y": 948978
+              },
+              {
+                "x": 71,
+                "y": 881919
+              },
+              {
+                "x": 72,
+                "y": 805174
+              },
+              {
+                "x": 73,
+                "y": 717522
+              },
+              {
+                "x": 74,
+                "y": 623386
+              },
+              {
+                "x": 75,
+                "y": 559828
+              },
+              {
+                "x": 76,
+                "y": 497847
+              },
+              {
+                "x": 77,
+                "y": 436531
+              },
+              {
+                "x": 78,
+                "y": 376111
+              },
+              {
+                "x": 79,
+                "y": 316843
+              },
+              {
+                "x": 80,
+                "y": 259007
+              },
+              {
+                "x": 81,
+                "y": 202914
+              },
+              {
+                "x": 82,
+                "y": 148903
+              },
+              {
+                "x": 83,
+                "y": 97348
+              },
+              {
+                "x": 84,
+                "y": 48660
+              },
+              {
+                "x": 85,
+                "y": 3288
+              },
+              {
+                "x": 86,
+                "y": -38276
+              },
+              {
+                "x": 87,
+                "y": -75495
+              },
+              {
+                "x": 88,
+                "y": -107780
+              },
+              {
+                "x": 89,
+                "y": -134488
+              },
+              {
+                "x": 90,
+                "y": -154919
+              },
+              {
+                "x": 90,
+                "y": -160752
+              }
+            ]
           },
           "tone": "bad",
           "strength": 3.3,
@@ -201,19 +424,20 @@
         },
         {
           "id": "seguro",
-          "question": "Si faltaras, ¿cuántos años de sueldo cubriría tu seguro de vida?",
+          "question": "If you weren't here, how many years of salary would your life insurance cover?",
           "input": {
             "min": 0,
             "max": 10,
             "step": 0.1,
             "initial": 3,
-            "unit": "años de sueldo"
+            "unit": "years of salary"
           },
           "truth": {
             "value": 1,
             "coverage": 180000,
             "income": 180000,
-            "recommendedMin": 900000
+            "recommendedMin": 900000,
+            "recommendedYears": 5
           },
           "tone": "bad",
           "strength": 2.4,
@@ -242,7 +466,7 @@
     },
     {
       "id": "daniel-emily-johnson",
-      "name": "Daniel y Emily Johnson",
+      "name": "Daniel & Emily Johnson",
       "household": [
         {
           "name": "Daniel",
@@ -269,13 +493,13 @@
       "probes": [
         {
           "id": "colchon",
-          "question": "¿Cuántos meses podrías vivir con tu efectivo?",
+          "question": "How many months could you live off your cash?",
           "input": {
             "min": 0,
             "max": 36,
             "step": 0.5,
             "initial": 6,
-            "unit": "meses"
+            "unit": "months"
           },
           "truth": {
             "value": 1.4,
@@ -288,18 +512,208 @@
         },
         {
           "id": "ahorros",
-          "question": "¿A qué edad crees que se acabarían tus ahorros?",
+          "question": "At what age do you think your savings would run out?",
           "input": {
             "min": 60,
             "max": 100,
             "step": 1,
             "initial": 80,
-            "unit": "años"
+            "unit": "years"
           },
           "truth": {
             "depletes": false,
             "liquidAtEnd": 260272,
-            "endOfPlanAge": 91
+            "endOfPlanAge": 91,
+            "series": [
+              {
+                "x": 44,
+                "y": 350354
+              },
+              {
+                "x": 45,
+                "y": 399708
+              },
+              {
+                "x": 46,
+                "y": 453403
+              },
+              {
+                "x": 47,
+                "y": 511766
+              },
+              {
+                "x": 48,
+                "y": 575155
+              },
+              {
+                "x": 49,
+                "y": 643949
+              },
+              {
+                "x": 50,
+                "y": 719432
+              },
+              {
+                "x": 51,
+                "y": 783116
+              },
+              {
+                "x": 52,
+                "y": 853392
+              },
+              {
+                "x": 53,
+                "y": 905977
+              },
+              {
+                "x": 54,
+                "y": 961789
+              },
+              {
+                "x": 55,
+                "y": 1047054
+              },
+              {
+                "x": 56,
+                "y": 1138687
+              },
+              {
+                "x": 57,
+                "y": 1261157
+              },
+              {
+                "x": 58,
+                "y": 1393434
+              },
+              {
+                "x": 59,
+                "y": 1536258
+              },
+              {
+                "x": 60,
+                "y": 1690421
+              },
+              {
+                "x": 61,
+                "y": 1856776
+              },
+              {
+                "x": 62,
+                "y": 1934173
+              },
+              {
+                "x": 63,
+                "y": 1835576
+              },
+              {
+                "x": 64,
+                "y": 1723787
+              },
+              {
+                "x": 65,
+                "y": 1614522
+              },
+              {
+                "x": 66,
+                "y": 1500305
+              },
+              {
+                "x": 67,
+                "y": 1375646
+              },
+              {
+                "x": 68,
+                "y": 1284987
+              },
+              {
+                "x": 69,
+                "y": 1235189
+              },
+              {
+                "x": 70,
+                "y": 1207545
+              },
+              {
+                "x": 71,
+                "y": 1175881
+              },
+              {
+                "x": 72,
+                "y": 1137222
+              },
+              {
+                "x": 73,
+                "y": 1090196
+              },
+              {
+                "x": 74,
+                "y": 1035474
+              },
+              {
+                "x": 75,
+                "y": 996992
+              },
+              {
+                "x": 76,
+                "y": 972892
+              },
+              {
+                "x": 77,
+                "y": 950404
+              },
+              {
+                "x": 78,
+                "y": 929780
+              },
+              {
+                "x": 79,
+                "y": 911295
+              },
+              {
+                "x": 80,
+                "y": 895251
+              },
+              {
+                "x": 81,
+                "y": 881977
+              },
+              {
+                "x": 82,
+                "y": 871834
+              },
+              {
+                "x": 83,
+                "y": 865214
+              },
+              {
+                "x": 84,
+                "y": 862546
+              },
+              {
+                "x": 85,
+                "y": 864297
+              },
+              {
+                "x": 86,
+                "y": 870975
+              },
+              {
+                "x": 87,
+                "y": 883135
+              },
+              {
+                "x": 88,
+                "y": 901378
+              },
+              {
+                "x": 89,
+                "y": 926360
+              },
+              {
+                "x": 90,
+                "y": 958792
+              }
+            ]
           },
           "tone": "good",
           "strength": 1,
@@ -307,7 +721,7 @@
         },
         {
           "id": "tarjeta",
-          "question": "De cada 450 $ que pagas a la tarjeta, ¿cuánto reduce la deuda?",
+          "question": "For every $450 you pay on your credit card, how much reduces your debt?",
           "input": {
             "min": 0,
             "max": 450,
@@ -328,7 +742,7 @@
         },
         {
           "id": "destino",
-          "question": "De cada 100 $ que ahorras, ¿cuántos van a la jubilación?",
+          "question": "For every $100 you save, how much goes toward retirement?",
           "input": {
             "min": 0,
             "max": 100,
@@ -391,13 +805,13 @@
       "probes": [
         {
           "id": "colchon",
-          "question": "¿Cuántos meses podrías vivir con tu efectivo?",
+          "question": "How many months could you live off your cash?",
           "input": {
             "min": 0,
             "max": 36,
             "step": 0.5,
             "initial": 6,
-            "unit": "meses"
+            "unit": "months"
           },
           "truth": {
             "value": 7.9,
@@ -410,7 +824,7 @@
         },
         {
           "id": "destino",
-          "question": "De cada 100 $ que ahorras, ¿cuántos van a la jubilación?",
+          "question": "For every $100 you save, how much goes toward retirement?",
           "input": {
             "min": 0,
             "max": 100,
@@ -429,18 +843,200 @@
         },
         {
           "id": "ahorros",
-          "question": "¿A qué edad crees que se acabarían tus ahorros?",
+          "question": "At what age do you think your savings would run out?",
           "input": {
             "min": 60,
             "max": 100,
             "step": 1,
             "initial": 80,
-            "unit": "años"
+            "unit": "years"
           },
           "truth": {
             "depletes": true,
             "age": 73,
-            "endOfPlanAge": 91
+            "endOfPlanAge": 91,
+            "series": [
+              {
+                "x": 47,
+                "y": 420006
+              },
+              {
+                "x": 48,
+                "y": 480397
+              },
+              {
+                "x": 49,
+                "y": 533657
+              },
+              {
+                "x": 50,
+                "y": 593049
+              },
+              {
+                "x": 51,
+                "y": 496954
+              },
+              {
+                "x": 52,
+                "y": 525022
+              },
+              {
+                "x": 53,
+                "y": 572728
+              },
+              {
+                "x": 54,
+                "y": 625175
+              },
+              {
+                "x": 55,
+                "y": 682749
+              },
+              {
+                "x": 56,
+                "y": 745865
+              },
+              {
+                "x": 57,
+                "y": 814995
+              },
+              {
+                "x": 58,
+                "y": 890624
+              },
+              {
+                "x": 59,
+                "y": 973281
+              },
+              {
+                "x": 60,
+                "y": 1063532
+              },
+              {
+                "x": 61,
+                "y": 1162011
+              },
+              {
+                "x": 62,
+                "y": 1269362
+              },
+              {
+                "x": 63,
+                "y": 1386319
+              },
+              {
+                "x": 64,
+                "y": 1513656
+              },
+              {
+                "x": 65,
+                "y": 1522924
+              },
+              {
+                "x": 66,
+                "y": 1329758
+              },
+              {
+                "x": 67,
+                "y": 1161215
+              },
+              {
+                "x": 68,
+                "y": 1020820
+              },
+              {
+                "x": 69,
+                "y": 863460
+              },
+              {
+                "x": 70,
+                "y": 687623
+              },
+              {
+                "x": 71,
+                "y": 491677
+              },
+              {
+                "x": 72,
+                "y": 273853
+              },
+              {
+                "x": 73,
+                "y": 32242
+              },
+              {
+                "x": 74,
+                "y": -227414
+              },
+              {
+                "x": 75,
+                "y": -494204
+              },
+              {
+                "x": 76,
+                "y": -768277
+              },
+              {
+                "x": 77,
+                "y": -1049868
+              },
+              {
+                "x": 78,
+                "y": -1339219
+              },
+              {
+                "x": 79,
+                "y": -1636578
+              },
+              {
+                "x": 80,
+                "y": -1942197
+              },
+              {
+                "x": 81,
+                "y": -2220413
+              },
+              {
+                "x": 82,
+                "y": -2507437
+              },
+              {
+                "x": 83,
+                "y": -2803553
+              },
+              {
+                "x": 84,
+                "y": -3109054
+              },
+              {
+                "x": 85,
+                "y": -3424245
+              },
+              {
+                "x": 86,
+                "y": -3749439
+              },
+              {
+                "x": 87,
+                "y": -4084960
+              },
+              {
+                "x": 88,
+                "y": -4431142
+              },
+              {
+                "x": 89,
+                "y": -4788332
+              },
+              {
+                "x": 90,
+                "y": -5156887
+              },
+              {
+                "x": 90,
+                "y": -5360262
+              }
+            ]
           },
           "tone": "bad",
           "strength": 3.9,

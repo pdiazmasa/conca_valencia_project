@@ -56,7 +56,7 @@ function buildFamily(slug, fh, inv) {
   const adults = fh.case.household.filter((h) => h.role === "client" || h.role === "co-client");
   const surname = slug.split("-").pop();
   const lastName = surname[0].toUpperCase() + surname.slice(1);
-  const name = `${adults.map((a) => a.first_name).join(" y ")} ${lastName}`;
+  const name = `${adults.map((a) => a.first_name).join(" & ")} ${lastName}`;
   const client = adults.find((a) => a.role === "client");
 
   const candidates = [];
@@ -73,8 +73,8 @@ function buildFamily(slug, fh, inv) {
     else
       add({
         id: "colchon",
-        question: "¿Cuántos meses podrías vivir con tu efectivo?",
-        input: { min: 0, max: 36, step: 0.5, initial: 6, unit: "meses" },
+        question: "How many months could you live off your cash?",
+        input: { min: 0, max: 36, step: 0.5, initial: 6, unit: "months" },
         truth: { value: months, recommendedMin: min, recommendedMax: max },
         tone: months >= min ? "good" : "bad",
         strength: BASE.colchon,
@@ -95,7 +95,7 @@ function buildFamily(slug, fh, inv) {
       const capped = caps.some((c) => c.includes("revolving"));
       add({
         id: "tarjeta",
-        question: `De cada ${pay} $ que pagas a la tarjeta, ¿cuánto reduce la deuda?`,
+        question: `For every $${pay} you pay on your credit card, how much reduces your debt?`,
         input: { min: 0, max: pay, step, initial: Math.round(pay / 2 / step) * step, unit: "$" },
         truth: { value: round(pay - interest, 2), interest, payment: pay, apr, balance: cc.balance },
         tone: "bad",
@@ -114,11 +114,25 @@ function buildFamily(slug, fh, inv) {
     if (runOut === undefined && (left === undefined || left <= 0)) skip("ahorros", "sin dato fiable de agotamiento");
     else {
       const depletes = runOut !== undefined;
+      const yearly = fh.projections?.yearly;
+      const series = Array.isArray(yearly)
+        ? yearly
+            .map((r) => {
+              const x = num(r?.age_client);
+              const y = num(r?.investable_assets);
+              return x !== undefined && y !== undefined ? { x, y: round(y) } : null;
+            })
+            .filter(Boolean)
+        : undefined;
+      const truth = depletes
+        ? { depletes: true, age: runOut, endOfPlanAge: endAge }
+        : { depletes: false, liquidAtEnd: round(left), endOfPlanAge: endAge };
+      if (series) truth.series = series;
       add({
         id: "ahorros",
-        question: "¿A qué edad crees que se acabarían tus ahorros?",
-        input: { min: 60, max: 100, step: 1, initial: 80, unit: "años" },
-        truth: depletes ? { depletes: true, age: runOut, endOfPlanAge: endAge } : { depletes: false, liquidAtEnd: round(left), endOfPlanAge: endAge },
+        question: "At what age do you think your savings would run out?",
+        input: { min: 60, max: 100, step: 1, initial: 80, unit: "years" },
+        truth,
         tone: depletes ? "bad" : "good",
         strength: depletes ? BASE.ahorros + (endAge - runOut) / 20 : 1,
         why: depletes ? `se agotan a los ${runOut} (plan a ${endAge})` : "no se agotan: buena noticia",
@@ -137,7 +151,7 @@ function buildFamily(slug, fh, inv) {
       else
         add({
           id: "destino",
-          question: "De cada 100 $ que ahorras, ¿cuántos van a la jubilación?",
+          question: "For every $100 you save, how much goes toward retirement?",
           input: { min: 0, max: 100, step: 5, initial: 50, unit: "$" },
           truth: { value: round(share * 100, 1), toRetirement: ret, totalSaved: total },
           tone: "bad",
@@ -157,9 +171,15 @@ function buildFamily(slug, fh, inv) {
       const capped = caps.some((c) => c.includes("mortality"));
       add({
         id: "seguro",
-        question: "Si faltaras, ¿cuántos años de sueldo cubriría tu seguro de vida?",
-        input: { min: 0, max: 10, step: 0.1, initial: 3, unit: "años de sueldo" },
-        truth: { value: round(years, 2), coverage: li.clientCoverage, income: li.clientEarnedIncome, recommendedMin: li.recommendedClientMinCoverage },
+        question: "If you weren't here, how many years of salary would your life insurance cover?",
+        input: { min: 0, max: 10, step: 0.1, initial: 3, unit: "years of salary" },
+        truth: {
+          value: round(years, 2),
+          coverage: li.clientCoverage,
+          income: li.clientEarnedIncome,
+          recommendedMin: li.recommendedClientMinCoverage,
+          recommendedYears: round(li.recommendedClientMinCoverage / li.clientEarnedIncome, 2),
+        },
         tone: "bad",
         strength: BASE.seguro + (capped ? 1 : 0) + Math.min(1 - li.clientCoverage / li.recommendedClientMinCoverage, 1) * 0.5,
         why: `cubre ${round(years, 1)} años de sueldo${capped ? " y limita la nota" : ""}`,
@@ -178,7 +198,7 @@ function buildFamily(slug, fh, inv) {
     else
       add({
         id: "mezcla",
-        question: "¿Qué % de tu inversión está en bolsa?",
+        question: "What % of your investments is in stocks?",
         input: { min: 0, max: 100, step: 1, initial: 50, unit: "%" },
         truth: { value: round(cur * 100), targetPct: round(tgt * 100) },
         tone: "bad",
@@ -196,9 +216,9 @@ function buildFamily(slug, fh, inv) {
       const value = Number(m[1].replace(/,/g, ""));
       add({
         id: "fiscal",
-        question: "Si usaras todo el cupo de tu 401(k), ¿cuánto menos pagarías de impuestos este año?",
+        question: "If you maxed out your 401(k), how much less would you pay in taxes this year?",
         input: { min: 0, max: 20000, step: 250, initial: 5000, unit: "$" },
-        truth: { value, note: "Es un aplazamiento, no dinero gratis (estimación del plan)." },
+        truth: { value, note: "It's a tax deferral, not free money (plan estimate)." },
         tone: "neutral",
         strength: BASE.fiscal + Math.min(value / 12000, 1) * 0.5,
         why: `el plan estima ${value} $/año de ahorro fiscal`,
@@ -330,5 +350,10 @@ writeFileSync(outFile, JSON.stringify({ source: source === "mcp" ? "MCP de Sherp
 for (const f of families) {
   console.log(`\n${f.name} (nota ${f.score})`);
   f.probes.forEach((p, i) => console.log(`  ${i + 1}. [${p.tone}] ${p.id} — ${p.why}`));
+  const ahorros = f.probes.find((p) => p.id === "ahorros");
+  const s = ahorros?.truth?.series;
+  if (s && s.length > 0) {
+    console.log(`  serie ahorros: ${s.length} puntos (edad ${s[0].x}–${s[s.length - 1].x})`);
+  }
   console.log(`  fuera: ${[...f.notSelected.map((s) => s.id + " (elegible)"), ...f.skipped.map((s) => `${s.id}: ${s.why}`)].join(" | ")}`);
 }

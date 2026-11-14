@@ -1,0 +1,251 @@
+/* Formato Historia: tarjeta estilo Spotify Wrapped invertida (monocromo) */
+
+.historia-card {
+  position: relative;
+  min-height: 70vh;
+  min-height: 70dvh;
+  background: var(--ink);
+  color: #ffffff;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  padding: 22px 20px 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* ---- Barras de progreso finas estilo stories ---- */
+.historia-stories {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.historia-story-track {
+  flex: 1;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.historia-story-fill {
+  height: 100%;
+  background: #ffffff;
+  width: 0%;
+}
+
+.historia-story-fill.is-filled {
+  width: 100%;
+}
+
+.historia-card.is-static .historia-story-fill.is-current {
+  width: 100%;
+}
+
+.historia-card.is-animated .historia-story-fill.is-current {
+  animation: historia-story-grow 1.6s var(--ease) forwards;
+}
+
+@keyframes historia-story-grow {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* ---- Contenedor de beats ---- */
+.historia-beats {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  gap: 24px;
+}
+
+/* ---- Estilos compartidos de beat ---- */
+.historia-beat {
+  display: flex;
+  flex-direction: column;
+}
+
+.historia-eyebrow {
+  font-size: 11px;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 6px;
+}
+
+/* Beat 1: Pregunta */
+.historia-question {
+  font-size: clamp(18px, 4.8vw, 22px);
+  line-height: 1.3;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* Beat 2: Respuesta de la persona */
+.historia-answer {
+  font-size: clamp(26px, 6.5vw, 32px);
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: rgba(255, 255, 255, 0.95);
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+}
+
+/* Beat 3: Plan real */
+.historia-beat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.historia-beat-header .historia-eyebrow {
+  margin-bottom: 0;
+}
+
+.historia-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 18px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.historia-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.historia-badge-good {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.historia-badge-neutral {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.historia-badge-bad {
+  background: rgba(231, 0, 11, 0.12);
+  color: var(--ember);
+  border: 1px solid rgba(231, 0, 11, 0.3);
+}
+
+/* Cifra enorme (64-80px, tracking -0.05em) */
+.historia-stat {
+  margin: 4px 0 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.historia-stat.tone-bad {
+  color: var(--ember);
+}
+
+.historia-stat.tone-good,
+.historia-stat.tone-neutral {
+  color: #ffffff;
+}
+
+.historia-stat-num {
+  font-size: clamp(64px, 16vw, 80px);
+  line-height: 0.95;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  display: inline-block;
+}
+
+.historia-stat-unit {
+  font-size: 0.42em;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-left: 6px;
+  vertical-align: baseline;
+  color: inherit;
+  opacity: 0.85;
+}
+
+.historia-stat-phrase {
+  font-size: clamp(34px, 8.5vw, 44px);
+  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  display: block;
+}
+
+.historia-context {
+  font-size: 14px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 6px;
+}
+
+/* ---- Animaciones escalonadas de beats ---- */
+.historia-card.is-static .historia-beat {
+  opacity: 1;
+  transform: none;
+}
+
+.historia-card.is-animated .historia-beat-1 {
+  animation: historia-fade-up 0.45s var(--ease) both;
+  animation-delay: 0.08s;
+}
+
+.historia-card.is-animated .historia-beat-2 {
+  animation: historia-fade-up 0.45s var(--ease) both;
+  animation-delay: 0.55s;
+}
+
+.historia-card.is-animated .historia-beat-3 {
+  animation: historia-fade-up 0.55s var(--ease) both;
+  animation-delay: 1.05s;
+}
+
+@keyframes historia-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Accesibilidad: prefers-reduced-motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .historia-card *,
+  .historia-beat,
+  .historia-story-fill {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .historia-story-fill.is-current {
+    width: 100% !important;
+  }
+}
