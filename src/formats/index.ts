@@ -3,10 +3,7 @@ import { Wrapped, WrappedPage } from "./Wrapped";
 import { DashboardFull } from "../dashboard/DashboardFull";
 import { Dashboard } from "./Dashboard";
 import { Informe } from "./Informe";
-import { Historia } from "./Historia";
-import { Futuro } from "./Futuro";
-import { Visual } from "./Visual";
-import { AudioAsk, AudioCompare, AudioPage, AudioReveal } from "./Audio";
+import { AudioAsk, AudioCouple, AudioPage, AudioReveal } from "./Audio";
 
 export const FORMATS: Record<FormatId, FormatDef> = {
   wrapped: {
@@ -23,32 +20,13 @@ export const FORMATS: Record<FormatId, FormatDef> = {
     Reveal: Dashboard,
     Page: DashboardFull,
   },
-  historia: {
-    id: "historia",
-    name: "Story",
-    tagline: "Your plan told in cards, one idea at a time.",
-    Reveal: Historia,
-  },
-  futuro: {
-    id: "futuro",
-    name: "Future you",
-    tagline: "Your future self tells you how things are going.",
-    Reveal: Futuro,
-    askFraming: () => "Your future self wants to know what you think:",
-  },
-  visual: {
-    id: "visual",
-    name: "Visual",
-    tagline: "Pictures you can understand at a glance.",
-    Reveal: Visual,
-  },
   audio: {
     id: "audio",
     name: "Audio",
     tagline: "We read it out to you, nice and clear.",
     Reveal: AudioReveal,
     Page: AudioPage,
-    Compare: AudioCompare,
+    Couple: AudioCouple,
     Ask: AudioAsk,
   },
   informe: {
@@ -59,7 +37,7 @@ export const FORMATS: Record<FormatId, FormatDef> = {
   },
 };
 
-export const FORMAT_ORDER: FormatId[] = ["wrapped", "dashboard", "audio", "historia", "futuro", "visual", "informe"];
+export const FORMAT_ORDER: FormatId[] = ["wrapped", "dashboard", "audio", "informe"];
 
 // Formato por defecto según la edad: 0–29 Wrapped · 30–54 Dashboard · 55+ Audio.
 export function formatForAge(age: number | null): FormatId {

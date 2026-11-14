@@ -4,8 +4,8 @@
 // Qué se locuta (todo en inglés, "según tu plan"):
 //   q:    la pregunta de cada sonda
 //   verdict: veredicto cualitativo por sonda (nunca dice el número del usuario)
-//   turn: "Juan, responde" / "Juan, este es tu plan" (hogares con 2 adultos)
-//   cmp:  introducción y coincide/difiere por sonda (comparación)
+//   turn: "Juan, responde" (hogares con 2 adultos)
+//   couple: saludo a la pareja y una frase por aspecto (coinciden/difieren y cómo está el plan)
 //   plan: lo que dice el plan + su contexto, por familia y sonda
 //
 // Uso:
@@ -17,7 +17,7 @@
 //   --yes     confirma un gasto estimado superior a 0,50 $
 //   --force   regenera todo aunque exista
 //   --prune   borra de public/audio los mp3 que el manifest ya no usa (p. ej. de una voz anterior)
-//   --only=q|verdict|turn|cmp|plan|sec   limita el tipo de clip (sec = portada y secciones del análisis)
+//   --only=q|verdict|turn|couple|plan|sec   limita el tipo de clip (sec = portada y secciones del análisis)
 //
 // La clave del equipo (SHERPAS_AI_KEY o IA_TOKEN en .env / .env.txt) solo la usa este script:
 // no se escribe en ningún archivo ni llega al navegador.
@@ -25,7 +25,7 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { ANALYSIS, FAMILIES, VERDICT_TEXT, agreeText, compareIntroText, peopleOf, revealContext, truthValue, turnText, type Probe } from "../src/data";
+import { ANALYSIS, FAMILIES, VERDICT_TEXT, coupleIntroText, coupleOutcomesFor, coupleText, peopleOf, revealContext, truthValue, turnText, type Probe } from "../src/data";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const audioDir = join(root, "public", "audio");
@@ -106,7 +106,7 @@ function planSentence(p: Probe): string {
   }
 }
 
-type Wanted = { key: string; kind: "q" | "verdict" | "turn" | "cmp" | "plan" | "sec"; text: string };
+type Wanted = { key: string; kind: "q" | "verdict" | "turn" | "couple" | "plan" | "sec"; text: string };
 const wanted: Wanted[] = [];
 for (const f of FAMILIES) {
   for (const p of f.probes) {
@@ -115,22 +115,24 @@ for (const f of FAMILIES) {
   }
 }
 
-// Veredictos cualitativos (se eligen en la app comparando respuesta y plan) y textos de turno/comparación.
+// Veredictos cualitativos (se eligen en la app comparando respuesta y plan).
 const probeIds = new Set(FAMILIES.flatMap((f) => f.probes.map((p) => p.id)));
 for (const id of probeIds) {
   for (const [verdict, text] of Object.entries(VERDICT_TEXT[id] ?? {})) {
     if (text) wanted.push({ key: `verdict:${id}:${verdict}`, kind: "verdict", text });
   }
-  wanted.push({ key: `cmp:${id}:agree`, kind: "cmp", text: agreeText(id, true) });
-  wanted.push({ key: `cmp:${id}:differ`, kind: "cmp", text: agreeText(id, false) });
 }
-wanted.push({ key: "cmp:intro", kind: "cmp", text: compareIntroText });
+// Parejas: aviso de turno, saludo a los dos y una frase por aspecto y resultado posible.
+const coupleProbes = new Set<string>();
 for (const f of FAMILIES) {
-  for (const person of peopleOf(f).slice(0, 2)) {
-    if (peopleOf(f).length < 2) continue;
-    wanted.push({ key: `turn:${person.name}:ask`, kind: "turn", text: turnText(person.name, "ask") });
-    wanted.push({ key: `turn:${person.name}:results`, kind: "turn", text: turnText(person.name, "results") });
-  }
+  const people = peopleOf(f);
+  if (people.length < 2) continue;
+  for (const person of people) wanted.push({ key: `turn:${person.name}`, kind: "turn", text: turnText(person.name) });
+  wanted.push({ key: `couple:${f.id}:intro`, kind: "couple", text: coupleIntroText(people) });
+  for (const p of f.probes) coupleProbes.add(p.id);
+}
+for (const id of coupleProbes) {
+  for (const outcome of coupleOutcomesFor(id)) wanted.push({ key: `couple:${id}:${outcome}`, kind: "couple", text: coupleText(id, outcome) });
 }
 
 for (const f of FAMILIES) {
@@ -162,7 +164,7 @@ function writeManifest() {
 
 console.log(`${EL_KEY ? "ElevenLabs DIRECTO (cuenta propia)" : "Proxy de Sherpas"} · modelo: ${MODEL} · voz: ${VOICE}${LANGUAGE ? ` · idioma: ${LANGUAGE}` : ""}`);
 const count = (k: string) => wanted.filter((w) => w.kind === k).length;
-console.log(`Clips pedidos: ${count("q")} preguntas, ${count("plan")} del plan, ${count("sec")} del análisis, ${count("verdict")} de veredicto, ${count("turn")} de turno, ${count("cmp")} de comparación (${uniqueTexts.size} únicos).`);
+console.log(`Clips pedidos: ${count("q")} preguntas, ${count("plan")} del plan, ${count("sec")} del análisis, ${count("verdict")} de veredicto, ${count("turn")} de turno, ${count("couple")} de pareja (${uniqueTexts.size} únicos).`);
 console.log(`Pendientes de generar: ${missing.length} (${missingChars} caracteres) con ${MODEL} → coste estimado ${cost.toFixed(2)} $ de los 1,40 $ de ElevenLabs del equipo.`);
 
 function prune() {

@@ -2,8 +2,8 @@ import type { FC } from "react";
 import type { Analysis, Family, Person, Probe, Section } from "../data";
 
 // Un formato es una forma distinta de enseñar la MISMA información: las sondas
-// (intuición vs. plan) y el análisis completo. Solo cambia la representación.
-export type FormatId = "wrapped" | "dashboard" | "audio" | "historia" | "futuro" | "visual" | "informe";
+// (intuición vs. plan) y el análisis completo. Solo hay cuatro: Wrapped (<30), Dashboard (30–54), Audio (55+) e Informe.
+export type FormatId = "wrapped" | "dashboard" | "audio" | "informe";
 
 export type RevealProps = {
   family: Family;
@@ -27,12 +27,14 @@ export type PageProps = {
   Reveal: FC<RevealProps>;
 };
 
-// Comparación entre las personas del hogar: respuestas de cada una frente a las de la otra y al plan.
-export type CompareProps = {
+// Un aspecto cuando responden dos personas: lo que pensaba cada una, si coinciden y el plan.
+export type CoupleRevealProps = {
   family: Family;
-  analysis: Analysis;
+  probe: Probe;
+  index: number;
+  total: number;
   people: Person[];
-  answers: Record<number, Record<string, number>>;
+  values: number[]; // respuesta de cada persona a esta pregunta
 };
 
 export type FormatDef = {
@@ -43,7 +45,6 @@ export type FormatDef = {
   // Página del análisis; si falta se usa la de Dashboard.
   Page?: FC<PageProps>;
   Ask?: FC<AskProps>;
-  // Pantalla de comparación entre personas; si falta se usa la de Dashboard.
-  Compare?: FC<CompareProps>;
-  askFraming?: (family: Family, probe: Probe) => string | null;
+  // Aspecto de pareja (opina uno, opina otro, realidad); si falta se usa el genérico.
+  Couple?: FC<CoupleRevealProps>;
 };

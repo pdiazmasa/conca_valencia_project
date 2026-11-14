@@ -264,7 +264,31 @@ export const VERDICT_TEXT: Record<string, Partial<Record<Verdict, string>>> = {
   },
 };
 
-// Tema de cada pregunta, para la comparación entre personas.
+// ---- Pareja: qué pasa en cada aspecto cuando responden dos personas ----
+// Se decide con las dos respuestas y el plan; nunca nombra a quién acertó (no hay marcador entre ellos).
+export type CoupleOutcome = "both_right" | "agree_better" | "agree_worse" | "agree_different" | "one_right" | "none_right";
+
+export function coupleOutcome(p: Probe, a: number, b: number): CoupleOutcome {
+  const close = (v: number) => verdictFor(p, v) === "close";
+  if (close(a) && close(b)) return "both_right";
+  if (agreeOn(p, a, b)) {
+    const v = verdictFor(p, (a + b) / 2);
+    if (v === "close") return "both_right";
+    if (v === "better") return "agree_better";
+    if (v === "worse" || v === "much_worse") return "agree_worse";
+    return "agree_different";
+  }
+  return close(a) || close(b) ? "one_right" : "none_right";
+}
+
+// Resultados posibles de una pregunta (para generar solo los clips que pueden salir).
+export function coupleOutcomesFor(probeId: string): CoupleOutcome[] {
+  const v = VERDICT_TEXT[probeId] ?? {};
+  const base: CoupleOutcome[] = ["both_right", "agree_different", "one_right", "none_right"];
+  return v.better ? [...base, "agree_better", "agree_worse"] : base;
+}
+
+// Tema de cada pregunta, para las frases de pareja.
 const TOPIC: Record<string, string> = {
   colchon: "your cash cushion",
   tarjeta: "paying down your card",
@@ -274,9 +298,19 @@ const TOPIC: Record<string, string> = {
   mezcla: "your investment mix",
   fiscal: "taxes",
 };
-export const agreeText = (probeId: string, agree: boolean) =>
-  agree ? `On ${TOPIC[probeId] ?? "this one"}, you both guessed about the same.` : `On ${TOPIC[probeId] ?? "this one"}, you see it differently.`;
 
-export const compareIntroText = "Let's see where you agree and where you see things differently.";
-export const turnText = (name: string, kind: "ask" | "results") =>
-  kind === "ask" ? `${name}, it's your turn to answer.` : `${name}, here is your plan.`;
+export function coupleText(probeId: string, outcome: CoupleOutcome): string {
+  const t = TOPIC[probeId] ?? "this one";
+  switch (outcome) {
+    case "both_right": return `On ${t}, you both got it about right.`;
+    case "agree_better": return `On ${t}, you saw it the same way, and the news is better than you both thought.`;
+    case "agree_worse": return `On ${t}, you saw it the same way, and it is tougher than you both thought. Worth tackling together.`;
+    case "agree_different": return `On ${t}, you agree with each other, but the plan says something different.`;
+    case "one_right": return `On ${t}, you see it differently, and one of you is close to the plan.`;
+    case "none_right": return `On ${t}, you see it differently, and the plan differs from both guesses.`;
+  }
+}
+
+export const coupleIntroText = (people: Person[]) => `${people.map((p) => p.name).join(" and ")}, let's compare what each of you thought.`;
+
+export const turnText = (name: string) => `${name}, it's your turn to answer.`;

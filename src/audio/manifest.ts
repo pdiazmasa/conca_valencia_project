@@ -1,5 +1,5 @@
 import raw from "../data/audio.manifest.json";
-import type { Verdict } from "../data";
+import type { CoupleOutcome, Verdict } from "../data";
 
 type Entry = { text: string; file?: string };
 const entries = (raw as { entries: Record<string, Entry> }).entries;
@@ -9,9 +9,9 @@ export const planKey = (family: string, probe: string) => `plan:${family}:${prob
 export const verdictKey = (probe: string, verdict: Verdict) => `verdict:${probe}:${verdict}`;
 export const coverKey = (family: string, i: number) => `cover:${family}:${i}`;
 export const sectionKey = (family: string, section: string, i: number) => `sec:${family}:${section}:${i}`;
-export const turnKey = (name: string, kind: "ask" | "results") => `turn:${name}:${kind}`;
-export const compareIntroKey = () => `cmp:intro`;
-export const compareKey = (probe: string, agree: boolean) => `cmp:${probe}:${agree ? "agree" : "differ"}`;
+export const turnKey = (name: string) => `turn:${name}`;
+export const coupleIntroKey = (family: string) => `couple:${family}:intro`;
+export const coupleKey = (probe: string, outcome: CoupleOutcome) => `couple:${probe}:${outcome}`;
 
 export type Clip = { key: string; text: string; url: string | null };
 

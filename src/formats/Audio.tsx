@@ -1,9 +1,10 @@
 import { useEffect } from "react";
-import { agreeOn, formatStat, truthValue, turnText, verdictFor } from "../data";
-import { compareIntroKey, compareKey, coverKey, getClip, planKey, questionKey, sectionKey, turnKey, verdictKey } from "../audio/manifest";
+import { coupleIntroText, coupleOutcome, coupleText, formatStat, truthValue, turnText, verdictFor } from "../data";
+import { coupleIntroKey, coupleKey, coverKey, getClip, planKey, questionKey, sectionKey, turnKey, verdictKey } from "../audio/manifest";
 import { useNarrator } from "../audio/useNarrator";
 import { StatValue } from "./Dashboard";
-import type { AskProps, CompareProps, PageProps, RevealProps } from "./types";
+import { CoupleFigures } from "../analysis/CoupleReveal";
+import type { AskProps, CoupleRevealProps, PageProps, RevealProps } from "./types";
 import "./audio.css";
 
 function PlayIcon({ playing }: { playing: boolean }) {
@@ -127,53 +128,54 @@ export function AudioPage({ family, analysis, page, answers }: PageProps) {
 }
 
 // Aviso de turno ("Timothy, it's your turn to answer."): suena solo si esa persona usará Audio.
-export function AudioTurn({ name, kind }: { name: string; kind: "ask" | "results" }) {
+export function AudioTurn({ name }: { name: string }) {
   const n = useNarrator();
   useEffect(() => {
-    n.play([turnKey(name, kind)]);
+    n.play([turnKey(name)]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name, kind]);
+  }, [name]);
   return n.status === "blocked" ? (
-    <button type="button" className="pill pill-outline" onClick={() => n.play([turnKey(name, kind)])}>
+    <button type="button" className="pill pill-outline" onClick={() => n.play([turnKey(name)])}>
       Tap to listen
     </button>
   ) : (
-    <p className="audio-hint">{turnText(name, kind)}</p>
+    <p className="audio-hint">{turnText(name)}</p>
   );
 }
 
-// Comparación entre personas en Audio: intro, una frase por pregunta (coinciden / difieren) y el primer paso de Sherpas.
-export function AudioCompare({ family, analysis, people, answers }: CompareProps) {
+// Aspecto de pareja en Audio: en el primero saluda a los dos por su nombre; después una frase conjunta
+// (coinciden / difieren y cómo está el plan). Nunca dice cifras: están en pantalla.
+export function AudioCouple({ family, probe, index, people, values }: CoupleRevealProps) {
   const n = useNarrator();
-  const [a, b] = [answers[0] ?? {}, answers[1] ?? {}];
-  const lines = [
-    { key: compareIntroKey() },
-    ...family.probes.map((p) => ({ key: compareKey(p.id, agreeOn(p, a[p.id] ?? p.input.initial, b[p.id] ?? p.input.initial)) })),
-    ...(analysis.score.spoken[1] ? [{ key: coverKey(family.id, 1) }] : []),
-  ];
-  const keys = lines.map((l) => l.key);
+  const outcome = coupleOutcome(probe, values[0], values[1]);
+  const keys = [...(index === 0 ? [coupleIntroKey(family.id)] : []), coupleKey(probe.id, outcome), planKey(family.id, probe.id)];
+  const captions = keys.map((k) => getClip(k)?.text ?? (k === coupleKey(probe.id, outcome) ? coupleText(probe.id, outcome) : index === 0 && k === coupleIntroKey(family.id) ? coupleIntroText(people) : ""));
   useEffect(() => {
     n.play(keys);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [family.id]);
+  }, [family.id, probe.id, outcome]);
   const playing = n.status === "playing";
   return (
     <div className="audio-reveal">
-      <h1 className="a-title">{people.map((p) => p.name).join(" & ")}</h1>
+      <p className="question-sm">{probe.question}</p>
       <div className="audio-player">
         <button type="button" className="audio-btn" onClick={() => (playing ? n.pause() : n.status === "paused" ? n.resume() : n.play(keys))} aria-label={playing ? "Pause" : "Listen"}>
           <PlayIcon playing={playing} />
         </button>
         <div className="audio-controls">
           <button type="button" className="pill pill-outline" onClick={() => n.replay()}>Listen again</button>
+          <button type="button" className="pill pill-outline" onClick={() => n.setRate(n.rate === 1 ? 0.8 : 1)} aria-pressed={n.rate < 1}>
+            {n.rate < 1 ? "Slower: on" : "Slower"}
+          </button>
         </div>
         {n.status === "blocked" && <p className="audio-hint">Tap the button to listen</p>}
       </div>
       <ol className="audio-captions">
-        {lines.map((l, i) => (
-          <li key={l.key} className={n.current === i ? "on" : ""}><p>{getClip(l.key)?.text ?? ""}</p></li>
+        {captions.map((text, i) => (
+          <li key={keys[i]} className={n.current === i ? "on" : ""}><p>{text}</p></li>
         ))}
       </ol>
+      <CoupleFigures probe={probe} people={people} values={values} />
     </div>
   );
 }

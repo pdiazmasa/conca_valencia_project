@@ -188,3 +188,14 @@ h1.question { font-size: 28px; line-height: 1.2; letter-spacing: -0.02em; }
 /* Comparación */
 .cmp-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
 .cmp-move { margin: 8px 0 0; line-height: 1.45; }
+
+/* ---- Pareja: aspecto por aspecto ---- */
+.summary-mark-b { background: var(--ink-soft); border: 2px solid var(--paper); }
+.couple-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
+.couple-dot-a { background: var(--paper); border: 2px solid var(--muted); }
+.couple-dot-b { background: var(--ink-soft); }
+.couple-dot-plan { background: var(--ink); }
+.couple-dot-plan.tone-bad { background: var(--ember); }
+.couple-figures .summary-bar { margin-top: 20px; }
+/* En pareja las apuestas ya se vieron aspecto por aspecto: se oculta el "apuestas vs plan" de una sola persona. */
+.is-couple .dbx-guess-card { display: none; }
