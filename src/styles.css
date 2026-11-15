@@ -199,3 +199,26 @@ h1.question { font-size: 28px; line-height: 1.2; letter-spacing: -0.02em; }
 .couple-figures .summary-bar { margin-top: 20px; }
 /* En pareja las apuestas ya se vieron aspecto por aspecto: se oculta el "apuestas vs plan" de una sola persona. */
 .is-couple .dbx-guess-card { display: none; }
+
+/* ---- Próximos pasos ---- */
+.steps-person { margin-top: 20px; }
+.steps-list { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.steps-card { display: flex; flex-direction: column; gap: 8px; width: 100%; text-align: left; cursor: pointer; font: inherit; color: inherit; border: 1px solid var(--hairline); }
+.steps-card.on { border-color: var(--ink); background: var(--surface-alt); }
+.steps-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.steps-title { font-weight: 600; }
+.steps-effect { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.steps-how { display: flex; flex-direction: column; gap: 4px; padding-top: 10px; border-top: 1px solid var(--hairline); line-height: 1.45; }
+.steps-agree, .steps-remind { margin-top: 20px; }
+.steps-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.steps-buttons .pill:disabled { opacity: 0.45; cursor: not-allowed; }
+.steps-note { margin: 12px 0 0; font-size: 13px; color: var(--muted); }
+.steps-sheet { display: none; }
+@media print {
+  body * { visibility: hidden; }
+  .steps-sheet, .steps-sheet * { visibility: visible; }
+  .steps-sheet { display: block; position: absolute; inset: 0 auto auto 0; width: 100%; padding: 24px; color: #000; background: #fff; }
+  .steps-sheet h1 { font-size: 22px; margin: 0 0 4px; }
+  .steps-sheet h2 { font-size: 17px; margin: 18px 0 4px; }
+  .steps-sheet p { margin: 4px 0; line-height: 1.45; }
+}

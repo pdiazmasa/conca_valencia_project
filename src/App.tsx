@@ -7,12 +7,13 @@ import { StatValue, toneLabel } from "./formats/Dashboard";
 import { AudioTurn } from "./formats/Audio";
 import { CoupleReveal } from "./analysis/CoupleReveal";
 import LoadingScreen from "./LoadingScreen";
+import { NextStepsScreen } from "./NextSteps";
 
 type Dir = "forward" | "back";
 // turn: "X, responde" (solo con varias personas) · age: edad (decide el formato) · ask: preguntas de intuición ·
 // loading: carga corta · couple: cada aspecto con lo que opina cada uno y el plan (solo parejas) ·
-// analysis: plan completo · done: resumen
-type Phase = "turn" | "age" | "ask" | "loading" | "couple" | "analysis" | "done";
+// analysis: plan completo · done: resumen · steps: próximos pasos (lo último)
+type Phase = "turn" | "age" | "ask" | "loading" | "couple" | "analysis" | "done" | "steps";
 type State = {
   family: Family | null;
   people: Person[];
@@ -23,6 +24,7 @@ type State = {
   step: number;
   phase: Phase;
   answers: Record<number, Record<string, number>>;
+  choices: Record<number, number>; // primer paso elegido por cada persona (posición en los pasos del plan)
   dir: Dir;
   history: State[];
 };
@@ -244,13 +246,13 @@ function SummaryScreen({
   people,
   answers,
   onChangeFormat,
-  onRestart,
+  onNextSteps,
 }: {
   family: Family;
   people: Person[];
   answers: Record<number, Record<string, number>>;
   onChangeFormat: (f: FormatId) => void;
-  onRestart: () => void;
+  onNextSteps: () => void;
 }) {
   // Sondas con valor real numérico para contabilizar aciertos (margen <= 10 % del rango).
   const scorable = family.probes.filter((p) => truthValue(p) !== null);
@@ -321,8 +323,8 @@ function SummaryScreen({
       </section>
 
       <div className="actions">
-        <button type="button" className="pill pill-outline" onClick={onRestart}>
-          Start over
+        <button type="button" className="pill pill-filled" onClick={onNextSteps}>
+          Your next steps
         </button>
       </div>
     </main>
@@ -373,6 +375,7 @@ const initialState: State = {
   step: 0,
   phase: "age",
   answers: {},
+  choices: {},
   dir: "forward",
   history: [],
 };
@@ -398,8 +401,8 @@ export default function App() {
     setS((cur) => {
       const prev = cur.history[cur.history.length - 1];
       if (!prev) return cur;
-      // Se conservan las respuestas y edades más recientes.
-      return { ...prev, answers: cur.answers, ages: cur.ages, dir: "back" };
+      // Se conservan las respuestas, edades y pasos elegidos más recientes.
+      return { ...prev, answers: cur.answers, ages: cur.ages, choices: cur.choices, dir: "back" };
     });
 
   const pickFamily = (family: Family) => {
@@ -466,7 +469,15 @@ export default function App() {
         ) : s.phase === "couple" ? (
           <CoupleScreen family={family} people={s.people} format={format} index={s.index} answers={s.answers} onNext={nextCouple} />
         ) : s.phase === "done" ? (
-          <SummaryScreen family={family} people={s.people} answers={s.answers} onChangeFormat={changeFormat} onRestart={restart} />
+          <SummaryScreen family={family} people={s.people} answers={s.answers} onChangeFormat={changeFormat} onNextSteps={() => go(() => ({ phase: "steps" as Phase }))} />
+        ) : s.phase === "steps" ? (
+          <NextStepsScreen
+            family={family}
+            people={s.people}
+            choices={s.choices}
+            onChoose={(person, move) => setS((cur) => ({ ...cur, choices: { ...cur.choices, [person]: move } }))}
+            onRestart={restart}
+          />
         ) : probe ? (
           <QuestionScreen
             family={family}
