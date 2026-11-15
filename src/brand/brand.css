@@ -1,0 +1,61 @@
+/* Logo de Same Page: pantalla de entrada e icono fijo arriba. Todo bajo .brand-* para no afectar a nada más. */
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@600&display=swap");
+
+.brand-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: var(--canvas, #f5f5f5);
+  cursor: pointer;
+}
+.brand-stage.is-dock {
+  background: transparent;
+  transition: background 0.7s ease;
+  pointer-events: none;
+}
+.brand-sym {
+  display: block;
+  width: 230px;
+  height: 230px;
+  overflow: visible; /* de pie la forma sobresale un poco del cuadro y no debe recortarse */
+}
+.brand-word {
+  margin: 0;
+  font-family: "Syne", var(--font, system-ui, sans-serif);
+  font-size: 44px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--ink, #0a0a0a);
+  white-space: nowrap;
+  opacity: 0;
+}
+
+/* Icono fijo arriba, centrado y a la altura del botón de volver (sin recuadro) */
+.brand-pill {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.brand-slot-sym {
+  display: block;
+  width: 36px;
+  height: 36px;
+}
+/* El icono se ve cuando el logo que viaja ya ha aterrizado encima */
+.brand-pill:not(.is-done) .brand-slot-sym {
+  visibility: hidden;
+}
