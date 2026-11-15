@@ -175,7 +175,7 @@ h1.question { font-size: 28px; line-height: 1.2; letter-spacing: -0.02em; }
 .turn h1 { margin: 0; }
 
 /* Pantalla de carga */
-.loading { display: flex; align-items: center; min-height: 60vh; }
+.loading { display: flex; align-items: center; justify-content: center; gap: 36px; min-height: 60vh; }
 .loading-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 18px; font-size: 20px; }
 .loading-steps li { display: flex; align-items: center; gap: 12px; color: var(--muted); transition: color .3s var(--ease); }
 .loading-steps li.active, .loading-steps li.done { color: var(--ink); }
@@ -183,7 +183,12 @@ h1.question { font-size: 28px; line-height: 1.2; letter-spacing: -0.02em; }
 .loading-steps li.active .loading-dot { border-color: var(--ink); animation: pulse 1s var(--ease) infinite; }
 .loading-steps li.done .loading-dot { background: var(--ink); border-color: var(--ink); }
 @keyframes pulse { 50% { opacity: .4; } }
-@media (prefers-reduced-motion: reduce) { .loading-steps li.active .loading-dot { animation: none; } }
+.loading-stack { display: block; overflow: visible; }
+.loading-pill { animation: loading-wave 1.6s ease-in-out infinite; }
+@keyframes loading-wave { 0%, 55%, 100% { transform: translateY(0); } 25% { transform: translateY(-9px); } }
+.loading.is-landing .loading-pill { animation: none; }
+.loading.is-landing .loading-steps { opacity: 0; transition: opacity .3s ease; }
+@media (prefers-reduced-motion: reduce) { .loading-steps li.active .loading-dot, .loading-pill { animation: none; } }
 
 /* Comparación */
 .cmp-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
@@ -222,3 +227,6 @@ h1.question { font-size: 28px; line-height: 1.2; letter-spacing: -0.02em; }
   .steps-sheet h2 { font-size: 17px; margin: 18px 0 4px; }
   .steps-sheet p { margin: 4px 0; line-height: 1.45; }
 }
+
+/* Pareja dentro de la tarjeta de sondas del análisis: sin tarjetas dentro de tarjetas */
+.a-probes .couple .card { border: 0; box-shadow: none; background: transparent; padding: 0; border-radius: 0; }

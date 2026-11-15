@@ -36,9 +36,9 @@
   opacity: 0;
 }
 
-/* Icono fijo arriba, centrado y a la altura del botón de volver (sin recuadro) */
+/* Icono arriba, centrado y a la altura del botón de volver (sin recuadro). Va con la página: al deslizar hacia abajo se va. */
 .brand-pill {
-  position: fixed;
+  position: absolute;
   top: 14px;
   left: 50%;
   transform: translateX(-50%);
@@ -57,5 +57,9 @@
 }
 /* El icono se ve cuando el logo que viaja ya ha aterrizado encima */
 .brand-pill:not(.is-done) .brand-slot-sym {
+  visibility: hidden;
+}
+/* Mientras la pantalla de carga enseña el logo en el centro, el de arriba se esconde (después el del centro sube y ocupa su sitio) */
+.brand-pill.is-away .brand-slot-sym {
   visibility: hidden;
 }

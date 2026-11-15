@@ -3,11 +3,11 @@ import "./brand.css";
 
 // Logo de Same Page. Al abrir, la forma sale de pie en el centro, se tumba, rebota y se despliega hacia
 // arriba en azules; después "aterriza" (es el mismo elemento, no uno que desaparece y otro que aparece)
-// como icono fijo arriba, centrado (sin recuadro); el nombre se desvanece por el camino. Sale una sola vez por sesión (?brand=replay lo fuerza para probar),
-// se salta tocando o con Enter/Espacio/Escape, y sin animación si el sistema pide reducir movimiento.
+// como icono arriba, centrado (sin recuadro) y dentro de la página (se va al deslizar hacia abajo); el nombre se desvanece por el camino.
+// Sale cada vez que se carga o recarga la página, se salta tocando o con Enter/Espacio/Escape, y sin animación si el sistema pide reducir movimiento.
+// onLanded avisa cuando el logo ya está en su sitio (la app no enseña nada antes). away esconde el icono de arriba (lo usa la pantalla de carga).
 
 const BLUES = ["#93c5fd", "#60a5fa", "#3b82f6", "#2563eb", "#1e3a8a"]; // de delante a detrás
-const SEEN_KEY = "samepage-brand-seen";
 const DOCK_AT = 3.3; // segundos hasta que empieza a viajar a la barra
 const FLY_MS = 800;
 
@@ -74,17 +74,8 @@ function fly(el: SVGSVGElement | HTMLElement, slot: Element) {
 
 const reducedMotion = () => typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
-function alreadySeen() {
-  try {
-    if (new URLSearchParams(window.location.search).get("brand") === "replay") return false;
-    return window.sessionStorage.getItem(SEEN_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
-
-export function Brand() {
-  const [phase, setPhase] = useState<"play" | "dock" | "done">(() => (reducedMotion() || alreadySeen() ? "done" : "play"));
+export function Brand({ onLanded, away = false }: { onLanded?: () => void; away?: boolean }) {
+  const [phase, setPhase] = useState<"play" | "dock" | "done">(() => (reducedMotion() ? "done" : "play"));
   const symRef = useRef<SVGSVGElement>(null);
   const wordRef = useRef<HTMLParagraphElement>(null);
   const slotSym = useRef<SVGSVGElement>(null);
@@ -119,19 +110,22 @@ export function Brand() {
     if (phase !== "dock") return;
     if (symRef.current) paint(symRef.current, 99);
     if (symRef.current && slotSym.current) fly(symRef.current, slotSym.current);
-    if (wordRef.current) {
-      wordRef.current.style.transition = "opacity 0.35s ease";
-      wordRef.current.style.opacity = "0"; // el nombre se desvanece mientras el icono sube
+    const word = wordRef.current;
+    if (word) {
+      // El nombre se desvanece mientras el icono sube: se fija la opacidad de ahora y se anima hasta 0.
+      word.style.opacity = getComputedStyle(word).opacity;
+      void word.offsetWidth;
+      word.style.transition = "opacity 0.6s ease";
+      word.style.opacity = "0";
     }
-    const id = window.setTimeout(() => {
-      try {
-        window.sessionStorage.setItem(SEEN_KEY, "1");
-      } catch {
-        /* sin sessionStorage: se verá otra vez, no pasa nada */
-      }
-      setPhase("done");
-    }, FLY_MS + 50);
+    const id = window.setTimeout(() => setPhase("done"), FLY_MS + 50);
     return () => window.clearTimeout(id);
+  }, [phase]);
+
+  // Cuando el logo ya está en su sitio, la app puede enseñar su contenido.
+  useEffect(() => {
+    if (phase === "done") onLanded?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
 
   return (
@@ -146,7 +140,7 @@ export function Brand() {
           </p>
         </div>
       )}
-      <div className={`brand-pill ${phase === "done" ? "is-done" : ""}`} role="img" aria-label="Same Page">
+      <div className={`brand-pill${phase === "done" ? " is-done" : ""}${away ? " is-away" : ""}`} role="img" aria-label="Same Page">
         <svg ref={slotSym} className="brand-slot-sym" viewBox="0 0 120 120" aria-hidden="true">
           <StackRects t={99} />
         </svg>

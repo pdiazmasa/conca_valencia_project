@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { coupleIntroText, coupleOutcome, coupleText, formatStat, truthValue, turnText, verdictFor } from "../data";
+import { coupleIntroText, coupleOutcome, coupleText, formatStat, truthValue, turnText, verdictFor, type Probe } from "../data";
 import { coupleIntroKey, coupleKey, coverKey, getClip, planKey, questionKey, sectionKey, turnKey, verdictKey } from "../audio/manifest";
 import { useNarrator } from "../audio/useNarrator";
 import { StatValue } from "./Dashboard";
-import { CoupleFigures } from "../analysis/CoupleReveal";
-import type { AskProps, CoupleRevealProps, PageProps, RevealProps } from "./types";
+import { CoupleFigures, coupleValues, useCouple } from "../analysis/CoupleReveal";
+import type { AskProps, PageProps, RevealProps } from "./types";
 import "./audio.css";
 
 function PlayIcon({ playing }: { playing: boolean }) {
@@ -74,20 +74,32 @@ export function AudioReveal({ family, probe, answer, animate }: RevealProps) {
   );
 }
 
-// Página del análisis en Audio: un solo reproductor por página que lee, en orden,
-// lo que dijiste y lo que dice el plan (para las sondas de la sección) y el resumen de la sección.
+// Página del análisis en Audio: un solo reproductor por página que lee, en orden, lo que pensabas y lo que dice
+// el plan (para las sondas de la sección) y el resumen de la sección. Si responden dos personas, en lugar de
+// "lo que dijiste" lee una frase conjunta (coinciden o no, y cómo está el plan) y debajo salen las cifras de cada uno.
 export function AudioPage({ family, analysis, page, answers }: PageProps) {
   const n = useNarrator();
+  const couple = useCouple();
 
-  const items: { key: string; label: string }[] =
+  type Item = { key: string; text: string };
+  const item = (key: string, fallback = ""): Item => ({ key, text: getClip(key)?.text ?? fallback });
+  const probeItems = (p: Probe): Item[] => {
+    if (!couple) return [item(verdictKey(p.id, verdictFor(p, answers[p.id] ?? p.input.initial))), item(planKey(family.id, p.id))];
+    const values = coupleValues(couple, p);
+    const outcome = coupleOutcome(p, values[0], values[1]);
+    return [
+      ...(couple.order[0] === p.id ? [item(coupleIntroKey(family.id), coupleIntroText(couple.people))] : []),
+      item(coupleKey(p.id, outcome), coupleText(p.id, outcome)),
+      item(planKey(family.id, p.id)),
+    ];
+  };
+
+  const items: Item[] =
     page.kind === "cover"
-      ? analysis.score.spoken.map((_, i) => ({ key: coverKey(family.id, i), label: "Your plan" }))
+      ? analysis.score.spoken.map((_, i) => item(coverKey(family.id, i)))
       : [
-          ...page.probes.flatMap((p) => [
-            { key: verdictKey(p.id, verdictFor(p, answers[p.id] ?? p.input.initial)), label: "Your guess" },
-            { key: planKey(family.id, p.id), label: "Your plan" },
-          ]),
-          ...page.section.spoken.map((_, i) => ({ key: sectionKey(family.id, page.section.id, i), label: "Your plan" })),
+          ...page.probes.flatMap(probeItems),
+          ...page.section.spoken.map((_, i) => item(sectionKey(family.id, page.section.id, i))),
         ];
   const keys = items.map((i) => i.key);
   const id = page.kind === "cover" ? "cover" : page.section.id;
@@ -119,10 +131,16 @@ export function AudioPage({ family, analysis, page, answers }: PageProps) {
       <ol className="audio-captions">
         {items.map((it, i) => (
           <li key={it.key} className={n.current === i ? "on" : ""}>
-            <p>{getClip(it.key)?.text ?? ""}</p>
+            <p>{it.text}</p>
           </li>
         ))}
       </ol>
+      {couple && page.kind === "section" && page.probes.map((p) => (
+        <div key={p.id} className="a-section">
+          <p className="question-sm">{p.question}</p>
+          <CoupleFigures probe={p} people={couple.people} values={coupleValues(couple, p)} />
+        </div>
+      ))}
     </div>
   );
 }
@@ -140,42 +158,5 @@ export function AudioTurn({ name }: { name: string }) {
     </button>
   ) : (
     <p className="audio-hint">{turnText(name)}</p>
-  );
-}
-
-// Aspecto de pareja en Audio: en el primero saluda a los dos por su nombre; después una frase conjunta
-// (coinciden / difieren y cómo está el plan). Nunca dice cifras: están en pantalla.
-export function AudioCouple({ family, probe, index, people, values }: CoupleRevealProps) {
-  const n = useNarrator();
-  const outcome = coupleOutcome(probe, values[0], values[1]);
-  const keys = [...(index === 0 ? [coupleIntroKey(family.id)] : []), coupleKey(probe.id, outcome), planKey(family.id, probe.id)];
-  const captions = keys.map((k) => getClip(k)?.text ?? (k === coupleKey(probe.id, outcome) ? coupleText(probe.id, outcome) : index === 0 && k === coupleIntroKey(family.id) ? coupleIntroText(people) : ""));
-  useEffect(() => {
-    n.play(keys);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [family.id, probe.id, outcome]);
-  const playing = n.status === "playing";
-  return (
-    <div className="audio-reveal">
-      <p className="question-sm">{probe.question}</p>
-      <div className="audio-player">
-        <button type="button" className="audio-btn" onClick={() => (playing ? n.pause() : n.status === "paused" ? n.resume() : n.play(keys))} aria-label={playing ? "Pause" : "Listen"}>
-          <PlayIcon playing={playing} />
-        </button>
-        <div className="audio-controls">
-          <button type="button" className="pill pill-outline" onClick={() => n.replay()}>Listen again</button>
-          <button type="button" className="pill pill-outline" onClick={() => n.setRate(n.rate === 1 ? 0.8 : 1)} aria-pressed={n.rate < 1}>
-            {n.rate < 1 ? "Slower: on" : "Slower"}
-          </button>
-        </div>
-        {n.status === "blocked" && <p className="audio-hint">Tap the button to listen</p>}
-      </div>
-      <ol className="audio-captions">
-        {captions.map((text, i) => (
-          <li key={keys[i]} className={n.current === i ? "on" : ""}><p>{text}</p></li>
-        ))}
-      </ol>
-      <CoupleFigures probe={probe} people={people} values={values} />
-    </div>
   );
 }

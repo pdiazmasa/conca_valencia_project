@@ -3,7 +3,7 @@ import { Wrapped, WrappedPage } from "./Wrapped";
 import { DashboardFull } from "../dashboard/DashboardFull";
 import { Dashboard } from "./Dashboard";
 import { Informe } from "./Informe";
-import { AudioAsk, AudioCouple, AudioPage, AudioReveal } from "./Audio";
+import { AudioAsk, AudioPage, AudioReveal } from "./Audio";
 
 export const FORMATS: Record<FormatId, FormatDef> = {
   wrapped: {
@@ -26,7 +26,6 @@ export const FORMATS: Record<FormatId, FormatDef> = {
     tagline: "We read it out to you, nice and clear.",
     Reveal: AudioReveal,
     Page: AudioPage,
-    Couple: AudioCouple,
     Ask: AudioAsk,
   },
   informe: {

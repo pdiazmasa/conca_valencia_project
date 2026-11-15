@@ -28,6 +28,7 @@ export type PageProps = {
 };
 
 // Un aspecto cuando responden dos personas: lo que pensaba cada una, si coinciden y el plan.
+// index/total: posición entre las sondas de todo el plan (la primera, index 0, abre con el saludo a la pareja).
 export type CoupleRevealProps = {
   family: Family;
   probe: Probe;
@@ -45,6 +46,4 @@ export type FormatDef = {
   // Página del análisis; si falta se usa la de Dashboard.
   Page?: FC<PageProps>;
   Ask?: FC<AskProps>;
-  // Aspecto de pareja (opina uno, opina otro, realidad); si falta se usa el genérico.
-  Couple?: FC<CoupleRevealProps>;
 };

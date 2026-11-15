@@ -1,19 +1,20 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ANALYSIS, FAMILIES, SECTION_OF_PROBE, formatValue, peopleOf, truthValue, type Family, type Person } from "./data";
 import { FORMATS, FORMAT_ORDER, formatForAge, type FormatId } from "./formats";
 import { DashboardPage } from "./formats/DashboardPage";
 import type { AnalysisPage } from "./formats/types";
 import { StatValue, toneLabel } from "./formats/Dashboard";
 import { AudioTurn } from "./formats/Audio";
-import { CoupleReveal } from "./analysis/CoupleReveal";
+import { CoupleContext, CoupleRevealAdapter, type CoupleData } from "./analysis/CoupleReveal";
 import LoadingScreen from "./LoadingScreen";
 import { NextStepsScreen } from "./NextSteps";
+import { Brand } from "./brand/Brand";
 
 type Dir = "forward" | "back";
 // turn: "X, responde" (solo con varias personas) · age: edad (decide el formato) · ask: preguntas de intuición ·
-// loading: carga corta · couple: cada aspecto con lo que opina cada uno y el plan (solo parejas) ·
-// analysis: plan completo · done: resumen · steps: próximos pasos (lo último)
-type Phase = "turn" | "age" | "ask" | "loading" | "couple" | "analysis" | "done" | "steps";
+// loading: carga corta · analysis: plan completo (en pareja, cada sección enseña a la vez lo que pensaba cada uno,
+// si coinciden y la realidad) · done: resumen · steps: próximos pasos (lo último)
+type Phase = "turn" | "age" | "ask" | "loading" | "analysis" | "done" | "steps";
 type State = {
   family: Family | null;
   people: Person[];
@@ -176,8 +177,7 @@ function AgeScreen({ value, onChange, onNext }: { value: number; onChange: (v: n
 }
 
 // Páginas del análisis: portada + una por sección, con las sondas que pertenecen a cada una.
-// En pareja las sondas ya se han visto aspecto por aspecto, así que las secciones no las repiten.
-function analysisPages(family: Family, couple = false): AnalysisPage[] {
+function analysisPages(family: Family): AnalysisPage[] {
   const analysis = ANALYSIS[family.id];
   if (!analysis) return [];
   return [
@@ -185,7 +185,7 @@ function analysisPages(family: Family, couple = false): AnalysisPage[] {
     ...analysis.sections.map((section): AnalysisPage => ({
       kind: "section",
       section,
-      probes: couple ? [] : family.probes.filter((p) => SECTION_OF_PROBE[p.id] === section.id),
+      probes: family.probes.filter((p) => SECTION_OF_PROBE[p.id] === section.id),
     })),
   ];
 }
@@ -194,27 +194,36 @@ function AnalysisScreen({
   family,
   format,
   step,
-  answers,
-  couple,
+  people,
+  allAnswers,
   onNext,
 }: {
   family: Family;
   format: FormatId;
   step: number;
-  answers: Record<string, number>;
-  couple: boolean;
+  people: Person[];
+  allAnswers: Record<number, Record<string, number>>;
   onNext: () => void;
 }) {
-  const pages = analysisPages(family, couple);
+  const pages = analysisPages(family);
   const page = pages[step];
   const def = FORMATS[format];
   const Page = def.Page ?? DashboardPage;
+  const couple = people.length > 1;
+  // En pareja la misma página enseña, para cada aspecto, lo que pensaba cada uno, si coinciden y el plan.
+  const coupleData = useMemo<CoupleData | null>(
+    () => (couple ? { people, answers: allAnswers, order: pages.flatMap((pg) => (pg.kind === "section" ? pg.probes.map((p) => p.id) : [])) } : null),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [couple, people, allAnswers, family.id],
+  );
   if (!page) return null;
   return (
     <main className="content">
       <Progress total={pages.length} current={step} />
       <div className={`reveal-slot${couple ? " is-couple" : ""}`}>
-        <Page family={family} analysis={ANALYSIS[family.id]} page={page} answers={answers} Reveal={def.Reveal} />
+        <CoupleContext.Provider value={coupleData}>
+          <Page family={family} analysis={ANALYSIS[family.id]} page={page} answers={allAnswers[0] ?? {}} Reveal={couple ? CoupleRevealAdapter : def.Reveal} />
+        </CoupleContext.Provider>
       </div>
       <div className="actions">
         <button type="button" className="pill pill-filled" onClick={onNext}>
@@ -331,40 +340,6 @@ function SummaryScreen({
   );
 }
 
-function CoupleScreen({
-  family,
-  people,
-  format,
-  index,
-  answers,
-  onNext,
-}: {
-  family: Family;
-  people: Person[];
-  format: FormatId;
-  index: number;
-  answers: Record<number, Record<string, number>>;
-  onNext: () => void;
-}) {
-  const probe = family.probes[index];
-  const View = FORMATS[format].Couple ?? CoupleReveal;
-  const values = people.map((_, i) => answers[i]?.[probe.id] ?? probe.input.initial);
-  const isLast = index >= family.probes.length - 1;
-  return (
-    <main className="content">
-      <Progress total={family.probes.length} current={index} />
-      <div className="reveal-slot">
-        <View family={family} probe={probe} index={index} total={family.probes.length} people={people} values={values} />
-      </div>
-      <div className="actions">
-        <button type="button" className="pill pill-filled" onClick={onNext}>
-          {isLast ? "See the full plan" : "Next"}
-        </button>
-      </div>
-    </main>
-  );
-}
-
 const initialState: State = {
   family: null,
   people: [],
@@ -382,6 +357,8 @@ const initialState: State = {
 
 export default function App() {
   const [s, setS] = useState<State>(initialState);
+  // El contenido no sale hasta que el logo de arranque ha llegado a su sitio.
+  const [ready, setReady] = useState(false);
 
   // Una persona: su edad. Pareja: la media de las dos.
   const formatOf = (st: State): FormatId => {
@@ -426,15 +403,11 @@ export default function App() {
       return { answers, person: 0, phase: "loading" as Phase, index: 0 };
     });
 
-  const afterLoading = () =>
-    replace((cur) => (cur.people.length > 1 ? { phase: "couple", index: 0, step: 0 } : { phase: "analysis", step: 0 }));
-
-  const nextCouple = () =>
-    go((cur) => (cur.index < cur.family!.probes.length - 1 ? { index: cur.index + 1 } : { phase: "analysis" as Phase, step: 0 }));
+  const afterLoading = () => replace(() => ({ phase: "analysis" as Phase, step: 0 }));
 
   const nextStep = () =>
     go((cur) => {
-      const pages = analysisPages(cur.family!, cur.people.length > 1).length;
+      const pages = analysisPages(cur.family!).length;
       if (cur.step < pages - 1) return { step: cur.step + 1 };
       return { phase: "done" as Phase };
     });
@@ -442,7 +415,7 @@ export default function App() {
   const startTurn = () => go(() => ({ phase: "age" as Phase }));
 
   const changeFormat = (format: FormatId) =>
-    go((cur) => ({ formatOverride: format, person: 0, index: 0, step: 0, phase: (cur.people.length > 1 ? "couple" : "analysis") as Phase }));
+    go(() => ({ formatOverride: format, person: 0, index: 0, step: 0, phase: "analysis" as Phase }));
 
   const family = s.family;
   const format = formatOf(s);
@@ -452,9 +425,11 @@ export default function App() {
 
   return (
     <div className="app">
+      <Brand onLanded={() => setReady(true)} away={s.phase === "loading"} />
       <header className="topbar">
         <BackButton onClick={back} disabled={!family || s.history.length === 0} />
       </header>
+      {ready && (
       <div key={screenKey} className={`screen dir-${s.dir}`}>
         {!family ? (
           <FamilyScreen onPick={pickFamily} />
@@ -465,9 +440,7 @@ export default function App() {
         ) : s.phase === "loading" ? (
           <LoadingScreen onDone={afterLoading} />
         ) : s.phase === "analysis" ? (
-          <AnalysisScreen family={family} format={format} step={s.step} answers={answers} couple={s.people.length > 1} onNext={nextStep} />
-        ) : s.phase === "couple" ? (
-          <CoupleScreen family={family} people={s.people} format={format} index={s.index} answers={s.answers} onNext={nextCouple} />
+          <AnalysisScreen family={family} format={format} step={s.step} people={s.people} allAnswers={s.answers} onNext={nextStep} />
         ) : s.phase === "done" ? (
           <SummaryScreen family={family} people={s.people} answers={s.answers} onChangeFormat={changeFormat} onNextSteps={() => go(() => ({ phase: "steps" as Phase }))} />
         ) : s.phase === "steps" ? (
@@ -491,6 +464,7 @@ export default function App() {
           />
         ) : null}
       </div>
+      )}
     </div>
   );
 }

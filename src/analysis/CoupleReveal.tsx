@@ -1,6 +1,14 @@
-import { agreeOn, coupleOutcome, coupleText, formatValue, revealContext, truthValue, type Probe } from "../data";
+import { createContext, useContext } from "react";
+import { agreeOn, coupleOutcome, coupleText, formatValue, revealContext, truthValue, type Person, type Probe } from "../data";
 import { StatValue } from "../formats/Dashboard";
-import type { CoupleRevealProps } from "../formats/types";
+import type { CoupleRevealProps, RevealProps } from "../formats/types";
+
+// Datos de la pareja para las páginas del análisis: quiénes son, qué respondió cada uno y en qué orden
+// aparecen las sondas. Las páginas de cada formato no lo saben: reciben el adaptador como su "Reveal".
+export type CoupleData = { people: Person[]; answers: Record<number, Record<string, number>>; order: string[] };
+export const CoupleContext = createContext<CoupleData | null>(null);
+export const useCouple = () => useContext(CoupleContext);
+export const coupleValues = (c: CoupleData, probe: Probe) => c.people.map((_, i) => c.answers[i]?.[probe.id] ?? probe.input.initial);
 
 const pct = (probe: Probe, v: number) => Math.min(100, Math.max(0, ((v - probe.input.min) / (probe.input.max - probe.input.min)) * 100));
 
@@ -50,4 +58,11 @@ export function CoupleReveal({ probe, people, values }: CoupleRevealProps) {
       </section>
     </div>
   );
+}
+
+// Sustituye al "Reveal" de una persona cuando responden dos: mismo hueco en la página, con lo de los dos.
+export function CoupleRevealAdapter({ family, probe }: RevealProps) {
+  const c = useCouple();
+  if (!c) return null;
+  return <CoupleReveal family={family} probe={probe} index={c.order.indexOf(probe.id)} total={c.order.length} people={c.people} values={coupleValues(c, probe)} />;
 }
