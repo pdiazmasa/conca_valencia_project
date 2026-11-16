@@ -1,0 +1,419 @@
+/* Estilos de las 5 piezas visuales adicionales del Dashboard (prefijo dbx-mc-*).
+   Usa únicamente las variables existentes en src/styles.css. Móvil primero (340-390 px). */
+
+.dbx-mc-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  font-family: var(--font);
+}
+
+.dbx-mc-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Oculta la cabecera interna cuando el componente se integra dentro de ChartCard para no duplicar el eyebrow */
+.dbx-cc-chart .dbx-mc-head {
+  display: none;
+}
+
+.dbx-mc-total {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-mc-chart-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.dbx-mc-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: var(--font);
+}
+
+.dbx-mc-caption {
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+/* ---- 1. PillarPoints ("Where your points come from") ---- */
+.dbx-mc-pillar-label {
+  font-size: 13px;
+  font-weight: 500;
+  fill: var(--ink);
+}
+
+.dbx-mc-pillar-label-gap {
+  font-weight: 600;
+}
+
+.dbx-mc-pillar-pts {
+  font-size: 13px;
+  font-weight: 600;
+  fill: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-mc-pillar-pts-bad {
+  fill: var(--ember);
+}
+
+.dbx-mc-pillar-bg-track {
+  fill: var(--surface-alt);
+}
+
+.dbx-mc-pillar-max-track {
+  fill: var(--hairline);
+}
+
+.dbx-mc-pillar-fill {
+  fill: var(--ink);
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: dbx-mc-bar-in 650ms var(--ease) both;
+}
+
+.dbx-mc-pillar-fill-bad {
+  fill: var(--ember);
+}
+
+.dbx-mc-gap-pill {
+  fill: var(--paper);
+  stroke: var(--ember);
+  stroke-width: 1px;
+}
+
+.dbx-mc-gap-pill-text {
+  font-size: 10.5px;
+  font-weight: 600;
+  fill: var(--ember);
+  letter-spacing: 0.01em;
+}
+
+/* ---- 2. FamilyTimeline ("Your family's timeline") ---- */
+.dbx-mc-tl-axis-label {
+  font-size: 11.5px;
+  font-weight: 500;
+  fill: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-mc-tl-guide {
+  stroke: var(--hairline);
+  stroke-width: 1px;
+  stroke-dasharray: 2 3;
+}
+
+.dbx-mc-tl-guide-bad {
+  stroke: var(--ember);
+  stroke-opacity: 0.45;
+}
+
+.dbx-mc-tl-name {
+  font-size: 13px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+.dbx-mc-tl-age {
+  font-size: 11.5px;
+  font-weight: 400;
+  fill: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-mc-tl-track {
+  stroke: var(--hairline);
+  stroke-width: 4px;
+}
+
+.dbx-mc-tl-track-ok {
+  stroke: var(--ink);
+  stroke-width: 4px;
+}
+
+.dbx-mc-tl-track-bad {
+  stroke: var(--ember);
+  stroke-width: 4px;
+}
+
+.dbx-mc-tl-dot-now {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 2px;
+}
+
+.dbx-mc-tl-dot {
+  fill: var(--ink);
+  stroke: var(--paper);
+  stroke-width: 1.5px;
+}
+
+.dbx-mc-tl-dot-bad {
+  fill: var(--ember);
+  stroke: var(--paper);
+  stroke-width: 1.5px;
+}
+
+.dbx-mc-tl-tag {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-mc-tl-tag-muted {
+  fill: var(--muted);
+  font-weight: 500;
+}
+
+.dbx-mc-tl-tag-bad {
+  fill: var(--ember);
+}
+
+.dbx-mc-tl-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.dbx-mc-tl-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 9px;
+  border-radius: 18px;
+  background: var(--surface-alt);
+  border: 1px solid var(--hairline);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-mc-tl-chip-bad {
+  color: var(--ember);
+  border-color: var(--ember);
+  background: var(--paper);
+  font-weight: 600;
+}
+
+/* ---- 3. MonthlyDebt ("Where your monthly debt payments go") ---- */
+.dbx-mc-debt-name {
+  font-size: 13px;
+  font-weight: 500;
+  fill: var(--ink);
+}
+
+.dbx-mc-debt-amount {
+  font-size: 13px;
+  font-weight: 600;
+  fill: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-mc-debt-track {
+  fill: var(--hairline);
+}
+
+.dbx-mc-debt-fill {
+  fill: var(--ink);
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: dbx-mc-bar-in 650ms var(--ease) both;
+}
+
+.dbx-mc-debt-fill-bad {
+  fill: var(--ember);
+}
+
+.dbx-mc-debt-rate {
+  font-size: 12.5px;
+  font-weight: 600;
+  fill: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-mc-debt-rate-bad {
+  fill: var(--ember);
+}
+
+/* ---- 4. SwingRange ("How bumpy the last 3 years were") ---- */
+.dbx-mc-swing-track {
+  fill: var(--hairline);
+}
+
+.dbx-mc-swing-band {
+  fill: var(--ink);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: dbx-mc-scale-x 650ms var(--ease) both;
+}
+
+.dbx-mc-swing-zero {
+  stroke: var(--paper);
+  stroke-width: 2px;
+}
+
+.dbx-mc-swing-zero-tick {
+  stroke: var(--ink);
+  stroke-width: 1.5px;
+}
+
+.dbx-mc-swing-edge {
+  stroke: var(--ink);
+  stroke-width: 2px;
+}
+
+.dbx-mc-swing-dot {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 2.5px;
+}
+
+.dbx-mc-swing-val {
+  font-size: 14px;
+  font-weight: 600;
+  fill: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-mc-swing-zero-label {
+  font-size: 12px;
+  font-weight: 500;
+  fill: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-mc-swing-bracket {
+  stroke: var(--muted);
+  stroke-width: 1.25px;
+  fill: none;
+}
+
+.dbx-mc-swing-band-label {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+/* ---- 5. AdvisorPriorities ("Your advisor's recommendations") ---- */
+.dbx-mc-prio-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dbx-mc-prio-item {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 12px;
+  position: relative;
+}
+
+.dbx-mc-prio-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dbx-mc-prio-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  background: var(--surface-alt);
+  border: 1.5px solid var(--hairline);
+  color: var(--ink);
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.dbx-mc-prio-line {
+  width: 2px;
+  flex: 1;
+  min-height: 14px;
+  background: var(--hairline);
+  margin: 4px 0;
+}
+
+.dbx-mc-prio-body {
+  padding-bottom: 16px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dbx-mc-prio-item:last-child .dbx-mc-prio-body {
+  padding-bottom: 2px;
+}
+
+.dbx-mc-prio-title {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.dbx-mc-prio-detail {
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+/* ---- Animaciones y movimiento reducido ---- */
+@keyframes dbx-mc-bar-in {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes dbx-mc-scale-x {
+  from {
+    opacity: 0;
+    transform: scaleX(0.35);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dbx-mc-pillar-fill,
+  .dbx-mc-debt-fill,
+  .dbx-mc-swing-band {
+    animation: none !important;
+    transform: none !important;
+  }
+}

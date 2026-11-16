@@ -1,5 +1,296 @@
 import { useId } from "react";
-import { formatStat, formatValue, truthValue, type Probe } from "../data";
+import { formatStat, formatValue, revealContext, truthValue, type Probe } from "../data";
+
+// Orden de prioridad para elegir la sonda principal de "The one thing to know" en la portada.
+export const KEY_INSIGHT_PRIORITY = [
+  "ahorros",
+  "destino",
+  "tarjeta",
+  "seguro",
+  "mezcla",
+  "colchon",
+] as const;
+
+export function pickKeyInsightProbe(probes: Probe[]): Probe | null {
+  for (const id of KEY_INSIGHT_PRIORITY) {
+    const found = probes.find((p) => p.id === id && p.tone === "bad");
+    if (found) return found;
+  }
+  return null;
+}
+
+const fmtCardUsd = (v: number): string =>
+  `$${new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: v % 1 === 0 ? 0 : 2,
+  }).format(v)}`;
+
+export type KeyInsightProps = {
+  probe?: Probe | null;
+  probes?: Probe[];
+  currentAge?: number | null;
+  scoreValue?: number;
+};
+
+// Tarjeta principal de portada ("The one thing to know"): destaca el giro crítico del plan.
+export function KeyInsight({
+  probe,
+  probes,
+  currentAge,
+  scoreValue,
+}: KeyInsightProps) {
+  const clipId = `dbx-ins-${useId().replace(/:/g, "")}`;
+  const active = probe ?? (probes ? pickKeyInsightProbe(probes) : null);
+  if (!active || active.tone !== "bad") return null;
+
+  const t = active.truth;
+  const vbW = 340;
+  const padX = 10;
+  const trackW = vbW - padX * 2;
+
+  if (active.id === "ahorros") {
+    const startAge = currentAge ?? 40;
+    const runOutAge = t.age ?? startAge;
+    const endAge = t.endOfPlanAge ?? 91;
+    const span = Math.max(1, endAge - startAge);
+    const ratio = Math.min(1, Math.max(0, (runOutAge - startAge) / span));
+    const runOutX = padX + ratio * trackW;
+    const endX = vbW - padX;
+    const trackY = 34;
+
+    const runOutAnchor: "start" | "middle" | "end" =
+      runOutX > vbW - 88 ? "end" : runOutX < 88 ? "start" : "middle";
+    const runOutLabelX =
+      runOutAnchor === "end"
+        ? Math.min(endX, runOutX + 4)
+        : runOutAnchor === "start"
+          ? Math.max(padX, runOutX - 4)
+          : runOutX;
+
+    return (
+      <div className="dbx-insight-wrap">
+        <p className="eyebrow">The one thing to know</p>
+        <h2 className="dbx-insight-title">{`Your savings run out at ${runOutAge}`}</h2>
+
+        <div className="dbx-chart-wrap">
+          <svg
+            className="dbx-svg dbx-insight-svg"
+            viewBox={`0 0 ${vbW} 68`}
+            preserveAspectRatio="xMidYMid meet"
+            role="img"
+            aria-label={`Timeline from age ${startAge} to ${endAge}. Savings run out at age ${runOutAge}.`}
+          >
+            {/* Tramo cubierto por los ahorros desde hoy hasta la edad de agotamiento */}
+            <line
+              x1={padX}
+              y1={trackY}
+              x2={runOutX}
+              y2={trackY}
+              className="dbx-insight-line-ok"
+              strokeLinecap="round"
+            />
+            {/* Tramo descubierto en rojo desde que se agotan hasta el final del plan */}
+            <line
+              x1={runOutX}
+              y1={trackY}
+              x2={endX}
+              y2={trackY}
+              className="dbx-insight-line-bad"
+              strokeLinecap="round"
+            />
+
+            <circle cx={padX} cy={trackY} r={5} className="dbx-insight-dot-ok" />
+            <circle cx={endX} cy={trackY} r={5} className="dbx-insight-dot-bad" />
+            <circle cx={runOutX} cy={trackY} r={6.5} className="dbx-insight-dot-bad" />
+
+            {/* Etiqueta superior en rojo con la edad en que se agotan */}
+            <text
+              x={runOutLabelX}
+              y={16}
+              textAnchor={runOutAnchor}
+              className="dbx-insight-svg-label dbx-is-bad-text"
+            >
+              {`Savings run out ${runOutAge}`}
+            </text>
+
+            {/* Etiquetas inferiores en los extremos de la línea de vida */}
+            <text
+              x={padX}
+              y={58}
+              textAnchor="start"
+              className="dbx-insight-svg-label"
+            >
+              {`Today ${startAge}`}
+            </text>
+            <text
+              x={endX}
+              y={58}
+              textAnchor="end"
+              className="dbx-insight-svg-label"
+            >
+              {`Plan ends ${endAge}`}
+            </text>
+          </svg>
+        </div>
+
+        {typeof scoreValue === "number" && scoreValue >= 70 && (
+          <p className="dbx-caption">
+            A high score doesn&apos;t mean your savings last.
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  if (active.id === "destino") {
+    const toRet = t.toRetirement ?? 0;
+    const totalSaved = t.totalSaved ?? 0;
+    const otherSaved = Math.max(0, totalSaved - toRet);
+    const retRatio =
+      totalSaved > 0 ? Math.min(1, Math.max(0, toRet / totalSaved)) : 0;
+    const retW = retRatio * trackW;
+
+    return (
+      <div className="dbx-insight-wrap">
+        <p className="eyebrow">The one thing to know</p>
+        <h2 className="dbx-insight-title">
+          {`${formatStat("usd", toRet)} of your ${formatStat("usd", totalSaved)} yearly savings goes to retirement`}
+        </h2>
+
+        <div className="dbx-chart-wrap">
+          <svg
+            className="dbx-svg dbx-insight-svg"
+            viewBox={`0 0 ${vbW} 50`}
+            preserveAspectRatio="xMidYMid meet"
+            role="img"
+            aria-label={`${formatStat("usd", toRet)} to retirement out of ${formatStat("usd", totalSaved)} total yearly savings.`}
+          >
+            <clipPath id={clipId}>
+              <rect x={padX} y={6} width={trackW} height={18} rx={7} />
+            </clipPath>
+            <g clipPath={`url(#${clipId})`}>
+              {/* Resto del ahorro anual */}
+              <rect
+                x={padX}
+                y={6}
+                width={trackW}
+                height={18}
+                className="dbx-insight-bar-rest"
+              />
+              {/* Parte que va a jubilación (muesca roja si es 0 para evidenciar el déficit) */}
+              <rect
+                x={padX}
+                y={6}
+                width={retW > 0 ? Math.max(8, retW) : 8}
+                height={18}
+                className={toRet === 0 ? "dbx-insight-bar-bad" : "dbx-insight-bar-ok"}
+              />
+            </g>
+
+            <text
+              x={padX}
+              y={42}
+              textAnchor="start"
+              className="dbx-insight-svg-label dbx-is-bad-text"
+            >
+              {`To retirement ${formatStat("usd", toRet)}`}
+            </text>
+            <text
+              x={vbW - padX}
+              y={42}
+              textAnchor="end"
+              className="dbx-insight-svg-label"
+            >
+              {`Other savings ${formatStat("usd", otherSaved)}`}
+            </text>
+          </svg>
+        </div>
+      </div>
+    );
+  }
+
+  if (active.id === "tarjeta") {
+    const payment = t.payment ?? 0;
+    const principal = t.value ?? 0;
+    const interest = t.interest ?? Math.max(0, payment - principal);
+    const total = payment > 0 ? payment : principal + interest || 1;
+    const prinW = Math.min(1, Math.max(0, principal / total)) * trackW;
+    const intW = Math.max(0, trackW - prinW);
+    const aprPct = Math.round((t.apr ?? 0) * 1000) / 10;
+
+    return (
+      <div className="dbx-insight-wrap">
+        <p className="eyebrow">The one thing to know</p>
+        <h2 className="dbx-insight-title">
+          {`Of every ${fmtCardUsd(payment)} card payment, only ${fmtCardUsd(principal)} reduces your debt`}
+        </h2>
+
+        <div className="dbx-chart-wrap">
+          <svg
+            className="dbx-svg dbx-insight-svg"
+            viewBox={`0 0 ${vbW} 50`}
+            preserveAspectRatio="xMidYMid meet"
+            role="img"
+            aria-label={`Card payment breakdown: ${fmtCardUsd(principal)} reduces debt, ${fmtCardUsd(interest)} goes to interest.`}
+          >
+            <clipPath id={clipId}>
+              <rect x={padX} y={6} width={trackW} height={18} rx={7} />
+            </clipPath>
+            <g clipPath={`url(#${clipId})`}>
+              {/* Parte que reduce deuda en tinta */}
+              <rect
+                x={padX}
+                y={6}
+                width={prinW}
+                height={18}
+                className="dbx-insight-bar-ok"
+              />
+              {/* Parte que se va en intereses en rojo */}
+              <rect
+                x={padX + prinW}
+                y={6}
+                width={intW}
+                height={18}
+                className="dbx-insight-bar-bad"
+              />
+            </g>
+
+            <text
+              x={padX}
+              y={42}
+              textAnchor="start"
+              className="dbx-insight-svg-label"
+            >
+              {`Reduces debt ${fmtCardUsd(principal)}`}
+            </text>
+            <text
+              x={vbW - padX}
+              y={42}
+              textAnchor="end"
+              className="dbx-insight-svg-label dbx-is-bad-text"
+            >
+              {`Interest ${fmtCardUsd(interest)}`}
+            </text>
+          </svg>
+        </div>
+
+        <p className="dbx-caption">{`Your card charges ${aprPct}%`}</p>
+      </div>
+    );
+  }
+
+  // Fallback para seguro, mezcla o colchon cuando son la primera sonda "bad".
+  const val = truthValue(active) ?? 0;
+  return (
+    <div className="dbx-insight-wrap">
+      <p className="eyebrow">The one thing to know</p>
+      <h2 className="dbx-insight-title tone-bad">
+        {`Your plan: ${formatValue(active.input, val)}`}
+      </h2>
+      <p className="dbx-caption">{revealContext(active)}</p>
+    </div>
+  );
+}
+
 
 // Tipos de datos que reciben las gráficas del dashboard a partir del JSON precalculado.
 export type CapItem = {
@@ -147,6 +438,7 @@ export function GuessGap({ probes, answers }: GuessGapProps) {
                 <svg
                   className="dbx-svg dbx-guess-svg"
                   viewBox={`0 0 ${vbW} ${vbH}`}
+                  preserveAspectRatio="xMidYMid meet"
                   role="img"
                   aria-label={`${p.question} You guessed ${youFmt}, plan is ${planFmt}.`}
                 >
@@ -302,6 +594,7 @@ export function ScoreGauge({ value, band, potential, caps = [] }: ScoreGaugeProp
       <svg
         className="dbx-svg dbx-gauge-svg"
         viewBox="0 0 320 156"
+        preserveAspectRatio="xMidYMid meet"
         role="img"
         aria-label={ariaParts.join(" ")}
       >
@@ -395,28 +688,31 @@ export function ScoreGauge({ value, band, potential, caps = [] }: ScoreGaugeProp
   );
 }
 
-// Formatea los nombres de los 5 pilares evitando jerga ("Liquidity" -> "Cash for emergencies").
-function shortPillarLabel(name: string): string {
-  if (name.includes("Liquidity")) return "Cash for emergencies";
+// Formatea los nombres de los 5 pilares evitando jerga y partiendo en 2 líneas los largos.
+function pillarLabelLines(name: string): string[] {
+  if (name.includes("Liquidity")) return ["Cash for", "emergencies"];
   const lower = name.toLowerCase();
-  if (lower.includes("saving")) return "Savings";
-  if (lower.includes("debt")) return "Debt";
-  if (lower.includes("invest")) return "Investments";
-  if (lower.includes("insur") || lower.includes("protect")) return "Protection";
-  const clean = plainLabel(name);
-  return clean.length > 14 ? `${clean.slice(0, 13)}…` : clean;
+  if (lower.includes("saving")) return ["Savings"];
+  if (lower.includes("debt")) return ["Debt"];
+  if (lower.includes("invest")) return ["Investments"];
+  if (lower.includes("insur") || lower.includes("protect")) return ["Protection"];
+  const clean = plainLabel(name).trim();
+  if (clean.length <= 12 || !clean.includes(" ")) return [clean];
+  const words = clean.split(/\s+/);
+  const mid = Math.ceil(words.length / 2);
+  return [words.slice(0, mid).join(" "), words.slice(mid).join(" ")];
 }
 
 export type PillarRadarProps = {
   pillars: PillarItem[];
 };
 
-// Radar de 5 ejes (0-100) con anillos guía, polígono relleno suave y valor en cada vértice.
+// Radar de 5 ejes (0-100) con anillos guía, polígono relleno suave y valor debajo de cada etiqueta.
 export function PillarRadar({ pillars }: PillarRadarProps) {
   const count = pillars.length || 5;
-  const cx = 160;
-  const cy = 122;
-  const maxR = 64;
+  const cx = 180;
+  const cy = 138;
+  const maxR = 66;
   const levels = [25, 50, 75, 100];
 
   const angleFor = (i: number) => -Math.PI / 2 + (i * 2 * Math.PI) / count;
@@ -445,7 +741,8 @@ export function PillarRadar({ pillars }: PillarRadarProps) {
     <div className="dbx-chart-wrap">
       <svg
         className="dbx-svg dbx-radar-svg"
-        viewBox="0 0 320 244"
+        viewBox="0 0 360 280"
+        preserveAspectRatio="xMidYMid meet"
         role="img"
         aria-label={`Score by area radar chart: ${ariaSummary}.`}
       >
@@ -478,29 +775,40 @@ export function PillarRadar({ pillars }: PillarRadarProps) {
           <polygon points={polygonPoints} className="dbx-radar-area" />
         )}
 
-        {/* Vértices y etiquetas con puntuación */}
+        {/* Vértices, etiquetas (1 o 2 líneas) y valor debajo de cada etiqueta */}
         {pillars.map((p, i) => {
           const vertex = pointAt(i, p.score);
-          const labelPos = pointAt(i, 128);
           const cos = Math.cos(angleFor(i));
           const sin = Math.sin(angleFor(i));
-          // En la base del pentágono (sin > 0.5) centramos y separamos para que "Cash for emergencies" quepa íntegro.
+          const lines = pillarLabelLines(p.name);
+          const lineStep = 14;
+
+          const isTop = sin < -0.7;
           const isBottom = sin > 0.5;
-          const anchor = isBottom
-            ? "middle"
-            : Math.abs(cos) < 0.25
+
+          const anchor: "start" | "middle" | "end" =
+            isTop || isBottom
               ? "middle"
               : cos > 0
                 ? "start"
                 : "end";
-          const labelX = isBottom
-            ? cos < 0
-              ? Math.max(76, labelPos.x - 14)
-              : Math.min(244, labelPos.x + 14)
-            : labelPos.x;
-          const dyLabel = sin < -0.5 ? -8 : isBottom ? 8 : -2;
+
+          const labelX = isTop
+            ? cx
+            : isBottom
+              ? cos < 0
+                ? cx - 60
+                : cx + 54
+              : cx + (maxR + 12) * cos;
+
+          const firstLineY = isTop
+            ? cy - maxR - 30 - (lines.length - 1) * lineStep
+            : isBottom
+              ? cy + maxR * sin + 24
+              : cy + maxR * sin - 4 - ((lines.length - 1) * lineStep) / 2;
+
+          const valueY = firstLineY + (lines.length - 1) * lineStep + 16;
           const isLow = p.score < 40;
-          const displayName = shortPillarLabel(p.name);
 
           return (
             <g key={p.name} className="dbx-radar-node">
@@ -513,15 +821,19 @@ export function PillarRadar({ pillars }: PillarRadarProps) {
               />
               <text
                 x={labelX}
-                y={labelPos.y + dyLabel}
+                y={firstLineY}
                 textAnchor={anchor}
                 className="dbx-radar-label"
               >
-                {displayName}
+                {lines.map((ln, idx) => (
+                  <tspan key={idx} x={labelX} dy={idx === 0 ? 0 : lineStep}>
+                    {ln}
+                  </tspan>
+                ))}
               </text>
               <text
                 x={labelX}
-                y={labelPos.y + dyLabel + 15}
+                y={valueY}
                 textAnchor={anchor}
                 className={`dbx-radar-value ${isLow ? "dbx-is-bad-text" : ""}`}
               >
@@ -560,15 +872,29 @@ export type MovesWaterfallProps = {
 // Gráfica de cascada (0-100): score inicial, escalón por cada move con badge de esfuerzo y barra final combinada.
 export function MovesWaterfall({ before, moves, combined }: MovesWaterfallProps) {
   const vbW = 340;
-  const vbH = 232;
+  const vbH = 280;
   const padL = 30;
-  const padR = 12;
-  const padT = 24;
-  const padB = 64;
+  const padR = 10;
+  const padT = 28;
+  const padB = 68;
   const plotW = vbW - padL - padR;
   const plotH = vbH - padT - padB;
 
   const yFor = (score: number) => padT + (1 - clampScore(score) / 100) * plotH;
+
+  // Cuando combined es null, destacamos el move con mayor subida (scoreAfter - scoreBefore).
+  const hasCombined = Boolean(combined);
+  const bestMoveIdx =
+    !hasCombined && moves.length > 0
+      ? moves.reduce(
+          (best, m, idx) =>
+            m.scoreAfter - m.scoreBefore >
+            moves[best].scoreAfter - moves[best].scoreBefore
+              ? idx
+              : best,
+          0
+        )
+      : -1;
 
   // Construimos las columnas: barra inicial, escalones y barra final opcional.
   type Column = {
@@ -581,6 +907,8 @@ export function MovesWaterfall({ before, moves, combined }: MovesWaterfallProps)
     to: number;
     delta: number;
     badgeText: string;
+    isMuted?: boolean;
+    isBest?: boolean;
   };
 
   const columns: Column[] = [];
@@ -595,16 +923,19 @@ export function MovesWaterfall({ before, moves, combined }: MovesWaterfallProps)
     to: startScore,
     delta: startScore,
     badgeText: String(startScore),
+    isMuted: true,
   });
 
-  let running = startScore;
+  // Cada paso sale de la nota actual (scoreBefore), NO se acumula: el plan da el efecto de cada
+  // paso por separado y solo "combined" dice qué pasa al hacerlos todos. Apilarlos inventaría una cifra.
   moves.forEach((m, idx) => {
     const cleanTitle = plainLabel(m.title);
     const delta = m.scoreAfter - m.scoreBefore;
-    const stepStart = running;
-    const stepEnd = clampScore(stepStart + delta);
-    running = stepEnd;
+    const stepStart = clampScore(m.scoreBefore);
+    const stepEnd = clampScore(m.scoreAfter);
     const sign = delta >= 0 ? `+${delta}` : String(delta);
+    const isBest = !hasCombined && idx === bestMoveIdx;
+    const isMuted = !hasCombined ? idx !== bestMoveIdx : delta === 0;
     columns.push({
       key: `${m.title}-${idx}`,
       fullTitle: `${cleanTitle} (${sign} pts${m.effort ? `, ${m.effort} effort` : ""})`,
@@ -615,6 +946,8 @@ export function MovesWaterfall({ before, moves, combined }: MovesWaterfallProps)
       to: stepEnd,
       delta,
       badgeText: sign,
+      isMuted,
+      isBest,
     });
   });
 
@@ -634,7 +967,7 @@ export function MovesWaterfall({ before, moves, combined }: MovesWaterfallProps)
 
   const colCount = columns.length;
   const slotW = plotW / Math.max(colCount, 1);
-  const barW = Math.min(38, Math.max(20, slotW * 0.56));
+  const barW = Math.min(40, Math.max(22, slotW * 0.56));
 
   const ariaSteps = [
     `Starting score ${startScore}`,
@@ -648,120 +981,125 @@ export function MovesWaterfall({ before, moves, combined }: MovesWaterfallProps)
     .join(", ");
 
   return (
-    <div className="dbx-chart-wrap">
-      <svg
-        className="dbx-svg dbx-waterfall-svg"
-        viewBox={`0 0 ${vbW} ${vbH}`}
-        role="img"
-        aria-label={`Score waterfall chart: ${ariaSteps}.`}
-      >
-        {/* Líneas guía horizontales del eje 0..100 */}
-        {[0, 25, 50, 75, 100].map((tick) => {
-          const y = yFor(tick);
-          return (
-            <g key={tick}>
-              <line
-                x1={padL}
-                y1={y}
-                x2={vbW - padR}
-                y2={y}
-                className="dbx-wf-grid"
-              />
-              <text x={padL - 6} y={y + 3} textAnchor="end" className="dbx-svg-axis-label">
-                {tick}
-              </text>
-            </g>
-          );
-        })}
-
-        {/* Columnas y conectores en cascada */}
-        {columns.map((col, i) => {
-          const centerX = padL + i * slotW + slotW / 2;
-          const x = centerX - barW / 2;
-          const topScore = Math.max(col.from, col.to);
-          const bottomScore = Math.min(col.from, col.to);
-          const yTop = yFor(topScore);
-          const yBottom = yFor(bottomScore);
-          // Si el escalón es +0, dibujamos un trazo visible de 3px para que se aprecie el nivel.
-          const rawHeight = Math.abs(yBottom - yTop);
-          const h = col.kind === "step" && col.delta === 0 ? 3 : Math.max(3, rawHeight);
-          const barY = col.kind === "step" && col.delta === 0 ? yTop - 1.5 : yTop;
-
-          const prev = i > 0 ? columns[i - 1] : null;
-          const prevCenterX = prev ? padL + (i - 1) * slotW + slotW / 2 : 0;
-          const connectorY = prev ? yFor(prev.to) : 0;
-
-          const pillW = Math.min(slotW - 4, 48);
-          const pillY = vbH - padB + 26;
-
-          return (
-            <g key={col.key} className={`dbx-wf-col dbx-wf-${col.kind}`}>
-              <title>{col.fullTitle}</title>
-
-              {prev && (
+    <div className="dbx-wf-wrap">
+      {/* El titular "Best single step" de la tarjeta ya cuenta el mayor salto: no se repite aquí. */}
+      <div className="dbx-chart-wrap">
+        <svg
+          className="dbx-svg dbx-waterfall-svg"
+          viewBox={`0 0 ${vbW} ${vbH}`}
+          preserveAspectRatio="xMidYMid meet"
+          role="img"
+          aria-label={`Score waterfall chart: ${ariaSteps}.`}
+        >
+          {/* Líneas guía horizontales del eje 0..100 */}
+          {[0, 25, 50, 75, 100].map((tick) => {
+            const y = yFor(tick);
+            return (
+              <g key={tick}>
                 <line
-                  x1={prevCenterX + barW / 2}
-                  y1={connectorY}
-                  x2={x}
-                  y2={connectorY}
-                  className="dbx-wf-connector"
+                  x1={padL}
+                  y1={y}
+                  x2={vbW - padR}
+                  y2={y}
+                  className="dbx-wf-grid"
                 />
-              )}
+                <text x={padL - 6} y={y + 4} textAnchor="end" className="dbx-svg-axis-label">
+                  {tick}
+                </text>
+              </g>
+            );
+          })}
 
-              <rect
-                x={x}
-                y={barY}
-                width={barW}
-                height={h}
-                rx={5}
-                className={`dbx-wf-bar dbx-wf-bar-${col.kind} ${
-                  col.kind === "step" && col.delta === 0 ? "dbx-wf-bar-zero" : ""
-                }`}
-              />
+          {/* Columnas y conectores en cascada */}
+          {columns.map((col, i) => {
+            const centerX = padL + i * slotW + slotW / 2;
+            const x = centerX - barW / 2;
+            const topScore = Math.max(col.from, col.to);
+            const bottomScore = Math.min(col.from, col.to);
+            const yTop = yFor(topScore);
+            const yBottom = yFor(bottomScore);
+            // Si el escalón es +0, dibujamos un trazo visible de 3px para que se aprecie el nivel.
+            const rawHeight = Math.abs(yBottom - yTop);
+            const h = col.kind === "step" && col.delta === 0 ? 3 : Math.max(3, rawHeight);
+            const barY = col.kind === "step" && col.delta === 0 ? yTop - 1.5 : yTop;
 
-              <text
-                x={centerX}
-                y={Math.max(12, barY - 6)}
-                textAnchor="middle"
-                className="dbx-wf-value"
-              >
-                {col.badgeText}
-              </text>
+            const prev = i > 0 ? columns[i - 1] : null;
+            const prevCenterX = prev ? padL + (i - 1) * slotW + slotW / 2 : 0;
+            // Línea guía al nivel de la nota actual: todos los pasos parten de ahí.
+            const connectorY = yFor(startScore);
 
-              <text
-                x={centerX}
-                y={vbH - padB + 17}
-                textAnchor="middle"
-                className="dbx-wf-label"
-              >
-                {col.shortLabel}
-              </text>
+            const pillW = Math.min(slotW - 4, 52);
+            const pillY = vbH - padB + 28;
 
-              {/* Badge pequeño de esfuerzo bajo cada escalón */}
-              {col.effort && (
-                <g className="dbx-wf-effort-group">
-                  <rect
-                    x={centerX - pillW / 2}
-                    y={pillY}
-                    width={pillW}
-                    height={16}
-                    rx={8}
-                    className="dbx-wf-effort-pill"
+            return (
+              <g key={col.key} className={`dbx-wf-col dbx-wf-${col.kind}`}>
+                <title>{col.fullTitle}</title>
+
+                {prev && col.kind === "step" && (
+                  <line
+                    x1={prevCenterX + barW / 2}
+                    y1={connectorY}
+                    x2={x}
+                    y2={connectorY}
+                    className="dbx-wf-connector"
                   />
-                  <text
-                    x={centerX}
-                    y={pillY + 11.5}
-                    textAnchor="middle"
-                    className="dbx-wf-effort-text"
-                  >
-                    {col.effort === "medium" ? "med" : col.effort}
-                  </text>
-                </g>
-              )}
-            </g>
-          );
-        })}
-      </svg>
+                )}
+
+                <rect
+                  x={x}
+                  y={barY}
+                  width={barW}
+                  height={h}
+                  rx={5}
+                  className={`dbx-wf-bar dbx-wf-bar-${col.kind} ${
+                    col.isMuted ? "dbx-wf-bar-muted" : ""
+                  } ${col.isBest ? "dbx-wf-bar-best" : ""}`}
+                />
+
+                <text
+                  x={centerX}
+                  y={Math.max(14, barY - 6)}
+                  textAnchor="middle"
+                  className={`dbx-wf-value ${col.isMuted && col.kind === "step" ? "dbx-wf-value-muted" : ""}`}
+                >
+                  {col.badgeText}
+                </text>
+
+                <text
+                  x={centerX}
+                  y={vbH - padB + 18}
+                  textAnchor="middle"
+                  className="dbx-wf-label"
+                >
+                  {col.shortLabel}
+                </text>
+
+                {/* Badge pequeño de esfuerzo bajo cada escalón */}
+                {col.effort && (
+                  <g className="dbx-wf-effort-group">
+                    <rect
+                      x={centerX - pillW / 2}
+                      y={pillY}
+                      width={pillW}
+                      height={18}
+                      rx={9}
+                      className="dbx-wf-effort-pill"
+                    />
+                    <text
+                      x={centerX}
+                      y={pillY + 13}
+                      textAnchor="middle"
+                      className="dbx-wf-effort-text"
+                    >
+                      {col.effort === "medium" ? "med" : col.effort}
+                    </text>
+                  </g>
+                )}
+              </g>
+            );
+          })}
+        </svg>
+      </div>
     </div>
   );
 }
@@ -801,6 +1139,7 @@ export function TargetBars({ items, ratio = false }: TargetBarsProps) {
       <svg
         className="dbx-svg dbx-targetbars-svg"
         viewBox={`0 0 ${vbW} ${vbH}`}
+        preserveAspectRatio="xMidYMid meet"
         role="img"
         aria-label={`Comparison bars: ${ariaDesc}.`}
       >
@@ -909,6 +1248,7 @@ export function Ring({ value, label, bad = false }: RingProps) {
       <svg
         className="dbx-svg dbx-ring-svg"
         viewBox="0 0 96 96"
+        preserveAspectRatio="xMidYMid meet"
         role="img"
         aria-label={`${cleanLabel}: ${pctText}`}
       >
@@ -976,6 +1316,7 @@ export function MonthBoxes({ months, label = "Emergency cash covers" }: MonthBox
         <svg
           className="dbx-svg dbx-mboxes-svg"
           viewBox={`0 0 ${vbW} ${vbH}`}
+          preserveAspectRatio="xMidYMid meet"
           role="img"
           aria-label={`${cleanLabel}: ${displayMonths} (${filled} of 12 boxes filled)`}
         >
@@ -1037,6 +1378,7 @@ export function VsBar({ rows }: VsBarProps) {
       <svg
         className="dbx-svg dbx-vsbar-svg"
         viewBox={`0 0 ${vbW} ${vbH}`}
+        preserveAspectRatio="xMidYMid meet"
         role="img"
         aria-label={`Coverage comparison: ${ariaDesc}.`}
       >
@@ -1147,6 +1489,7 @@ export function DebtBars({ rows }: DebtBarsProps) {
       <svg
         className="dbx-svg dbx-debtbars-svg"
         viewBox={`0 0 ${vbW} ${vbH}`}
+        preserveAspectRatio="xMidYMid meet"
         role="img"
         aria-label={`Debts by balance: ${ariaDesc}.`}
       >
@@ -1273,6 +1616,7 @@ export function StackBar({
         <svg
           className="dbx-svg dbx-stack-svg"
           viewBox={`0 0 ${vbW} ${vbH}`}
+          preserveAspectRatio="xMidYMid meet"
           role="img"
           aria-label={`${rowLabel ? `${rowLabel}: ` : "Stacked breakdown: "}${ariaDesc}.`}
         >
@@ -1364,6 +1708,7 @@ export function BalanceBar({
         <svg
           className="dbx-svg dbx-balance-svg"
           viewBox={`0 0 ${vbW} ${vbH}`}
+          preserveAspectRatio="xMidYMid meet"
           role="img"
           aria-label={`${plainLabel(headlineLabel)} ${formatStat("usd", netWorth)}: Total assets ${formatStat(
             "usd",

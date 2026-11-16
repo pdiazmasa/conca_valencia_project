@@ -2,6 +2,7 @@
    Usa únicamente los tokens de :root definidos en src/styles.css. */
 
 .dbx-root {
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -80,6 +81,70 @@
   font-size: 14px;
   line-height: 1.5;
   color: var(--ink-soft);
+}
+
+/* ---- 0a. KeyInsight ("The one thing to know") ---- */
+.dbx-insight-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dbx-insight-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dbx-insight-title {
+  margin-top: 2px;
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-insight-line-ok {
+  stroke: var(--ink);
+  stroke-width: 8px;
+}
+
+.dbx-insight-line-bad {
+  stroke: var(--ember);
+  stroke-width: 8px;
+}
+
+.dbx-insight-dot-ok {
+  fill: var(--ink);
+  stroke: var(--paper);
+  stroke-width: 1.5px;
+}
+
+.dbx-insight-dot-bad {
+  fill: var(--ember);
+  stroke: var(--paper);
+  stroke-width: 1.5px;
+}
+
+.dbx-insight-svg-label {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-insight-bar-ok {
+  fill: var(--ink);
+}
+
+.dbx-insight-bar-bad {
+  fill: var(--ember);
+}
+
+.dbx-insight-bar-rest {
+  fill: var(--hairline);
 }
 
 /* ---- 0. GuessGap ("Your guesses vs your plan") ---- */
@@ -424,23 +489,28 @@
   color: var(--ink-soft);
 }
 
-/* Escalona los hitos de LineChart en jubilación */
+/* Oculta etiquetas sobre la línea de LineChart y muestra leyenda en fila debajo */
 .dbx-chart-card .line-chart-marker-label {
+  display: none;
+}
+
+.dbx-milestone-legend {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.dbx-milestone-chip {
   font-size: 12px;
-  font-weight: 500;
-  color: var(--ink-soft);
+  padding: 2px 8px;
+  font-variant-numeric: tabular-nums;
 }
 
-.dbx-chart-card .line-chart-stage > .line-chart-marker:nth-of-type(2) .line-chart-marker-label {
-  top: 22px;
-}
-
-.dbx-chart-card .line-chart-stage > .line-chart-marker:nth-of-type(3) .line-chart-marker-label {
-  top: 42px;
-}
-
-.dbx-chart-card .line-chart-stage > .line-chart-marker:nth-of-type(4) .line-chart-marker-label {
-  top: 62px;
+.dbx-milestone-bad {
+  color: var(--ember);
+  border-color: var(--ember);
 }
 
 /* ---- Gráficas SVG ---- */
@@ -537,7 +607,8 @@
   stroke: var(--ink);
   stroke-width: 2px;
   stroke-linejoin: round;
-  transform-origin: 160px 122px;
+  transform-box: fill-box;
+  transform-origin: center;
   animation: dbx-scale-in 650ms var(--ease) both;
 }
 
@@ -558,13 +629,27 @@
 }
 
 .dbx-radar-value {
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 600;
   fill: var(--ink);
   font-variant-numeric: tabular-nums;
 }
 
 /* 3. MovesWaterfall */
+.dbx-wf-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dbx-wf-biggest-lift {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
 .dbx-wf-grid {
   stroke: var(--hairline);
   stroke-width: 1px;
@@ -590,8 +675,12 @@
   fill: var(--ink);
 }
 
-.dbx-wf-bar-zero {
+.dbx-wf-bar-muted {
   fill: var(--muted);
+}
+
+.dbx-wf-bar-best {
+  fill: var(--ink);
 }
 
 .dbx-wf-bar-total {
@@ -599,14 +688,18 @@
 }
 
 .dbx-wf-value {
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 600;
   fill: var(--ink);
   font-variant-numeric: tabular-nums;
 }
 
+.dbx-wf-value-muted {
+  fill: var(--muted);
+}
+
 .dbx-wf-label {
-  font-size: 11px;
+  font-size: 12px;
   fill: var(--ink-soft);
 }
 
@@ -617,7 +710,7 @@
 }
 
 .dbx-wf-effort-text {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
   fill: var(--muted);
 }
@@ -863,8 +956,8 @@
   }
 }
 
-/* ---- Escritorio (>= 900px) ---- */
-@media (min-width: 900px) {
+/* ---- Contenedor amplio (>= 760px) ---- */
+@container (min-width: 760px) {
   .dbx-cover-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: start;
@@ -884,5 +977,273 @@
     animation: none !important;
     stroke-dashoffset: 0 !important;
     transform: none !important;
+  }
+}
+
+/* Cifras clave de la línea de patrimonio (hoy, máximo y final): dan escala a una gráfica sin eje de cifras */
+.dbx-nw-figures {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 8px 0 12px;
+}
+.dbx-nw-fig {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.dbx-nw-label {
+  font-size: 12px;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.dbx-nw-value {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.dbx-nw-bad {
+  color: var(--ember);
+}
+
+/* ---- Cabecera de portada (dbx-head-*) ---- */
+.dbx-head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+}
+
+.dbx-head-eyebrow {
+  color: var(--muted);
+}
+
+.dbx-head-title {
+  font-size: 28px;
+  line-height: 1.14;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+
+.dbx-head-lede {
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.dbx-head-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.dbx-head-chip {
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-head-summary {
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--hairline);
+}
+
+/* ---- Patrón ChartCard (dbx-cc-*) ---- */
+.dbx-cc {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.dbx-cc-alert .dbx-cc-eyebrow {
+  color: var(--ember);
+}
+
+.dbx-cc-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dbx-cc-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  flex: 1 1 200px;
+}
+
+.dbx-cc-title {
+  font-size: 21px;
+  line-height: 1.22;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-cc-badge {
+  flex-shrink: 0;
+}
+
+.dbx-cc-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* Evita duplicar cabeceras y pies internos cuando KeyInsight o GuessGap van dentro de ChartCard */
+.dbx-cc-chart .dbx-insight-wrap > .eyebrow,
+.dbx-cc-chart .dbx-insight-wrap > .dbx-insight-title,
+.dbx-cc-chart .dbx-insight-wrap > .dbx-caption,
+.dbx-cc-chart .dbx-guess-header {
+  display: none;
+}
+
+.dbx-cc-chart .dbx-guess-row:first-child {
+  border-top: none;
+  padding-top: 2px;
+}
+
+.dbx-cc-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--hairline);
+}
+
+.dbx-cc-takeaway {
+  font-size: 15px;
+  line-height: 1.42;
+  font-weight: 600;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-cc-expand {
+  display: flex;
+  flex-direction: column;
+}
+
+.dbx-cc-toggle {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 2px 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  text-align: left;
+  color: var(--muted);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  user-select: none;
+  transition: color 180ms var(--ease);
+}
+
+.dbx-cc-toggle:hover {
+  color: var(--ink);
+}
+
+.dbx-cc-toggle:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 14px;
+}
+
+.dbx-cc-plus {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--hairline);
+  background: var(--paper);
+  color: var(--ink);
+  display: inline-grid;
+  place-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+  flex-shrink: 0;
+  transition:
+    transform 240ms var(--ease),
+    background-color 180ms var(--ease),
+    color 180ms var(--ease),
+    border-color 180ms var(--ease);
+}
+
+.dbx-cc-toggle:hover .dbx-cc-plus {
+  border-color: var(--ink);
+}
+
+.dbx-cc-toggle.is-open {
+  color: var(--ink);
+}
+
+.dbx-cc-toggle.is-open .dbx-cc-plus {
+  transform: rotate(45deg);
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.dbx-cc-toggle-label {
+  line-height: 1.3;
+}
+
+.dbx-cc-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  margin-top: 0;
+  transition:
+    grid-template-rows 260ms var(--ease),
+    opacity 220ms var(--ease),
+    margin-top 260ms var(--ease);
+}
+
+.dbx-cc-collapse.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  margin-top: 10px;
+}
+
+.dbx-cc-more {
+  overflow: hidden;
+  min-height: 0;
+}
+
+@container (min-width: 760px) {
+  .dbx-head {
+    padding: 24px;
+  }
+
+  .dbx-head-title {
+    font-size: 34px;
+  }
+
+  .dbx-cc-title {
+    font-size: 23px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dbx-cc-plus,
+  .dbx-cc-collapse,
+  .dbx-cc-toggle {
+    transition: none !important;
   }
 }
