@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent } from "react";
 import { StatTile, SectionChart, SectionTable, Observations } from "../analysis/AnalysisBlocks";
-import { formatValue, revealContext, truthValue, type Analysis, type Probe } from "../data";
+import { formatStat, formatValue, revealContext, truthValue, type Analysis, type Probe } from "../data";
 import { useTween } from "../charts/useTween";
 import type { PageProps, RevealProps } from "./types";
+import { useCouple } from "../analysis/CoupleReveal";
 import { CoverStory, WrappedStory } from "./WrappedStory";
 import "./wrapped.css";
 
@@ -406,7 +407,8 @@ export function WrappedCover({ analysis }: { analysis: Analysis }) {
 // Página del análisis para Wrapped. La portada es la tarjeta de puntuación con la pantalla de arranque
 // encima; las secciones muestran las tarjetas Wrapped a todo el ancho (sin el recuadro blanco).
 export function WrappedPage(props: PageProps) {
-  const { analysis, page, answers } = props;
+  const { family, analysis, page, answers, Reveal } = props;
+  const couple = useCouple();
 
   if (page.kind === "cover") {
     return (
@@ -420,7 +422,32 @@ export function WrappedPage(props: PageProps) {
   const { section, probes } = page;
   return (
     <div className="a-section">
-      <WrappedStory key={section.id} section={section} probes={probes} answers={answers} hasMore={true} />
+      {couple ? (
+        // Las parejas conservan por ahora el diseño de tarjetas: ahí cada uno ve su respuesta frente al plan.
+        <>
+          <section className="wrapped wr-card wr-hero wr-neutral">
+            <div className="wr-blobs" aria-hidden="true" />
+            <div className="wr-hero-in wr-sec-in">
+              <h1 className="wr-sec-title">{section.title}</h1>
+              {section.headline && (
+                <>
+                  <p className="wr-eyebrow">{section.headline.label}</p>
+                  <p className="wr-sec-value">{formatStat(section.headline.kind, section.headline.value)}</p>
+                </>
+              )}
+            </div>
+          </section>
+          {probes.length > 0 && (
+            <div className="wr-deck">
+              {probes.map((p, i) => (
+                <Reveal key={p.id} family={family} probe={p} answer={answers[p.id] ?? p.input.initial} index={i} total={probes.length} animate={true} />
+              ))}
+            </div>
+          )}
+        </>
+      ) : (
+        <WrappedStory key={section.id} section={section} probes={probes} answers={answers} hasMore={true} />
+      )}
 
       {section.stats.length > 0 && (
         <section className="card a-stats">
