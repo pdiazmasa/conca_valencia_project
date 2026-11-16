@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent } from "react";
-import { StatTile, SectionChart, SectionTable, Observations } from "../analysis/AnalysisBlocks";
-import { formatStat, formatValue, revealContext, truthValue, type Analysis, type Probe } from "../data";
+import { formatValue, revealContext, truthValue, type Analysis, type Probe } from "../data";
 import { useTween } from "../charts/useTween";
 import type { PageProps, RevealProps } from "./types";
 import { useCouple } from "../analysis/CoupleReveal";
@@ -407,7 +406,7 @@ export function WrappedCover({ analysis }: { analysis: Analysis }) {
 // Página del análisis para Wrapped. La portada es la tarjeta de puntuación con la pantalla de arranque
 // encima; las secciones muestran las tarjetas Wrapped a todo el ancho (sin el recuadro blanco).
 export function WrappedPage(props: PageProps) {
-  const { family, analysis, page, answers, Reveal } = props;
+  const { family, analysis, page, answers } = props;
   const couple = useCouple();
 
   if (page.kind === "cover") {
@@ -420,44 +419,45 @@ export function WrappedPage(props: PageProps) {
   }
 
   const { section, probes } = page;
+  // En pareja cada uno ha respondido por su cuenta: la historia enseña dónde coinciden y qué dice el plan,
+  // y al final de la última sección sale el resumen de todas las preguntas.
+  const last = analysis.sections[analysis.sections.length - 1]?.id === section.id;
   return (
     <div className="a-section">
-      {couple ? (
-        // Las parejas conservan por ahora el diseño de tarjetas: ahí cada uno ve su respuesta frente al plan.
-        <>
-          <section className="wrapped wr-card wr-hero wr-neutral">
-            <div className="wr-blobs" aria-hidden="true" />
-            <div className="wr-hero-in wr-sec-in">
-              <h1 className="wr-sec-title">{section.title}</h1>
-              {section.headline && (
-                <>
-                  <p className="wr-eyebrow">{section.headline.label}</p>
-                  <p className="wr-sec-value">{formatStat(section.headline.kind, section.headline.value)}</p>
-                </>
-              )}
-            </div>
-          </section>
-          {probes.length > 0 && (
-            <div className="wr-deck">
-              {probes.map((p, i) => (
-                <Reveal key={p.id} family={family} probe={p} answer={answers[p.id] ?? p.input.initial} index={i} total={probes.length} animate={true} />
-              ))}
-            </div>
-          )}
-        </>
-      ) : (
-        <WrappedStory key={section.id} section={section} probes={probes} answers={answers} hasMore={true} />
-      )}
+      <WrappedStory key={section.id} section={section} probes={probes} answers={answers} hasMore={false} couple={couple} recap={couple && last ? family.probes : undefined} />
+    </div>
+  );
+}
 
-      {section.stats.length > 0 && (
-        <section className="card a-stats">
-          {section.stats.map((s) => <StatTile key={s.label} stat={s} />)}
-        </section>
-      )}
-      {section.chart && <section className="card"><SectionChart chart={section.chart} /></section>}
-      {section.table && <section className="card"><SectionTable table={section.table} /></section>}
-      {section.observations.length > 0 && (
-        <section className="card"><Observations section={section} /></section>
+
+// Pantalla de turno de la pareja: quién ya ha respondido y a quién le toca. Al terminar los dos se ve el resultado.
+export function WrappedTurn({ people, index }: { people: { name: string }[]; index: number }) {
+  const first = (n: string) => n.split(" ")[0];
+  const now = people[index];
+  const prev = index > 0 ? people[index - 1] : null;
+  return (
+    <div className="wt">
+      <div className="wt-lab">{people.map((x) => first(x.name)).join(" & ")}</div>
+      <div className="wt-row">
+        {people.map((x, i) => (
+          <div key={x.name} className="wt-p">
+            <div className={`wt-av${i < index ? " done" : i === index ? " now" : ""}`}>{first(x.name)[0]}</div>
+            {i < index ? <span className="wt-done">✓ Done</span> : i === index ? <span>Your turn</span> : <span style={{ opacity: 0.6 }}>Waiting</span>}
+          </div>
+        ))}
+      </div>
+      <h1 className="wt-h">{prev ? `Waiting for ${first(now.name)}` : `${first(now.name)}, it's your turn`}</h1>
+      <p className="wt-t">
+        {prev
+          ? `${first(prev.name)}, your answers are saved. When ${first(now.name)} finishes, you'll see together where you agree, where you don't, and what the plan says.`
+          : "You each answer on your own. When you've both finished, you'll see together where you agree, where you don't, and what the plan says."}
+      </p>
+      {prev && (
+        <div className="wt-dots" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </div>
       )}
     </div>
   );

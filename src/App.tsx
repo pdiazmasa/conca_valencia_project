@@ -5,6 +5,7 @@ import { DashboardPage } from "./formats/DashboardPage";
 import type { AnalysisPage } from "./formats/types";
 import { StatValue, toneLabel } from "./formats/Dashboard";
 import { AudioTurn } from "./formats/Audio";
+import { WrappedTurn } from "./formats/Wrapped";
 import { CoupleContext, CoupleRevealAdapter, type CoupleData } from "./analysis/CoupleReveal";
 import LoadingScreen from "./LoadingScreen";
 import { NextStepsScreen } from "./NextSteps";
@@ -234,13 +235,17 @@ function AnalysisScreen({
   );
 }
 
-function TurnScreen({ person, format, onNext }: { person: Person; format: FormatId; onNext: () => void }) {
+function TurnScreen({ person, people, index, format, onNext }: { person: Person; people: Person[]; index: number; format: FormatId; onNext: () => void }) {
   return (
     <main className="content">
-      <div className="turn">
-        <h1>{person.name}, it's your turn</h1>
-        {format === "audio" && <AudioTurn name={person.name} />}
-      </div>
+      {format === "wrapped" ? (
+        <WrappedTurn people={people} index={index} />
+      ) : (
+        <div className="turn">
+          <h1>{person.name}, it's your turn</h1>
+          {format === "audio" && <AudioTurn name={person.name} />}
+        </div>
+      )}
       <div className="actions">
         <button type="button" className="pill pill-filled" onClick={onNext}>
           Start
@@ -434,7 +439,7 @@ export default function App() {
         {!family ? (
           <FamilyScreen onPick={pickFamily} />
         ) : s.phase === "turn" ? (
-          <TurnScreen person={s.people[s.person]} format={format} onNext={startTurn} />
+          <TurnScreen person={s.people[s.person]} people={s.people} index={s.person} format={format} onNext={startTurn} />
         ) : s.phase === "age" ? (
           <AgeScreen value={s.ages[s.person]} onChange={(age) => setS((cur) => ({ ...cur, ages: cur.ages.map((a, i) => (i === cur.person ? age : a)) }))} onNext={confirmAge} />
         ) : s.phase === "loading" ? (
