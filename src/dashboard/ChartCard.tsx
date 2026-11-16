@@ -66,6 +66,7 @@ export function ChartExpand({
         className={`dbx-cc-toggle${open ? " is-open" : ""}`}
         aria-expanded={open}
         aria-controls={panelId}
+        title={label}
         onClick={() => setOpen((prev) => !prev)}
       >
         <span className="dbx-cc-plus" aria-hidden="true">

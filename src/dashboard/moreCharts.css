@@ -417,3 +417,84 @@
     transform: none !important;
   }
 }
+
+
+/* ---- PC (>= 1024 px): las gráficas adicionales escalan al alto de la tarjeta compacta ----
+   Por debajo de 1024 px no se aplica nada (móvil igual que antes). */
+@media (min-width: 1024px) {
+  .dbx-cc-chart .dbx-mc-wrap {
+    gap: 4px;
+  }
+
+  /* Portada: el contenedor del SVG ocupa el resto y el SVG se ajusta (meet) al alto disponible */
+  .dbx-cover .dbx-mc-chart-wrap {
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dbx-cover .dbx-mc-svg {
+    flex: 1 1 0;
+    min-height: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Hitos de la línea temporal: chips más pequeños para no robar alto al gráfico */
+  .dbx-cover .dbx-mc-tl-chips {
+    flex: none;
+    gap: 4px;
+    margin-top: 0;
+  }
+
+  .dbx-cover .dbx-mc-tl-chip {
+    padding: 1px 7px;
+    font-size: 11px;
+  }
+
+  /* Prioridades del asesor: lista compacta que puede hacer scroll interno si no cabe */
+  .dbx-cover .dbx-mc-prio-list {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+
+  .dbx-cover .dbx-mc-prio-item {
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .dbx-cover .dbx-mc-prio-num {
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+    border-width: 1px;
+  }
+
+  .dbx-cover .dbx-mc-prio-line {
+    min-height: 4px;
+    margin: 2px 0;
+  }
+
+  .dbx-cover .dbx-mc-prio-body {
+    gap: 1px;
+    padding-bottom: 6px;
+  }
+
+  .dbx-cover .dbx-mc-prio-title {
+    font-size: 12px;
+    line-height: 1.25;
+  }
+
+  .dbx-cover .dbx-mc-prio-detail {
+    font-size: 11px;
+    line-height: 1.3;
+  }
+
+  /* Sección: las gráficas de la columna derecha no se estiran con el ancho de 5 columnas */
+  .dbx-section .dbx-mc-svg {
+    max-height: 190px;
+  }
+}

@@ -492,7 +492,7 @@ export function DashboardFull({
           {/* Prioridades ordenadas del asesor al cierre de la portada */}
           {prioritiesProps && prioritiesStory && (
             <ChartCard
-              eyebrow="What your advisor would do first"
+              eyebrow="What your plan recommends"
               badge={
                 <span className="dbx-mc-total">{`${prioritiesProps.items.length} steps`}</span>
               }

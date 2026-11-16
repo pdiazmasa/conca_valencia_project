@@ -1,0 +1,1452 @@
+/* Estilos exclusivos del formato Life line.
+   Todos los selectores llevan el prefijo .lfl- y usan los tokens de src/styles.css.
+   Móvil (< 1024 px): escenas apiladas. PC (≥ 1024 px): un escenario blanco de una sola pantalla. */
+
+@keyframes lfl-row-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lfl-dot-in {
+  from {
+    opacity: 0;
+    transform: scale(0.35);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.lfl-root {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  font-family: var(--font);
+  color: var(--ink);
+}
+
+.lfl-bad {
+  color: var(--ember);
+}
+
+.lfl-eyebrow {
+  font-size: 11px;
+  line-height: 1.35;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+/* ---------- Titulares y textos ---------- */
+.lfl-hero-title {
+  font-size: clamp(34px, 10.4vw, 42px);
+  line-height: 1.04;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  overflow-wrap: break-word;
+}
+
+.lfl-hero-lede {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--muted);
+  max-width: 34em;
+}
+
+.lfl-section-title {
+  font-size: clamp(38px, 11.5vw, 48px);
+  line-height: 1.02;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  overflow-wrap: break-word;
+}
+
+.lfl-scene-title {
+  font-size: clamp(30px, 9vw, 38px);
+  line-height: 1.06;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  overflow-wrap: break-word;
+}
+
+.lfl-footer {
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--muted);
+  text-align: center;
+}
+
+.lfl-footer-left {
+  text-align: left;
+  margin-top: auto;
+}
+
+.lfl-hint {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ---------- Familia ---------- */
+.lfl-family {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 30px;
+  margin-top: 6px;
+}
+
+.lfl-family-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lfl-family-name {
+  font-size: 11px;
+  line-height: 1.3;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.lfl-family-age {
+  font-family: var(--mono);
+  font-size: 40px;
+  line-height: 1.05;
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Cuadrícula de puntos ---------- */
+.lfl-dots-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+  flex-wrap: wrap;
+}
+
+.lfl-dots-sub {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.lfl-dots {
+  display: grid;
+  grid-template-columns: repeat(var(--lfl-cols, 8), minmax(0, 1fr));
+  gap: 12px 0;
+  justify-items: center;
+  padding: 6px 0;
+}
+
+.lfl-dot {
+  width: min(100%, 26px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.35);
+}
+
+.lfl-dots-in .lfl-dot {
+  animation: lfl-dot-in 0.45s var(--ease) both;
+  animation-delay: calc(min(var(--lfl-i, 0), 44) * 26ms);
+}
+
+.lfl-dot-ok {
+  background: var(--ink-soft);
+}
+
+.lfl-dot-card {
+  background: var(--paper);
+  box-shadow: inset 0 0 0 2.5px var(--ember);
+}
+
+.lfl-dot-no-savings {
+  background: var(--ember);
+}
+
+.lfl-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.lfl-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.lfl-legend-item.lfl-bad {
+  color: var(--ember);
+}
+
+.lfl-legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  flex: none;
+}
+
+.lfl-swatch-ok {
+  background: var(--ink-soft);
+}
+
+.lfl-swatch-card {
+  background: var(--paper);
+  box-shadow: inset 0 0 0 2px var(--ember);
+}
+
+.lfl-swatch-nosavings {
+  background: var(--ember);
+}
+
+.lfl-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 32px;
+  margin-top: 8px;
+}
+
+.lfl-summary-item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.lfl-summary-n {
+  font-size: clamp(52px, 16vw, 68px);
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+.lfl-summary-text {
+  font-size: 17px;
+  line-height: 1.2;
+  color: var(--muted);
+}
+
+/* ---------- Conmutador (píldora) ---------- */
+.lfl-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+}
+
+.lfl-toggle-btn {
+  min-height: 40px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.lfl-toggle-btn:hover {
+  color: var(--ink);
+}
+
+.lfl-toggle-active,
+.lfl-toggle-active:hover {
+  background: var(--ink);
+  color: #fafafa;
+}
+
+.lfl-toggle-btn:focus-visible,
+.lfl-pin:focus-visible,
+.lfl-source-summary:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* ---------- Escenas (móvil) ---------- */
+.lfl-scene {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+  min-height: 85vh;
+  min-height: 85svh;
+  padding: 36px 22px;
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  border-radius: 24px;
+  box-shadow: var(--card-shadow);
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+.lfl-scene-head {
+  min-height: 0;
+  justify-content: flex-start;
+  gap: 22px;
+}
+
+.lfl-scene-line {
+  justify-content: flex-start;
+  gap: 18px;
+  padding: 0 20px 28px;
+}
+
+.lfl-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  margin: 0 -20px;
+  padding: 14px 20px 12px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--hairline);
+  border-radius: 24px 24px 0 0;
+}
+
+.lfl-steps-note {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+/* ---------- Línea vertical ---------- */
+.lfl-line {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+.lfl-lrow {
+  display: grid;
+  grid-template-columns: 64px 18px minmax(0, 1fr);
+  column-gap: 8px;
+  padding-bottom: 30px;
+  animation: lfl-row-enter 0.4s var(--ease) both;
+  animation-delay: calc(min(var(--lfl-i, 0), 8) * 35ms);
+}
+
+.lfl-lrow:last-child {
+  padding-bottom: 4px;
+}
+
+.lfl-lrow-when {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.lfl-lrow-month {
+  min-height: 14px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  line-height: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.lfl-lrow-year {
+  font-family: var(--mono);
+  font-size: 22px;
+  line-height: 24px;
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+}
+
+.lfl-lrow-bad .lfl-lrow-year,
+.lfl-lrow-bad .lfl-lrow-month {
+  color: var(--ember);
+}
+
+.lfl-lrow-rail {
+  position: relative;
+}
+
+.lfl-lrow-rail::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 26px;
+  bottom: 0;
+  width: 1px;
+  background: var(--hairline);
+  transform: translateX(-0.5px);
+}
+
+.lfl-lrow + .lfl-lrow .lfl-lrow-rail::before {
+  top: 0;
+}
+
+.lfl-lrow:last-child .lfl-lrow-rail::before {
+  bottom: auto;
+  height: 26px;
+}
+
+.lfl-lrow:first-child:last-child .lfl-lrow-rail::before {
+  display: none;
+}
+
+.lfl-lrow-dot {
+  position: absolute;
+  left: 50%;
+  top: 21px;
+  transform: translateX(-50%);
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--muted);
+  box-shadow: 0 0 0 4px var(--paper);
+}
+
+.lfl-dotmark-good {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.lfl-dotmark-bad {
+  background: var(--ember);
+  border-color: var(--ember);
+}
+
+.lfl-lrow-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 14px;
+  min-width: 0;
+}
+
+.lfl-lrow-title {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  overflow-wrap: break-word;
+}
+
+.lfl-lrow-detail {
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.lfl-lrow-ages {
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Cita literal del plan (<details>) */
+.lfl-source {
+  margin-top: 6px;
+}
+
+.lfl-source-summary {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.lfl-source-text {
+  margin-top: 8px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--muted);
+  padding-left: 12px;
+  border-left: 1px solid var(--hairline);
+}
+
+/* ---------- Paso del plan ---------- */
+.lfl-step {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 12px;
+  padding-left: 14px;
+  border-left: 2px solid var(--ink);
+}
+
+.lfl-step-kicker {
+  font-size: 10.5px;
+  line-height: 1.3;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.lfl-step-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+}
+
+.lfl-step-title {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.lfl-step-score {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fafafa;
+  font-variant-numeric: tabular-nums;
+}
+
+.lfl-step-action {
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.lfl-step-advisor {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--ember);
+  font-weight: 500;
+}
+
+/* ---------- Nota y rescate ---------- */
+.lfl-note {
+  font-size: 44px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.lfl-note-arrow {
+  color: var(--muted);
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+.lfl-note-dim {
+  color: var(--muted);
+}
+
+.lfl-note-big {
+  font-size: clamp(60px, 19vw, 80px);
+}
+
+.lfl-note-caption {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.lfl-fixes {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  margin-top: 6px;
+}
+
+.lfl-fix {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 8px;
+  padding: 18px 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.lfl-fix-n {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 24px;
+  color: var(--muted);
+}
+
+.lfl-fix-body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.lfl-fix-title {
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.lfl-fix-action {
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.lfl-fix-effect {
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--hairline);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Secciones ---------- */
+.lfl-probes {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.lfl-headline-fallback {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lfl-headline-val {
+  font-size: 56px;
+  line-height: 1.04;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- PC: escenario de una sola pantalla ---------- */
+.lfl-fit-outer {
+  width: min(1320px, calc(100vw - 48px));
+  margin-left: calc((100% - min(1320px, calc(100vw - 48px))) / 2);
+}
+
+.lfl-fit-inner {
+  width: 100%;
+}
+
+.lfl-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 38fr) minmax(0, 62fr);
+  padding: 34px 0;
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  border-radius: 24px;
+  box-shadow: var(--card-shadow);
+}
+
+.lfl-stage-section {
+  grid-template-columns: minmax(0, 44fr) minmax(0, 56fr);
+}
+
+.lfl-stage-left {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0 40px;
+  min-width: 0;
+}
+
+.lfl-stage-right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 0 38px 0 40px;
+  border-left: 1px solid var(--hairline);
+  min-width: 0;
+}
+
+.lfl-desk .lfl-hero-title {
+  font-size: clamp(48px, 3.8vw, 56px);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+
+.lfl-desk .lfl-hero-lede {
+  font-size: 16px;
+}
+
+.lfl-desk .lfl-section-title {
+  font-size: clamp(48px, 4vw, 60px);
+  letter-spacing: -0.05em;
+}
+
+.lfl-desk .lfl-family {
+  gap: 10px 28px;
+  margin-top: 4px;
+}
+
+.lfl-desk .lfl-family-age {
+  font-size: 32px;
+}
+
+.lfl-dots-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--hairline);
+}
+
+.lfl-desk .lfl-dots {
+  gap: 9px 0;
+  padding: 2px 0;
+}
+
+.lfl-desk .lfl-dot {
+  width: min(100%, 15px);
+}
+
+.lfl-stage-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.lfl-desk .lfl-toggle {
+  width: max-content;
+  max-width: 100%;
+}
+
+/* ---------- Mapa horizontal ---------- */
+.lfl-map {
+  --lfl-gutter: 82px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.lfl-map-row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: var(--lfl-gutter) minmax(0, 1fr);
+}
+
+.lfl-map-gutter {
+  padding-right: 8px;
+  font-size: 10px;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--muted);
+  align-self: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lfl-map-pins + .lfl-map-gutter,
+.lfl-map-row:first-child .lfl-map-gutter {
+  align-self: start;
+}
+
+.lfl-map-track {
+  position: relative;
+  min-width: 0;
+}
+
+.lfl-pin-stem {
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+  background: rgba(10, 10, 10, 0.2);
+  transform: translateX(-0.5px);
+}
+
+.lfl-pin-stem-bad {
+  background: rgba(231, 0, 11, 0.38);
+}
+
+.lfl-pin {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 12px;
+  font-family: var(--font);
+  font-size: 12.5px;
+  line-height: 1;
+  font-weight: 500;
+  color: var(--ink);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.lfl-pin-flip {
+  flex-direction: row-reverse;
+}
+
+.lfl-pin-dot {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--muted);
+  transition: box-shadow 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.lfl-pin-label {
+  padding: 3px 5px;
+  border-radius: 8px;
+  background: var(--paper);
+}
+
+.lfl-pin-bad .lfl-pin-label {
+  color: var(--ember);
+}
+
+.lfl-pin:hover .lfl-pin-label {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lfl-pin:hover .lfl-pin-dot {
+  transform: scale(1.15);
+}
+
+.lfl-pin[aria-pressed="true"] .lfl-pin-label {
+  font-weight: 600;
+}
+
+.lfl-pin[aria-pressed="true"] .lfl-pin-dot {
+  box-shadow: 0 0 0 3px var(--paper), 0 0 0 4.5px var(--ink);
+}
+
+.lfl-pin-bad[aria-pressed="true"] .lfl-pin-dot {
+  box-shadow: 0 0 0 3px var(--paper), 0 0 0 4.5px var(--ember);
+}
+
+.lfl-pin-step {
+  padding: 3px 6px;
+  border-radius: 8px;
+  background: var(--ink);
+  color: #fafafa;
+  font-size: 9px;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.lfl-map-axis {
+  height: 30px;
+  border-top: 1px solid var(--muted);
+}
+
+.lfl-tick {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lfl-tick-mark {
+  width: 1px;
+  height: 5px;
+  background: var(--muted);
+}
+
+.lfl-tick-year {
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.2;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.lfl-tick-hidden {
+  opacity: 0;
+}
+
+.lfl-tick-sel {
+  position: absolute;
+  top: 5px;
+  z-index: 2;
+  transform: translateX(-50%);
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fafafa;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.lfl-tick-sel-bad {
+  background: var(--ember);
+}
+
+.lfl-lane-row {
+  height: 30px;
+}
+
+.lfl-lane-name {
+  letter-spacing: 0.08em;
+}
+
+.lfl-lane {
+  height: 30px;
+}
+
+.lfl-lane-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--hairline);
+}
+
+.lfl-lane-age {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1px 5px;
+  background: var(--paper);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.3;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.lfl-lane-age-sel {
+  z-index: 2;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fafafa;
+  font-weight: 500;
+}
+
+.lfl-map-guide-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  grid-template-columns: var(--lfl-gutter) minmax(0, 1fr);
+  pointer-events: none;
+}
+
+.lfl-map-guide-wrap .lfl-map-track {
+  height: 100%;
+}
+
+.lfl-map-guide {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px dashed rgba(10, 10, 10, 0.3);
+}
+
+/* ---------- Panel de detalle y nota ---------- */
+.lfl-stage-bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 28px;
+  margin-top: auto;
+}
+
+.lfl-stage-bottom-main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.lfl-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 150px;
+  padding: 16px 20px;
+  background: var(--surface-alt);
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+}
+
+.lfl-panel-two {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 22px;
+}
+
+.lfl-panel-two .lfl-step {
+  margin-top: 0;
+  padding-left: 22px;
+  border-left: 1px solid var(--hairline);
+  align-self: stretch;
+}
+
+.lfl-panel-main {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.lfl-panel-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 12px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.lfl-panel-date {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.lfl-panel-date.lfl-bad {
+  color: var(--ember);
+}
+
+.lfl-panel-ages {
+  color: var(--muted);
+}
+
+.lfl-panel-title {
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.lfl-panel-detail {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.lfl-stage-note {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  max-width: 230px;
+  text-align: right;
+}
+
+.lfl-stage-note .lfl-note {
+  font-size: 60px;
+}
+
+.lfl-stage-note .lfl-note-caption {
+  font-size: 11.5px;
+}
+
+/* Reducciones en la línea del PC (secciones) */
+.lfl-desk .lfl-stage-right .lfl-line .lfl-lrow {
+  padding-bottom: 20px;
+}
+
+.lfl-desk .lfl-lrow-title {
+  font-size: 17px;
+}
+
+.lfl-desk .lfl-lrow-detail {
+  font-size: 14px;
+}
+
+/* ---------- LifelineReveal ---------- */
+.lfl-reveal-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 22px;
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  border-radius: 24px;
+  box-shadow: var(--card-shadow);
+  font-family: var(--font);
+  color: var(--ink);
+}
+
+.lfl-scene .lfl-reveal-card,
+.lfl-stage .lfl-reveal-card {
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.lfl-probes .lfl-reveal-card + .lfl-reveal-card {
+  padding-top: 22px;
+  border-top: 1px solid var(--hairline);
+}
+
+.lfl-reveal-question {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.lfl-reveal-compare {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 36px;
+}
+
+.lfl-reveal-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.lfl-reveal-label {
+  font-size: 11px;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.lfl-reveal-val {
+  font-size: clamp(34px, 10.5vw, 44px);
+  line-height: 1.04;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  overflow-wrap: break-word;
+}
+
+.lfl-desk .lfl-reveal-val {
+  font-size: clamp(36px, 3vw, 44px);
+}
+
+.lfl-reveal-val-you {
+  color: var(--muted);
+}
+
+.lfl-reveal-val.lfl-bad {
+  color: var(--ember);
+}
+
+.lfl-reveal-context {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* Eje fino de edades para la sonda ahorros */
+.lfl-axis-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lfl-axis-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 2px 10px;
+}
+
+.lfl-axis-caption {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.lfl-axis-diff {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.lfl-axis-diff.lfl-bad {
+  color: var(--ember);
+}
+
+.lfl-axis-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.lfl-axis-tick {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  fill: var(--muted);
+}
+
+.lfl-axis-marker-you {
+  font-family: var(--mono);
+  font-size: 11px;
+  fill: var(--muted);
+  font-weight: 500;
+}
+
+.lfl-axis-marker-plan {
+  font-family: var(--mono);
+  font-size: 11px;
+  fill: var(--ink);
+  font-weight: 600;
+}
+
+.lfl-axis-marker-plan.lfl-bad {
+  fill: var(--ember);
+}
+
+/* Barra superior y tabla debug de la página de desarrollo (lifeline.html) */
+.lfl-dev-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.lfl-dev-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.lfl-dev-select {
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 18px;
+  border: 1px solid var(--hairline);
+  background: var(--surface-alt);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.lfl-dev-pages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.lfl-dev-pill {
+  padding: 5px 12px;
+  border-radius: 18px;
+  border: 1px solid var(--hairline);
+  background: var(--paper);
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.lfl-dev-pill-active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.lfl-debug-wrap {
+  max-width: 960px;
+  width: 100%;
+  margin: 24px auto;
+  padding: 0 16px 40px;
+  overflow-x: auto;
+}
+
+.lfl-debug-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.lfl-debug-th,
+.lfl-debug-td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--hairline);
+  text-align: left;
+  vertical-align: top;
+}
+
+.lfl-debug-th {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--surface-alt);
+}
+
+
+/* ---------- Sticky: .app lleva overflow-x: hidden y eso anula position: sticky; clip lo evita sin crear scroll ---------- */
+.app:has(.lfl-root) {
+  overflow-x: clip;
+}
+
+/* ---------- Ajustes de ancho ---------- */
+@media (max-width: 1023.98px) {
+  .lfl-root {
+    gap: 14px;
+  }
+}
+
+@media (max-width: 380px) {
+  .lfl-scene {
+    padding: 30px 18px;
+  }
+  .lfl-scene-line {
+    padding: 0 16px 24px;
+  }
+  .lfl-sticky {
+    margin: 0 -16px;
+    padding: 12px 16px 10px;
+  }
+  .lfl-lrow {
+    grid-template-columns: 54px 16px minmax(0, 1fr);
+  }
+  .lfl-lrow-year {
+    font-size: 19px;
+  }
+  .lfl-toggle-btn {
+    padding: 8px 8px;
+    font-size: 12.5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lfl-lrow {
+    animation: none;
+  }
+  .lfl-dot,
+  .lfl-dots-in .lfl-dot {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .lfl-toggle-btn,
+  .lfl-pin-dot {
+    transition: none;
+  }
+}
+/* ---------- Escenas concretas y ganchos de estructura ---------- */
+.lfl-mob {
+  gap: 14px;
+}
+
+.lfl-scene-today {
+  gap: 20px;
+}
+
+.lfl-scene-xmas {
+  gap: 16px;
+}
+
+.lfl-scene-xmas .lfl-dots {
+  gap: 14px 0;
+}
+
+.lfl-scene-xmas .lfl-dot {
+  width: min(100%, 28px);
+}
+
+.lfl-scene-rescue {
+  justify-content: flex-start;
+  gap: 14px;
+  padding-bottom: 28px;
+}
+
+.lfl-scene-rescue .lfl-footer {
+  margin-top: 18px;
+}
+
+.lfl-map-axis-row {
+  margin-top: 2px;
+}
+
+.lfl-reveal-single {
+  flex-direction: column;
+}
