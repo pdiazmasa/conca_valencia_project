@@ -431,10 +431,12 @@ export function WrappedPage(props: PageProps) {
 
 
 // Pantalla de turno de la pareja: quién ya ha respondido y a quién le toca. Al terminar los dos se ve el resultado.
-export function WrappedTurn({ people, index }: { people: { name: string }[]; index: number }) {
+// stage "wait": pantalla de relevo ("Waiting for Melanie") · stage "turn": le toca a la persona (con su nombre, como la primera).
+export function WrappedTurn({ people, index, stage = "turn" }: { people: { name: string }[]; index: number; stage?: "wait" | "turn" }) {
   const first = (n: string) => n.split(" ")[0];
   const now = people[index];
   const prev = index > 0 ? people[index - 1] : null;
+  const waiting = !!prev && stage === "wait";
   return (
     <div className="wt">
       <div className="wt-lab">{people.map((x) => first(x.name)).join(" & ")}</div>
@@ -442,17 +444,19 @@ export function WrappedTurn({ people, index }: { people: { name: string }[]; ind
         {people.map((x, i) => (
           <div key={x.name} className="wt-p">
             <div className={`wt-av${i < index ? " done" : i === index ? " now" : ""}`}>{first(x.name)[0]}</div>
-            {i < index ? <span className="wt-done">✓ Done</span> : i === index ? <span>Your turn</span> : <span style={{ opacity: 0.6 }}>Waiting</span>}
+            {i < index ? <span className="wt-done">✓ Done</span> : i === index ? <span>{waiting ? "Waiting" : "Your turn"}</span> : <span style={{ opacity: 0.6 }}>Waiting</span>}
           </div>
         ))}
       </div>
-      <h1 className="wt-h">{prev ? `Waiting for ${first(now.name)}` : `${first(now.name)}, it's your turn`}</h1>
+      <h1 className="wt-h">{waiting ? `Waiting for ${first(now.name)}` : `${first(now.name)}, it's your turn`}</h1>
       <p className="wt-t">
-        {prev
-          ? `${first(prev.name)}, your answers are saved. When ${first(now.name)} finishes, you'll see together where you agree, where you don't, and what the plan says.`
-          : "You each answer on your own. When you've both finished, you'll see together where you agree, where you don't, and what the plan says."}
+        {waiting
+          ? `${first(prev!.name)}, your answers are saved. When ${first(now.name)} finishes, you'll see together where you agree, where you don't, and what the plan says.`
+          : prev
+            ? `${first(prev.name)}'s answers are saved. Now it's your turn: answer on your own. Then you'll see together where you agree, where you don't, and what the plan says.`
+            : "You each answer on your own. When you've both finished, you'll see together where you agree, where you don't, and what the plan says."}
       </p>
-      {prev && (
+      {waiting && (
         <div className="wt-dots" aria-hidden="true">
           <i />
           <i />

@@ -662,12 +662,28 @@ function FluidScreen({ probe, answer, real, pi, active, onNumbers }: { probe: Pr
       } catch {
         /* sin fuente: se queda como está */
       }
-      const c = document.createElement("canvas").getContext("2d");
+      const cv = document.createElement("canvas");
+      const c = cv.getContext("2d", { willReadFrequently: true });
       if (!c || off) return;
+      // Centrado óptico: se dibuja la cifra y se centra su "masa" (no su caja). Un "1" tiene la bandera ligera a la izquierda y el palo pesado a la derecha.
+      cv.width = Math.ceil(fs * 0.9 * Math.max(big.length, 1)) + 80;
+      cv.height = Math.ceil(fs * 1.4);
       c.font = `${fs}px ${ANTON}`;
       c.textAlign = "center";
-      const m = c.measureText(big);
-      setDx(-(m.actualBoundingBoxRight - m.actualBoundingBoxLeft) / 2);
+      c.fillStyle = "#000";
+      c.fillText(big, cv.width / 2, cv.height * 0.8);
+      const px = c.getImageData(0, 0, cv.width, cv.height).data;
+      let sum = 0;
+      let cnt = 0;
+      for (let y = 0; y < cv.height; y++) {
+        for (let x = 0; x < cv.width; x++) {
+          if (px[(y * cv.width + x) * 4 + 3] > 128) {
+            sum += x;
+            cnt++;
+          }
+        }
+      }
+      setDx(cnt ? -(sum / cnt - cv.width / 2) : 0);
     };
     run();
     return () => {

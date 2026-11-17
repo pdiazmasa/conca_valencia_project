@@ -240,18 +240,28 @@ function AnalysisScreen({
 }
 
 function TurnScreen({ person, people, index, format, onNext }: { person: Person; people: Person[]; index: number; format: FormatId; onNext: () => void }) {
+  // A partir de la segunda persona hay primero una pantalla de relevo ("Waiting for X") y después la suya ("X, it's your turn").
+  const [passed, setPassed] = useState(false);
+  const relay = index > 0 && !passed;
+  const prevName = index > 0 ? people[index - 1].name.split(" ")[0] : "";
+  const nowName = person.name.split(" ")[0];
   return (
     <main className="content">
-      {format === "wrapped" ? (
-        <WrappedTurn people={people} index={index} />
+      {format !== "audio" ? (
+        <WrappedTurn people={people} index={index} stage={relay ? "wait" : "turn"} />
       ) : (
         <div className="turn">
-          <h1>{person.name}, it's your turn</h1>
-          {format === "audio" && <AudioTurn name={person.name} />}
+          <h1>{relay ? `Waiting for ${nowName}` : `${person.name}, it's your turn`}</h1>
+          {relay && (
+            <p style={{ marginTop: 14, color: "#6b6b6b", fontSize: 17, lineHeight: 1.4, maxWidth: 520 }}>
+              {prevName}, your answers are saved. When {nowName} finishes, you'll see together where you agree, where you don't, and what the plan says.
+            </p>
+          )}
+          {format === "audio" && !relay && <AudioTurn name={person.name} />}
         </div>
       )}
       <div className="actions">
-        <button type="button" className="pill pill-filled" onClick={onNext}>
+        <button type="button" className="pill pill-filled" onClick={relay ? () => setPassed(true) : onNext}>
           Start
         </button>
       </div>
