@@ -138,14 +138,6 @@
    "text": "Your cash cushion is much shorter than you thought.",
    "file": "163abdf403be0df3.mp3"
   },
-  "cmp:colchon:agree": {
-   "text": "On your cash cushion, you both guessed about the same.",
-   "file": "cf89c36fca896eeb.mp3"
-  },
-  "cmp:colchon:differ": {
-   "text": "On your cash cushion, you see it differently.",
-   "file": "50f7ec9e1efd613d.mp3"
-  },
   "verdict:mezcla:close": {
    "text": "You guessed your mix of investments almost exactly.",
    "file": "6525bbfa11ebd8bb.mp3"
@@ -153,14 +145,6 @@
   "verdict:mezcla:different": {
    "text": "Your mix of investments is different from what you expected.",
    "file": "3df212bcffc58886.mp3"
-  },
-  "cmp:mezcla:agree": {
-   "text": "On your investment mix, you both guessed about the same.",
-   "file": "d5d3c328782835c5.mp3"
-  },
-  "cmp:mezcla:differ": {
-   "text": "On your investment mix, you see it differently.",
-   "file": "3cabbb5ba92b8877.mp3"
   },
   "verdict:tarjeta:close": {
    "text": "You guessed how much of each payment goes to the debt almost exactly.",
@@ -178,14 +162,6 @@
    "text": "Much less of each payment goes to the debt than you thought. The rest is interest.",
    "file": "48f11347a77d1492.mp3"
   },
-  "cmp:tarjeta:agree": {
-   "text": "On paying down your card, you both guessed about the same.",
-   "file": "611a1f525730213b.mp3"
-  },
-  "cmp:tarjeta:differ": {
-   "text": "On paying down your card, you see it differently.",
-   "file": "a4f1449cf43c32e9.mp3"
-  },
   "verdict:seguro:close": {
    "text": "You guessed your life insurance cover almost exactly.",
    "file": "530d1158391664fd.mp3"
@@ -201,14 +177,6 @@
   "verdict:seguro:much_worse": {
    "text": "Your life insurance covers many fewer years than you thought.",
    "file": "c66d4fb5d6db16d1.mp3"
-  },
-  "cmp:seguro:agree": {
-   "text": "On life insurance, you both guessed about the same.",
-   "file": "dea0d21736b39917.mp3"
-  },
-  "cmp:seguro:differ": {
-   "text": "On life insurance, you see it differently.",
-   "file": "9235cb444d599fb8.mp3"
   },
   "verdict:ahorros:close": {
    "text": "You guessed how long your savings last almost exactly.",
@@ -226,14 +194,6 @@
    "text": "Your savings run out much sooner than you thought.",
    "file": "b8946d6a91fc83d8.mp3"
   },
-  "cmp:ahorros:agree": {
-   "text": "On how long your savings last, you both guessed about the same.",
-   "file": "9387fcee51f74f0b.mp3"
-  },
-  "cmp:ahorros:differ": {
-   "text": "On how long your savings last, you see it differently.",
-   "file": "dab847147fd3b197.mp3"
-  },
   "verdict:destino:close": {
    "text": "You guessed how much of your savings goes to retirement almost exactly.",
    "file": "be8f37f3d1f813bd.mp3"
@@ -250,49 +210,165 @@
    "text": "Much less of your savings goes to retirement than you thought.",
    "file": "bb66c2789b8922b9.mp3"
   },
-  "cmp:destino:agree": {
-   "text": "On saving for retirement, you both guessed about the same.",
-   "file": "131dbe30075a6910.mp3"
-  },
-  "cmp:destino:differ": {
-   "text": "On saving for retirement, you see it differently.",
-   "file": "522273b73c4f7cdf.mp3"
-  },
-  "cmp:intro": {
-   "text": "Let's see where you agree and where you see things differently.",
-   "file": "1c3928bfe6c0f569.mp3"
-  },
-  "turn:Timothy:ask": {
+  "turn:Timothy": {
    "text": "Timothy, it's your turn to answer.",
    "file": "09b73388dcda4bdd.mp3"
   },
-  "turn:Timothy:results": {
-   "text": "Timothy, here is your plan.",
-   "file": "0760ac101da5ebb2.mp3"
-  },
-  "turn:Melanie:ask": {
+  "turn:Melanie": {
    "text": "Melanie, it's your turn to answer.",
    "file": "51b523ecfe0e0437.mp3"
   },
-  "turn:Melanie:results": {
-   "text": "Melanie, here is your plan.",
-   "file": "c5cdbc56770fc392.mp3"
+  "couple:timothy-melanie-weah:intro": {
+   "text": "Timothy and Melanie, let's compare what each of you thought.",
+   "file": "cec1dde0be57be33.mp3"
   },
-  "turn:Daniel:ask": {
+  "turn:Daniel": {
    "text": "Daniel, it's your turn to answer.",
    "file": "c29190a02b99eb79.mp3"
   },
-  "turn:Daniel:results": {
-   "text": "Daniel, here is your plan.",
-   "file": "9819ceab9172dfc8.mp3"
-  },
-  "turn:Emily:ask": {
+  "turn:Emily": {
    "text": "Emily, it's your turn to answer.",
    "file": "6b2e09206c879979.mp3"
   },
-  "turn:Emily:results": {
-   "text": "Emily, here is your plan.",
-   "file": "5abb13eedc18650f.mp3"
+  "couple:daniel-emily-johnson:intro": {
+   "text": "Daniel and Emily, let's compare what each of you thought.",
+   "file": "7b65c550a66b0fab.mp3"
+  },
+  "couple:colchon:both_right": {
+   "text": "On your cash cushion, you both got it about right.",
+   "file": "1ae95b05b989d469.mp3"
+  },
+  "couple:colchon:agree_different": {
+   "text": "On your cash cushion, you agree with each other, but the plan says something different.",
+   "file": "bade784d3b9bd554.mp3"
+  },
+  "couple:colchon:one_right": {
+   "text": "On your cash cushion, you see it differently, and one of you is close to the plan.",
+   "file": "2f24c40d36725a3e.mp3"
+  },
+  "couple:colchon:none_right": {
+   "text": "On your cash cushion, you see it differently, and the plan differs from both guesses.",
+   "file": "736c4b989a54780a.mp3"
+  },
+  "couple:colchon:agree_better": {
+   "text": "On your cash cushion, you saw it the same way, and the news is better than you both thought.",
+   "file": "4f458afe1b1ed439.mp3"
+  },
+  "couple:colchon:agree_worse": {
+   "text": "On your cash cushion, you saw it the same way, and it is tougher than you both thought. Worth tackling together.",
+   "file": "e1484f21e99722ad.mp3"
+  },
+  "couple:mezcla:both_right": {
+   "text": "On your investment mix, you both got it about right.",
+   "file": "b1cf08d22f99ea85.mp3"
+  },
+  "couple:mezcla:agree_different": {
+   "text": "On your investment mix, you agree with each other, but the plan says something different.",
+   "file": "a5142be57189d5b3.mp3"
+  },
+  "couple:mezcla:one_right": {
+   "text": "On your investment mix, you see it differently, and one of you is close to the plan.",
+   "file": "1ca9b064e6bbcb85.mp3"
+  },
+  "couple:mezcla:none_right": {
+   "text": "On your investment mix, you see it differently, and the plan differs from both guesses.",
+   "file": "57f1159be60dbd1b.mp3"
+  },
+  "couple:tarjeta:both_right": {
+   "text": "On paying down your card, you both got it about right.",
+   "file": "b75bad1f310f87e3.mp3"
+  },
+  "couple:tarjeta:agree_different": {
+   "text": "On paying down your card, you agree with each other, but the plan says something different.",
+   "file": "2971f7dbdeb323b3.mp3"
+  },
+  "couple:tarjeta:one_right": {
+   "text": "On paying down your card, you see it differently, and one of you is close to the plan.",
+   "file": "0cea798538dbc88d.mp3"
+  },
+  "couple:tarjeta:none_right": {
+   "text": "On paying down your card, you see it differently, and the plan differs from both guesses.",
+   "file": "735fe5f0f88ee1a4.mp3"
+  },
+  "couple:tarjeta:agree_better": {
+   "text": "On paying down your card, you saw it the same way, and the news is better than you both thought.",
+   "file": "165fbba9e08d096e.mp3"
+  },
+  "couple:tarjeta:agree_worse": {
+   "text": "On paying down your card, you saw it the same way, and it is tougher than you both thought. Worth tackling together.",
+   "file": "53fe798f72560754.mp3"
+  },
+  "couple:seguro:both_right": {
+   "text": "On life insurance, you both got it about right.",
+   "file": "84719fd19d876eee.mp3"
+  },
+  "couple:seguro:agree_different": {
+   "text": "On life insurance, you agree with each other, but the plan says something different.",
+   "file": "79421f8453c68ca4.mp3"
+  },
+  "couple:seguro:one_right": {
+   "text": "On life insurance, you see it differently, and one of you is close to the plan.",
+   "file": "80302d6bb37aaa4a.mp3"
+  },
+  "couple:seguro:none_right": {
+   "text": "On life insurance, you see it differently, and the plan differs from both guesses.",
+   "file": "2080e4aa27ab217c.mp3"
+  },
+  "couple:seguro:agree_better": {
+   "text": "On life insurance, you saw it the same way, and the news is better than you both thought.",
+   "file": "015b38ad752b5aba.mp3"
+  },
+  "couple:seguro:agree_worse": {
+   "text": "On life insurance, you saw it the same way, and it is tougher than you both thought. Worth tackling together.",
+   "file": "b149f0d8ce99a29d.mp3"
+  },
+  "couple:ahorros:both_right": {
+   "text": "On how long your savings last, you both got it about right.",
+   "file": "78e6e5a1e869a64b.mp3"
+  },
+  "couple:ahorros:agree_different": {
+   "text": "On how long your savings last, you agree with each other, but the plan says something different.",
+   "file": "afcccd04419c0488.mp3"
+  },
+  "couple:ahorros:one_right": {
+   "text": "On how long your savings last, you see it differently, and one of you is close to the plan.",
+   "file": "97012fc4acb5637d.mp3"
+  },
+  "couple:ahorros:none_right": {
+   "text": "On how long your savings last, you see it differently, and the plan differs from both guesses.",
+   "file": "3aec5dce9a373d50.mp3"
+  },
+  "couple:ahorros:agree_better": {
+   "text": "On how long your savings last, you saw it the same way, and the news is better than you both thought.",
+   "file": "11b89f3ea3c54fbc.mp3"
+  },
+  "couple:ahorros:agree_worse": {
+   "text": "On how long your savings last, you saw it the same way, and it is tougher than you both thought. Worth tackling together.",
+   "file": "56cdc87f0f140dad.mp3"
+  },
+  "couple:destino:both_right": {
+   "text": "On saving for retirement, you both got it about right.",
+   "file": "a87e7d5b9ebf7ed7.mp3"
+  },
+  "couple:destino:agree_different": {
+   "text": "On saving for retirement, you agree with each other, but the plan says something different.",
+   "file": "a376b8fc17c2a9aa.mp3"
+  },
+  "couple:destino:one_right": {
+   "text": "On saving for retirement, you see it differently, and one of you is close to the plan.",
+   "file": "b4116a70961dd3eb.mp3"
+  },
+  "couple:destino:none_right": {
+   "text": "On saving for retirement, you see it differently, and the plan differs from both guesses.",
+   "file": "0ec4ead499874134.mp3"
+  },
+  "couple:destino:agree_better": {
+   "text": "On saving for retirement, you saw it the same way, and the news is better than you both thought.",
+   "file": "840e46f7b4de2427.mp3"
+  },
+  "couple:destino:agree_worse": {
+   "text": "On saving for retirement, you saw it the same way, and it is tougher than you both thought. Worth tackling together.",
+   "file": "67792553ce2111fb.mp3"
   },
   "cover:timothy-melanie-weah:0": {
    "text": "Your financial health score is 60 out of 100, which we call stable.",
