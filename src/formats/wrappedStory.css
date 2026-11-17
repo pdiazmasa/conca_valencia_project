@@ -206,9 +206,10 @@
 .cc-top { position: absolute; top: 34px; left: 0; right: 0; text-align: center; z-index: 3; }
 .cc-tag { display: inline-block; border: 1.5px solid #b4231c; border-radius: 99px; padding: 4px 14px; font: 600 12px "Space Grotesk", sans-serif; letter-spacing: 0.08em; }
 .cc-h { position: absolute; top: 84px; left: 0; right: 0; text-align: center; font: 500 34px/1.05 "Space Grotesk", Helvetica, Arial, sans-serif; letter-spacing: -0.02em; z-index: 3; }
+.cc-q { position: absolute; top: 170px; left: 0; right: 0; padding: 0 30px; text-align: center; font: 600 13.5px/1.3 "Space Grotesk", Helvetica, Arial, sans-serif; color: #b4231c; opacity: 0.8; z-index: 3; }
 .cc-h i { color: #e8493f; font-family: Georgia, serif; }
-.cc-num { position: absolute; top: 190px; left: 0; right: 0; margin: 0 auto; width: max-content; z-index: 3; }
-.cc-body { position: absolute; left: 22px; right: 22px; top: 250px; height: 400px; background: #c8302a; border-radius: 22px 22px 0 0; box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.08), inset 0 8px 20px rgba(255, 255, 255, 0.12); z-index: 3; }
+.cc-num { position: absolute; top: 218px; left: 0; right: 0; margin: 0 auto; width: max-content; z-index: 3; }
+.cc-body { position: absolute; left: 22px; right: 22px; top: 280px; height: 400px; background: #c8302a; border-radius: 22px 22px 0 0; box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.08), inset 0 8px 20px rgba(255, 255, 255, 0.12); z-index: 3; }
 .cc-sol { position: absolute; right: 22px; top: 16px; width: 112px; height: 44px; background: #2a2625; border-radius: 5px; background-image: repeating-linear-gradient(90deg, transparent 0 27px, rgba(255, 255, 255, 0.12) 27px 28px); }
 .cc-lcd { position: absolute; left: 18px; right: 18px; top: 76px; height: 92px; background: #a9ad9a; border-radius: 8px; box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.35); padding: 10px 14px; color: #262a22; font-family: "Courier New", monospace; background-image: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0 2px, transparent 2px 4px); overflow: hidden; }
 .cc-l1 { font-weight: 700; line-height: 1.1; min-height: 44px; white-space: nowrap; }
@@ -288,8 +289,8 @@
 .sc-top { position: absolute; left: 0; right: 0; top: 70px; height: 124px; background: rgba(6, 7, 10, 0.86); z-index: 3; }
 .sc-n { position: absolute; left: 24px; top: 12px; line-height: 1; color: #ffd21f; white-space: nowrap; }
 .sc-c { position: absolute; left: 24px; top: 94px; font: 700 13px/1 "Courier New", ui-monospace, monospace; letter-spacing: 0.23em; text-transform: uppercase; color: #fff; }
-.sc-bot { position: absolute; left: 0; right: 0; bottom: 0; height: 80px; background: rgba(6, 7, 10, 0.82); z-index: 3; }
-.sc-col { position: absolute; top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.sc-bot { position: absolute; left: 0; right: 0; bottom: 0; height: 100px; background: rgba(6, 7, 10, 0.82); z-index: 3; }
+.sc-col { position: absolute; top: 10px; display: flex; flex-direction: column; gap: 6px; }
 .sc-k { font: 700 12px/1 "Courier New", ui-monospace, monospace; letter-spacing: 0.17em; text-transform: uppercase; color: #9fb0b0; }
 .sc-v { line-height: 1; white-space: nowrap; color: #fff; }
 .sc-y { color: #ffd21f; }
@@ -365,5 +366,7 @@
 /* ---- Resumen de pareja: dos círculos que se solapan ---- */
 .pr-vn { position: absolute; z-index: 3; width: 170px; height: 170px; border-radius: 50%; transition: left 1.1s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .pr-vname { position: absolute; z-index: 3; width: 130px; text-align: center; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
-.pr-chip { position: absolute; z-index: 3; width: 152px; box-sizing: border-box; padding: 12px 8px; border-radius: 14px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; text-align: center; white-space: nowrap; background: rgba(0, 0, 0, 0.55); color: #fff; border: 1.5px solid rgba(255, 255, 255, 0.45); }
+.pr-chip { position: absolute; z-index: 3; width: 152px; box-sizing: border-box; padding: 12px 4px; border-radius: 14px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; text-align: center; white-space: nowrap; background: rgba(0, 0, 0, 0.55); color: #fff; border: 1.5px solid rgba(255, 255, 255, 0.45); }
 .pr-chip.ag { background: #3ddba0; color: #06281c; border-color: #3ddba0; }
+
+.pl-up .pl-v, .pl-up .pl-l { color: #ffd21f; }

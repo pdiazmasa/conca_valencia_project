@@ -513,6 +513,7 @@ function CalcScreen({ probe, answer, real, active, onNumbers }: { probe: Probe; 
         <br />
         your <i>plan</i>…
       </div>
+      <div className="cc-q ws-in" style={delay(".45s")}>{probe.question}</div>
       <button type="button" className="ws-pill cc-num ws-in" data-nohit style={delay("1s")} onClick={onNumbers}>Show me the numbers</button>
       <div className="cc-body">
         <div className="cc-sol" />
@@ -964,6 +965,12 @@ const BT_CREAM = "#f3e8d3";
 const BT_BG = "#1e2024";
 
 // Fondos de los pasos con los colores de las barras de "Score by area": verde, amarillo, rojo.
+// Si la descripción es larga, se queda con la primera idea (antes de "to raise…", "toward…", "so that…").
+function shortAction(t: string) {
+  if (t.length <= 92) return t;
+  const k = t.search(/ (to raise|toward|towards|so that|in order to)\b/i);
+  return k > 24 ? t.slice(0, k) : t;
+}
 // ink = texto principal; ttl = título; sub = descripción; pillBg/pillFg = píldora de puntos.
 const BT_PALS = [
   { bg: "#14966a", sh: "#0a4d38", ink: "#fff", ttl: "#ffd21f", sub: "#e4fff3", pillBg: "#050505", pillFg: "#ffd21f" },
@@ -1031,7 +1038,7 @@ function MoveScreen({ moves, i, active }: { moves: ScoreT["moves"]; i: number; a
   const bot = BY + BHT - 18;
   const hh = (v: number) => (ih * Math.max(0, Math.min(100, v))) / 100;
   const big = btLines(m.title, 16) > 2;
-  const tSize = big ? 22 : 27;
+  const tSize = big ? 20 : 27;
 
   useEffect(() => {
     if (!active) return;
@@ -1082,11 +1089,11 @@ function MoveScreen({ moves, i, active }: { moves: ScoreT["moves"]; i: number; a
         </g>
       </svg>
       <div className="ws-lab bt-lab ws-in" style={{ ...delay(".1s"), color: PAL.ttl }}>Next step {i + 1} of {n}</div>
-      <div className="bt-ttl ws-in" style={{ ...delay(".3s"), top: big ? 58 : 62, fontSize: tSize, color: PAL.ttl, WebkitTextStrokeColor: PAL.ttl }}>{m.title}</div>
+      <div className="bt-ttl ws-in" style={{ ...delay(".3s"), top: big ? 54 : 62, fontSize: tSize, color: PAL.ttl, WebkitTextStrokeColor: PAL.ttl }}>{m.title}</div>
       <div className="bt-num ws-in" style={{ ...delay(".7s"), left: 202, top: 276, fontSize: String(m.scoreAfter).length > 2 ? 78 : 112, color: PAL.ink }}><span ref={numEl}>{m.scoreBefore}</span></div>
       <div className="bt-eff ws-in" style={{ ...delay("1s"), left: 202, top: 406, width: 134, color: PAL.ink, borderColor: PAL.ink }}>Effort · {m.effort}</div>
-      <div className="bt-pill ws-in" style={{ ...delay("1.4s"), left: 202, top: 448, width: 134, background: PAL.pillBg, color: PAL.pillFg, ...(gain > 0 ? {} : { fontSize: 11, letterSpacing: "0.04em" }) }}>{gain > 0 ? `+${gain} points` : "Better together"}</div>
-      <p className="bt-sub ws-in" style={{ ...delay(".5s"), top: 556, fontSize: 12.5, color: PAL.sub }}>{m.action.split(" — ")[0]}</p>
+      <div className="bt-pill ws-in" style={{ ...delay("1.4s"), left: 202, top: 448, width: 134, background: PAL.pillBg, color: PAL.pillFg, ...(gain > 0 ? {} : { fontSize: 11, letterSpacing: "0.04em" }) }}>{gain > 0 ? `+${gain} point${gain === 1 ? "" : "s"}` : "Better together"}</div>
+      <p className="bt-sub ws-in" style={{ ...delay(".5s"), top: 556, fontSize: 12.5, color: PAL.sub }}>{shortAction(m.action.split(" — ")[0])}</p>
     </Slide>
   );
 }
@@ -1292,10 +1299,11 @@ function LifeScreen({ kicker, kind, have, rec, word, active }: { kicker: string;
 // Cinco siluetas "expuestas" vistas por una cámara térmica (cabeza, torso, brazos y piernas con distinta temperatura).
 const FIG: [number, number][] = [[70, 222], [180, 222], [290, 222], [125, 384], [235, 384]];
 
-function ScanScreen({ kicker, kind, have, rec, word, active }: { kicker: string; kind: StatT["kind"]; have: number; rec: number; word: string; active: boolean }) {
+function ScanScreen({ kicker, kind, have, rec, word, hl = "You have", active }: { kicker: string; kind: StatT["kind"]; have: number; rec: number; word: string; hl?: string; active: boolean }) {
   const r = useRef<HTMLDivElement>(null);
   const { a, b, h, hv, rv, dv } = useVsNumbers(active, kind, have, rec, r);
   const uid = useId().replace(/:/g, "");
+  const covered = have >= rec;
   return (
     <Slide bg="#05030f" fg="#fff" active={active} r={r}>
       <svg className="sc-svg" viewBox="0 0 360 640" width="360" height="640" aria-hidden="true">
@@ -1343,10 +1351,10 @@ function ScanScreen({ kicker, kind, have, rec, word, active }: { kicker: string;
           const y0 = y - 4;
           return (
             <g key={i} className="sc-bx" style={{ animationDelay: `${1.2 + i * 0.35}s` }}>
-              <rect x={x0} y={y0} width="66" height="140" fill="none" stroke="#ffd21f" strokeWidth="1.6" />
-              <text x={x0} y={y0 - 5} className="sc-mono" fontSize="9.5" fill="#ffd21f">{`EXPOSED_0${i + 1}XY`}</text>
-              <rect x={x0} y={y0 + 126} width="66" height="14" fill="#ffd21f" />
-              <text x={x0 + 4} y={y0 + 136} className="sc-mono" fontSize="8.5" fill="#111">UNPROTECTED</text>
+              <rect x={x0} y={y0} width="66" height="140" fill="none" stroke={covered ? "#3ddba0" : "#ffd21f"} strokeWidth="1.6" />
+              <text x={x0} y={y0 - 5} className="sc-mono" fontSize="9.5" fill={covered ? "#3ddba0" : "#ffd21f"}>{`${covered ? "COVERED" : "EXPOSED"}_0${i + 1}XY`}</text>
+              <rect x={x0} y={y0 + 126} width="66" height="14" fill={covered ? "#3ddba0" : "#ffd21f"} />
+              <text x={x0 + 4} y={y0 + 136} className="sc-mono" fontSize="8.5" fill="#111">{covered ? "PROTECTED" : "UNPROTECTED"}</text>
             </g>
           );
         })}
@@ -1363,7 +1371,7 @@ function ScanScreen({ kicker, kind, have, rec, word, active }: { kicker: string;
       </div>
       <div className="sc-bot ws-in" style={delay("1s")}>
         <div className="sc-col" style={{ left: 24 }}>
-          <span className="sc-k">You have</span>
+          <span className="sc-k">{hl}</span>
           <span ref={a} className="ws-A sc-v" style={{ fontSize: fit(hv.big.length + 1, 34, 150) }}>{hv.big + pctSuf(hv.small)}</span>
         </div>
         <div className="sc-col" style={{ left: 200 }}>
@@ -1379,14 +1387,18 @@ function ScanScreen({ kicker, kind, have, rec, word, active }: { kicker: string;
 const PIL_BASE = 648;
 const PIL_MAX = 310;
 
-function PillarScreen({ kicker, kind, have, rec, word, active }: { kicker: string; kind: StatT["kind"]; have: number; rec: number; word: string; active: boolean }) {
+function PillarScreen({ kicker, kind, have, rec, word, hl = "You have", active }: { kicker: string; kind: StatT["kind"]; have: number; rec: number; word: string; hl?: string; active: boolean }) {
   const r = useRef<HTMLDivElement>(null);
   const { a, b, h, on, hv, rv, dv } = useVsNumbers(active, kind, have, rec, r);
   const uid = useId().replace(/:/g, "");
   const max = Math.max(Math.abs(have), Math.abs(rec)) || 1;
-  const ht = (v: number) => Math.max(46, (Math.max(0, v) / max) * PIL_MAX);
+  // Si en alguna barra el texto no cabe debajo, las dos lo llevan encima del muñeco; si cabe en las dos, las dos dentro.
+  // Con el texto encima, la barra más alta se acorta para que su texto nunca toque el título (que acaba hacia y=216).
+  const h0 = (v: number) => Math.max(46, (Math.max(0, v) / max) * PIL_MAX);
+  const up = [have, rec].some((v) => PIL_BASE - h0(v) + 96 + 64 > 628);
+  const ht = (v: number) => (up ? Math.max(46, (Math.max(0, v) / max) * (PIL_BASE - 216 - 170)) : h0(v));
   const P = [
-    { cx: 108, top: PIL_BASE - ht(have), flip: true, ref: a, v: hv, lab: "You have", id: "p1" },
+    { cx: 108, top: PIL_BASE - ht(have), flip: true, ref: a, v: hv, lab: hl, id: "p1" },
     { cx: 252, top: PIL_BASE - ht(rec), flip: false, ref: b, v: rv, lab: word, id: "p2" },
   ];
   const num = (len: number, base: number, width: number) => Math.min(base, width / (Math.max(len, 1) * 0.6));
@@ -1436,7 +1448,7 @@ function PillarScreen({ kicker, kind, have, rec, word, active }: { kicker: strin
         <span className="pl-cap">{vsCaption(kind, kicker, word, have, rec, false)}</span>
       </div>
       {P.map((p, i) => (
-        <div key={p.id} className="pl-n ws-in" style={{ ...delay(`${1.3 + i * 0.2}s`), left: p.cx - 56, top: p.top + 96 }}>
+        <div key={p.id} className={`pl-n ws-in${up ? " pl-up" : ""}`} style={{ ...delay(`${1.3 + i * 0.2}s`), left: p.cx - 56, top: up ? p.top - 170 : p.top + 96 }}>
           <span ref={p.ref} className="pl-v" style={{ fontSize: num(p.v.big.length + pctSuf(p.v.small).length, 33, 100) }}>{p.v.big + pctSuf(p.v.small)}</span>
           <span className="pl-l">{p.lab}</span>
         </div>
@@ -1812,6 +1824,9 @@ function PairScreen({ probe, couple, pi, total, active, onNumbers }: { probe: Pr
   const xb = X(b);
   const xp = real === null ? 336 : X(real);
   const lx = (x: number) => Math.max(62, Math.min(298, x));
+  const planTxt = real === null ? "Never runs out" : formatValue(probe.input, real);
+  const planHw = Math.max(planTxt.length, 4) * 5.6;
+  const lxp = Math.max(planHw + 12, Math.min(348 - planHw, xp));
   const T = 366;
   const same = Math.abs(xa - xb) < 6;
   const close = !same && Math.abs(xa - xb) < 84;
@@ -1841,7 +1856,7 @@ function PairScreen({ probe, couple, pi, total, active, onNumbers }: { probe: Pr
       <div className="pr-badge ws-in" style={{ ...delay(".9s"), top: 200, background: agree ? "#050505" : "#ffd21f", color: agree ? "#ffd21f" : "#16181d" }}>{agree ? "You agree" : "You see it differently"}</div>
       <div className="pr-trk ws-in" style={{ ...delay(".5s"), top: T, background: "rgba(0,0,0,.55)", boxShadow: "0 0 0 1.5px rgba(255,255,255,.35)" }} />
       <div className="pr-plan" style={{ left: xp, top: T - 62, height: 69, transform: on ? "scaleY(1)" : "scaleY(0)" }} />
-      <div className="pr-nm" style={{ left: lx(xp), top: T - 112, fontSize: 14, opacity: on ? 1 : 0 }}>Plan<br />{real === null ? "Never runs out" : formatValue(probe.input, real)}</div>
+      <div className="pr-nm" style={{ left: lxp, top: T - 112, fontSize: 14, opacity: on ? 1 : 0 }}>Plan<br />{planTxt}</div>
       <div className="pr-dot" style={{ left: on ? xa : 24, top: T, background: PR_A }} />
       <div className="pr-dot" style={{ left: on ? xb : 24, top: T, background: fx.b }} />
       {same ? (
@@ -1903,6 +1918,13 @@ function PairRecapScreen({ probes, couple, active }: { probes: Probe[]; couple: 
   );
 }
 
+// En pareja, "You have" pasa a ser el nombre de quien tiene el seguro (o "You both have" si es de los dos).
+function haveLabel(kicker: string, couple: boolean) {
+  if (!couple) return "You have";
+  const m = kicker.match(/\(([^)]+)\)/);
+  return m ? `${m[1]} has` : "You both have";
+}
+
 // ---- Una sección entera como historia ----
 type Screen = { k: "head" } | { k: "you" | "plan" | "gap"; probe: Probe; pi?: number; px?: boolean; paper?: { diff: string; variant: number }; answer?: number; real?: number | null; x?: Extra; pal?: Pal } | { k: "vs"; kicker: string; kind: StatT["kind"]; have: number; rec: number; word: string; variant: number } | { k: "ring"; stat: StatT; i: number } | { k: "mq"; stat: StatT; i: number } | { k: "lineup"; stats: StatT[] } | { k: "pair"; probe: Probe; pi: number } | { k: "recap" } | { k: "more" };
 
@@ -1926,7 +1948,7 @@ export function WrappedStory({ section, probes, answers, hasMore, startAt, coupl
     let vsN = 0;
     // Después las cifras clave de la sección, con los mismos formatos.
     // En pareja, "(you)" y "(partner)" pasan a ser los nombres de cada uno.
-    const nm = (l: string) => (couple ? l.replace(/\(you\)/i, `(${couple.people[0].name.split(" ")[0]})`).replace(/\(partner\)/i, `(${couple.people[1].name.split(" ")[0]})`) : l);
+    const nm = (l: string) => (couple ? l.replace(/\(you\)/i, `(${couple.people[0].name.split(" ")[0]})`).replace(/\(partner\)/i, `(${couple.people[1].name.split(" ")[0]})`) : l.replace(/\s*\((you|partner)\)/i, ""));
     const st = section.stats.map((x) => ({ ...x, label: nm(x.label) }));
     const skip = new Set<number>();
     const rest: { s: StatT; i: number }[] = [];
@@ -1970,6 +1992,8 @@ export function WrappedStory({ section, probes, answers, hasMore, startAt, coupl
     const sc = screens[i];
     if (!sc) return false;
     if (sc.k === "you") return true;
+    // La pantalla de avisos (píxel) también es de fondo claro: el "Tap" y la barra deben ir oscuros.
+    if (sc.k === "gap" && sc.px && !sc.x) return true;
     return false;
   };
   const render = (i: number, active: boolean, openSheet: (rows: Rows) => void, openMore: (tab?: string) => void) => {
@@ -1997,8 +2021,8 @@ export function WrappedStory({ section, probes, answers, hasMore, startAt, coupl
     if (sc.k === "ring") return <RingScreen uid={`${section.id}-${sc.i}`} kicker={section.title} label={sc.stat.label} value={sc.stat.value as number} canHold={false} active={active} fire={section.id === "debt" && i === screens.findIndex((q) => q.k === "ring")} />;
     if (sc.k === "vs") {
       if (sc.variant % 3 === 1) return <LifeScreen kicker={sc.kicker} kind={sc.kind} have={sc.have} rec={sc.rec} word={sc.word} active={active} />;
-      if (sc.variant % 3 === 2) return <ScanScreen kicker={sc.kicker} kind={sc.kind} have={sc.have} rec={sc.rec} word={sc.word} active={active} />;
-      return <PillarScreen kicker={sc.kicker} kind={sc.kind} have={sc.have} rec={sc.rec} word={sc.word} active={active} />;
+      if (sc.variant % 3 === 2) return <ScanScreen kicker={sc.kicker} kind={sc.kind} have={sc.have} rec={sc.rec} word={sc.word} hl={haveLabel(sc.kicker, !!couple)} active={active} />;
+      return <PillarScreen kicker={sc.kicker} kind={sc.kind} have={sc.have} rec={sc.rec} word={sc.word} hl={haveLabel(sc.kicker, !!couple)} active={active} />;
     }
     if (sc.k === "mq") return <MarqueeScreen kicker={section.title} label={sc.stat.label} kind={sc.stat.kind} value={sc.stat.value} variant={sc.i + 1} active={active} />;
     if (sc.k === "lineup") return <LineupScreen kicker={section.title} stats={sc.stats} active={active} />;
