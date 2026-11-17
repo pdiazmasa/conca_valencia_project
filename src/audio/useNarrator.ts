@@ -23,13 +23,22 @@ export function useNarrator() {
 
   const halt = useCallback(() => {
     runId.current++;
-    audioRef.current?.pause();
+    const a = audioRef.current;
+    if (a) {
+      // Se suelta el audio sin que sus eventos puedan disparar nada más (ni voz de reserva).
+      a.onended = null;
+      a.onerror = null;
+      a.pause();
+    }
     audioRef.current = null;
     if ("speechSynthesis" in window) window.speechSynthesis.cancel();
   }, []);
 
   const playClip = useCallback((clip: Clip, id: number) => new Promise<void>((resolve, reject) => {
+    const current = () => runId.current === id;
     const fallback = () => {
+      // Si ya hay otra reproducción en marcha (o se ha parado), no se lee nada con la voz del navegador.
+      if (!current()) return resolve();
       const voice = pickEnglishVoice();
       if (!voice) return resolve();
       const u = new SpeechSynthesisUtterance(clip.text);
@@ -45,9 +54,13 @@ export function useNarrator() {
     a.playbackRate = rateRef.current;
     audioRef.current = a;
     a.onended = () => resolve();
-    a.onerror = () => (runId.current === id ? fallback() : resolve());
+    a.onerror = () => (current() ? fallback() : resolve());
     a.play().catch((e: unknown) => {
-      if ((e as Error)?.name === "NotAllowedError") reject(e);
+      const name = (e as Error)?.name;
+      // Un play() interrumpido por una pausa o por otra reproducción (p. ej. React.StrictMode en desarrollo
+      // ejecuta cada efecto dos veces) no es un fallo: sin esto, la voz del navegador leía el mismo texto encima del mp3.
+      if (!current() || name === "AbortError") return resolve();
+      if (name === "NotAllowedError") reject(e);
       else fallback();
     });
   }), []);
