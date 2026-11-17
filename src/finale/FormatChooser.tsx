@@ -114,15 +114,15 @@ function LifelineIllustration() {
             cx={18 + i * 9.6}
             cy={45}
             r={3.6}
-            fill={i < 7 ? "#1d1d1f" : i === 7 ? "#e7000b" : "#ffffff"}
-            stroke={i < 7 ? "#1d1d1f" : i === 7 ? "#e7000b" : "#d6d6d6"}
+            fill={i < 7 ? "#1d1d1f" : i === 7 ? "#0071e3" : "#ffffff"}
+            stroke={i < 7 ? "#1d1d1f" : i === 7 ? "#0071e3" : "#d6d6d6"}
             strokeWidth="1.4"
           />
         ))}
       </g>
       <g className="fin-art-life-flag">
-        <line x1="85.2" y1="45" x2="85.2" y2="24" stroke="#e7000b" strokeWidth="1.6" strokeLinecap="round" />
-        <rect x="85.2" y="20" width="18" height="9" rx="3" fill="#e7000b" />
+        <line x1="85.2" y1="45" x2="85.2" y2="24" stroke="#0071e3" strokeWidth="1.6" strokeLinecap="round" />
+        <rect x="85.2" y="20" width="18" height="9" rx="3" fill="#0071e3" />
       </g>
       <line x1="18" y1="62" x2="44" y2="62" stroke="#707070" strokeWidth="2" strokeLinecap="round" />
       <line x1="18" y1="69" x2="34" y2="69" stroke="#d6d6d6" strokeWidth="2" strokeLinecap="round" />

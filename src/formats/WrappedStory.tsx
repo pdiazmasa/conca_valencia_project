@@ -132,7 +132,7 @@ const pctSuf = (small: string) => (small === "%" ? "%" : "");
 const withSuf = (fmt: (v: number) => string, small: string) => (v: number) => fmt(v) + pctSuf(small);
 
 // Anillo para una proporción. En Retirement, mantener pulsado enseña la parte que falta.
-function RingScreen({ uid, kicker, label, value, canHold, active, fire }: { uid: string; kicker: string; label: string; value: number; canHold: boolean; active: boolean; fire?: boolean }) {
+function RingScreen({ uid, kicker, label, value, canHold, active, fire, blue }: { uid: string; kicker: string; label: string; value: number; canHold: boolean; active: boolean; fire?: boolean; blue?: boolean }) {
   const r = useRef<HTMLDivElement>(null);
   const numEl = useRef<HTMLSpanElement>(null);
   const last = useRef(0);
@@ -175,9 +175,9 @@ function RingScreen({ uid, kicker, label, value, canHold, active, fire }: { uid:
   };
   useEffect(() => () => window.clearTimeout(timer.current), []);
   return (
-    <Slide bg={fire ? "#080503" : "#0b0720"} fg="#fff" active={active} r={r}>
-      <div className="ws-blob" style={{ width: 320, height: 320, background: fire ? "#ff7a00" : "#7c3aed", left: -110, top: 380, opacity: fire ? 0.55 : 0.65 }} />
-      <div className="ws-blob" style={{ width: 260, height: 260, background: fire ? "#ffc21a" : "#ec4899", right: -90, top: -70, opacity: fire ? 0.42 : 0.5, animationDelay: "-4s" }} />
+    <Slide bg={fire ? "#080503" : blue ? "#040a1c" : "#0b0720"} fg="#fff" active={active} r={r}>
+      <div className="ws-blob" style={{ width: 320, height: 320, background: fire ? "#ff7a00" : blue ? "#2347f5" : "#7c3aed", left: -110, top: 380, opacity: fire ? 0.55 : 0.65 }} />
+      <div className="ws-blob" style={{ width: 260, height: 260, background: fire ? "#ffc21a" : blue ? "#1d4ed8" : "#ec4899", right: -90, top: -70, opacity: fire ? 0.42 : blue ? 0.6 : 0.5, animationDelay: "-4s" }} />
       <div className="ws-lab ws-in" style={delay(".1s")}>{kicker}</div>
       <div
         className="ws-rw"
@@ -200,16 +200,16 @@ function RingScreen({ uid, kicker, label, value, canHold, active, fire }: { uid:
         <svg viewBox="-150 -150 300 300">
           <defs>
             <linearGradient id={`ws-g-${uid}`} x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor={fire ? "#ffe066" : "#22d3ee"} />
-              <stop offset=".5" stopColor={fire ? "#ff9a1a" : "#8b5cf6"} />
-              <stop offset="1" stopColor={fire ? "#d9480f" : "#ff4d8d"} />
+              <stop offset="0" stopColor={fire ? "#ffe066" : blue ? "#a5f3fc" : "#22d3ee"} />
+              <stop offset=".5" stopColor={fire ? "#ff9a1a" : blue ? "#38bdf8" : "#8b5cf6"} />
+              <stop offset="1" stopColor={fire ? "#d9480f" : blue ? "#2347f5" : "#ff4d8d"} />
             </linearGradient>
           </defs>
           <circle r="100" fill="none" stroke="rgba(255,255,255,.1)" strokeWidth="38" />
           {canHold && (
             <circle r="100" fill="none" stroke="#ff4040" strokeWidth="38" strokeDasharray={`${(1 - frac) * C} ${C}`} strokeDashoffset={hold ? 0 : (1 - frac) * C} transform={`rotate(${-90 + frac * 360})`} style={{ transition: "stroke-dashoffset .9s cubic-bezier(.2,.8,.2,1)" }} />
           )}
-          <circle r="100" fill="none" stroke={`url(#ws-g-${uid})`} strokeWidth="38" strokeLinecap="round" strokeDasharray={C} strokeDashoffset={filled ? C * (1 - frac) : C} transform="rotate(-90)" style={{ filter: fire ? "drop-shadow(0 0 16px rgba(255,140,30,.85))" : "drop-shadow(0 0 16px rgba(139,92,246,.9))", opacity: hold ? 0.25 : 1, transition: "stroke-dashoffset 1.7s cubic-bezier(.2,.8,.2,1),opacity .4s" }} />
+          <circle r="100" fill="none" stroke={`url(#ws-g-${uid})`} strokeWidth="38" strokeLinecap="round" strokeDasharray={C} strokeDashoffset={filled ? C * (1 - frac) : C} transform="rotate(-90)" style={{ filter: fire ? "drop-shadow(0 0 16px rgba(255,140,30,.85))" : blue ? "drop-shadow(0 0 16px rgba(56,130,255,.9))" : "drop-shadow(0 0 16px rgba(139,92,246,.9))", opacity: hold ? 0.25 : 1, transition: "stroke-dashoffset 1.7s cubic-bezier(.2,.8,.2,1),opacity .4s" }} />
         </svg>
         <div className="ws-cent">
           <div>
@@ -675,13 +675,29 @@ function FluidScreen({ probe, answer, real, pi, active, onNumbers }: { probe: Pr
       const px = c.getImageData(0, 0, cv.width, cv.height).data;
       let sum = 0;
       let cnt = 0;
+      const col = new Array<number>(cv.width).fill(0);
       for (let y = 0; y < cv.height; y++) {
         for (let x = 0; x < cv.width; x++) {
           if (px[(y * cv.width + x) * 4 + 3] > 128) {
             sum += x;
             cnt++;
+            col[x]++;
           }
         }
+      }
+      // Un solo "1": se centra el palo (las columnas más altas), que es lo que el ojo alinea con la unidad de debajo.
+      if (big === "1" && cnt) {
+        const mx = Math.max(...col);
+        let a = 0;
+        let n = 0;
+        col.forEach((v, x) => {
+          if (v >= mx * 0.9) {
+            a += x;
+            n++;
+          }
+        });
+        setDx(n ? -(a / n - cv.width / 2) : 0);
+        return;
       }
       setDx(cnt ? -(sum / cnt - cv.width / 2) : 0);
     };
@@ -963,6 +979,138 @@ function PillarsScreen({ pillars, active }: { pillars: ScoreT["pillars"]; active
   );
 }
 
+// El ranking: las cinco áreas de la mejor a la peor, reveladas en cuenta atrás (del último puesto al primero). Los empates comparten puesto.
+function RankScreen({ pillars, active }: { pillars: ScoreT["pillars"]; active: boolean }) {
+  const r = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(0);
+  const list = useMemo(() => {
+    const a = [...pillars].sort((x, y) => y.score - x.score).map((p) => ({ ...p, rank: 0 }));
+    a.forEach((x, i) => { x.rank = i === 0 || x.score !== a[i - 1].score ? i + 1 : a[i - 1].rank; });
+    return a;
+  }, [pillars]);
+  const n = list.length;
+
+  useEffect(() => {
+    if (!active) return;
+    if (reduced()) { setShown(n); return; }
+    const ts = list.map((_, k) => window.setTimeout(() => setShown(k + 1), 500 + k * 650));
+    return () => {
+      ts.forEach((t) => window.clearTimeout(t));
+      setShown(0);
+    };
+  }, [active]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const lo = list.length ? list[n - 1].score : 0;
+  const badge = (i: number) => {
+    const p = list[i];
+    if (p.rank === 1) return list.filter((q) => q.rank === 1).length > 1 ? "Joint strongest" : "Strongest";
+    if (p.score === lo) return lo >= 60 ? "Room to grow" : list.filter((q) => q.score === lo).length > 1 ? "Needs attention" : "Needs the most attention";
+    return "";
+  };
+  const short = (nm: string) => (/liquidity|emergency/i.test(nm) ? "Emergency fund" : /insurance/i.test(nm) ? "Insurance" : /savings/i.test(nm) ? "Savings & cash flow" : nm);
+
+  return (
+    <Slide bg="#050314" fg="#fff" active={active} r={r}>
+      <div className="fl-blob" style={{ width: 300, height: 300, left: -80, top: 40, background: "#1f3dff", animation: "fl-d1 9s ease-in-out infinite" }} />
+      <div className="fl-blob" style={{ width: 280, height: 280, right: -100, top: 310, background: "#8b2cf5", animation: "fl-d2 11s ease-in-out infinite" }} />
+      <div className="fl-blob" style={{ width: 220, height: 220, left: 60, bottom: -60, background: "#bfe9ff", opacity: 0.8, animation: "fl-d3 10s ease-in-out infinite" }} />
+      <div className="fl-blob" style={{ width: 240, height: 240, right: -20, top: -60, background: "#0a0620", animation: "fl-d1 13s ease-in-out infinite" }} />
+      <div className="fl-vig" />
+      <div className="fl-grain" />
+      <div className="ws-lab ws-in" style={delay(".1s")}>Your ranking</div>
+      <div className="rk-ttl ws-A ws-in" style={delay(".2s")}>Strongest<br />to weakest</div>
+      {list.map((p, i) => {
+        const on = shown >= n - i;
+        const c = btCol(p.score);
+        return (
+          <div key={p.name} className={`rk-row${i === 0 ? " rk-top" : ""}${on ? " on" : ""}`} style={{ top: 168 + i * 84 + (i === 0 ? 0 : 10) }}>
+            <div className="rk-n ws-A" style={{ color: i === 0 ? "#fff" : "rgba(255,255,255,.67)" }}>{p.rank}</div>
+            <div className="rk-nm">{short(p.name)}</div>
+            <div className="rk-sc ws-A" style={{ color: c }}>{Math.round(p.score)}</div>
+            <div className="rk-trk"><div className="rk-fil" style={{ width: on ? `${Math.max(p.score, 3)}%` : "0%", background: c }} /></div>
+            <div className="rk-bd" style={{ color: c }}>{badge(i)}</div>
+          </div>
+        );
+      })}
+    </Slide>
+  );
+}
+
+// El primer paso: "empieza aquí". El paso de esfuerzo no alto que más sube la nota, con cuenta atrás de 30 días,
+// y debajo los demás pasos del plan para que se vea que hay más por hacer.
+const EFFORT_RANK: Record<string, number> = { low: 0, medium: 1, high: 2 };
+function StartScreen({ s, active }: { s: ScoreT; active: boolean }) {
+  const r = useRef<HTMLDivElement>(null);
+  const numEl = useRef<HTMLSpanElement>(null);
+  const scEl = useRef<HTMLSpanElement>(null);
+  const [lit, setLit] = useState(0);
+  const { first, rest } = useMemo(() => {
+    const gain = (m: ScoreT["moves"][number]) => m.scoreAfter - m.scoreBefore;
+    const pool = s.moves.some((m) => m.effort !== "high") ? s.moves.filter((m) => m.effort !== "high") : s.moves;
+    const best = [...pool].sort((a, b) => gain(b) - gain(a) || (EFFORT_RANK[a.effort] ?? 1) - (EFFORT_RANK[b.effort] ?? 1))[0];
+    return { first: best, rest: s.moves.filter((m) => m !== best) };
+  }, [s]);
+  const n = s.moves.length;
+  const g = first ? first.scoreAfter - first.scoreBefore : 0;
+
+  useEffect(() => {
+    if (!active) return;
+    if (reduced()) {
+      setLit(30);
+      if (numEl.current) numEl.current.textContent = "0";
+      if (scEl.current && first) scEl.current.textContent = String(first.scoreAfter);
+      return;
+    }
+    const ts = Array.from({ length: 30 }, (_, k) => window.setTimeout(() => setLit(k + 1), 900 + k * 63));
+    const stopN = tweenText(numEl.current, round, 30, 0, 900, 1900);
+    const stopS = first ? tweenText(scEl.current, round, first.scoreBefore, first.scoreAfter, 3100, 900) : () => {};
+    return () => {
+      ts.forEach((t) => window.clearTimeout(t));
+      stopN();
+      stopS();
+      setLit(0);
+    };
+  }, [active]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!first) return null;
+  const comb = s.combined;
+  return (
+    <Slide bg="#1a0a2e" fg="#fff" active={active} r={r}>
+      <div className="fl-blob" style={{ width: 320, height: 320, left: -90, bottom: -200, background: "#ff8a3d", animation: "n3-rise 9s ease-in-out infinite alternate" }} />
+      <div className="fl-blob" style={{ width: 300, height: 300, right: -110, bottom: -240, background: "#ff3d6e", animation: "n3-rise 11s ease-in-out infinite alternate-reverse" }} />
+      <div className="fl-blob" style={{ width: 240, height: 240, left: 70, bottom: -260, background: "#ffd21f", opacity: 0.85, animation: "n3-rise 8s ease-in-out infinite alternate" }} />
+      <div className="fl-blob" style={{ width: 260, height: 260, right: -40, top: -80, background: "#2a0a3a", animation: "n3-m1 10s ease-in-out infinite" }} />
+      <div className="fl-vig" />
+      <div className="fl-grain" />
+      <div className="ws-lab ws-in" style={delay(".1s")}>Step 1 of {n}</div>
+      <div className="n3-ttl ws-A ws-in" style={delay(".2s")}>Start your<br />improvement here</div>
+      <div className="n3-num ws-A"><span ref={numEl}>30</span></div>
+      <div className="n3-days ws-in" style={delay(".3s")}>DAYS</div>
+      {Array.from({ length: 30 }, (_, k) => (
+        <i key={k} className={`n3-dot${k < lit ? (k === 0 ? " s" : k === 29 ? " e" : " on") : ""}`} style={{ left: 27 + (k % 15) * 21, top: 314 + Math.floor(k / 15) * 22 }} />
+      ))}
+      <div className="n3-act ws-in" style={delay(".5s")}>{shortAction(first.action)}</div>
+      <div className="n3-chip ws-in" style={delay("3.1s")}>
+        {g > 0 ? <>+{g} point{g === 1 ? "" : "s"} · score </> : <>Score </>}
+        <span ref={scEl}>{first.scoreBefore}</span>
+      </div>
+      {rest.length > 0 && <div className="n3-lt ws-in" style={delay("3.8s")}>THEN</div>}
+      {rest.slice(0, 2).map((m, j) => (
+        <div key={m.title} className="n3-then ws-in" style={{ ...delay(`${4 + j * 0.35}s`), top: 518 + j * 32 }}>
+          <b className="ws-A">{j + 2}</b>
+          <span>{m.title}</span>
+          <em>{m.effort}</em>
+        </div>
+      ))}
+      {rest.length > 0 && (
+        <div className="n3-all ws-in" style={delay("4.9s")}>
+          {comb ? `${comb.moves.length === n ? `ALL ${n} STEPS` : `${comb.moves.length} STEPS TOGETHER`} → SCORE ${comb.scoreAfter}` : `${rest.length} MORE STEP${rest.length === 1 ? "" : "S"} TO GO`}
+        </div>
+      )}
+    </Slide>
+  );
+}
+
 // ---- Próximos pasos como baterías: cada paso carga la nota desde donde está hasta lo que subiría (los pasos no se suman) ----
 const BT_PAD = 8;
 const btCol = (v: number) => (v < 30 ? "#ff7b4d" : v < 60 ? "#fcd34d" : "#3ddba0");
@@ -989,9 +1137,9 @@ function shortAction(t: string) {
 }
 // ink = texto principal; ttl = título; sub = descripción; pillBg/pillFg = píldora de puntos.
 const BT_PALS = [
-  { bg: "#14966a", sh: "#0a4d38", ink: "#fff", ttl: "#ffd21f", sub: "#e4fff3", pillBg: "#050505", pillFg: "#ffd21f" },
-  { bg: "#f2b02a", sh: "#8f5206", ink: "#16181d", ttl: "#16181d", sub: "#3a2605", pillBg: "#16181d", pillFg: "#ffd21f" },
-  { bg: "#e04632", sh: "#7a1410", ink: "#fff", ttl: "#ffd21f", sub: "#ffe6e0", pillBg: "#050505", pillFg: "#ffd21f" },
+  { bg: "#14966a", sh: "#0a4d38", mid: "#117a58", lt: "#2bd49a", ink: "#fff", ttl: "#ffd21f", sub: "#e4fff3", pillBg: "#050505", pillFg: "#ffd21f" },
+  { bg: "#f2b02a", sh: "#8f5206", mid: "#c9840f", lt: "#ffe08a", ink: "#16181d", ttl: "#16181d", sub: "#3a2605", pillBg: "#16181d", pillFg: "#ffd21f" },
+  { bg: "#e04632", sh: "#7a1410", mid: "#b52a1c", lt: "#ff9a7a", ink: "#fff", ttl: "#ffd21f", sub: "#ffe6e0", pillBg: "#050505", pillFg: "#ffd21f" },
 ];
 
 // Cuántas líneas ocupa un título al partirlo por palabras (aprox. por ancho de línea en caracteres).
@@ -1008,14 +1156,14 @@ const btLines = (text: string, per: number) => {
 };
 
 // Una batería plana con celdas: el relleno se pinta sobre el fondo y las celdas son huecos oscuros encima.
-function Battery({ id, x, y, w, h, before, after, cur, on, done, ghost }: { id: string; x: number; y: number; w: number; h: number; before: number; after: number; cur: boolean; on: boolean; done: boolean; ghost: boolean }) {
+function Battery({ id, x, y, w, h, before, after, cur, on, done, ghost, inner = BT_BG, sep = BT_BG }: { id: string; x: number; y: number; w: number; h: number; before: number; after: number; cur: boolean; on: boolean; done: boolean; ghost: boolean; inner?: string; sep?: string }) {
   const ih = h - 2 * BT_PAD - 6;
   const bot = y + BT_PAD + 3 + ih;
   const hh = (v: number) => (ih * Math.max(0, Math.min(100, v))) / 100;
   return (
     <g opacity={cur ? 1 : 0.45}>
       <rect x={x + w / 2 - 12} y={y - 14} width="24" height="16" rx="5" fill={BT_CREAM} />
-      <rect x={x + 2.5} y={y + 2.5} width={w - 5} height={h - 5} rx="15" fill={BT_BG} stroke={BT_CREAM} strokeWidth="5" />
+      <rect x={x + 2.5} y={y + 2.5} width={w - 5} height={h - 5} rx="15" fill={inner} stroke={BT_CREAM} strokeWidth="5" />
       <clipPath id={id}><rect x={x + BT_PAD + 3} y={y + BT_PAD + 3} width={w - 2 * BT_PAD - 6} height={ih} rx="5" /></clipPath>
       <defs>
         <BtGrad id={`${id}b`} v={before} y1={bot - hh(before)} y2={bot} />
@@ -1026,7 +1174,7 @@ function Battery({ id, x, y, w, h, before, after, cur, on, done, ghost }: { id: 
         {cur && <rect className="bt-base" x={x} y={bot - hh(before)} width={w} height={hh(before)} fill={done ? `url(#${id}a)` : `url(#${id}b)`} />}
         {cur && <rect className={`bt-gain${on ? " bt-on" : ""}`} x={x} y={bot - hh(after)} width={w} height={Math.max(0, hh(after) - hh(before))} fill={done ? `url(#${id}a)` : "#fff"} />}
         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((k) => (
-          <rect key={k} x={x} y={y + BT_PAD + 3 + (ih * k) / 10 - 1.6} width={w} height="3.2" fill={BT_BG} />
+          <rect key={k} x={x} y={y + BT_PAD + 3 + (ih * k) / 10 - 1.6} width={w} height="3.2" fill={sep} />
         ))}
       </g>
     </g>
@@ -1081,15 +1229,29 @@ function MoveScreen({ moves, i, active }: { moves: ScoreT["moves"]; i: number; a
           <clipPath id={`bc${uid}`}><rect x={BX + 18} y={BY + 18} width={BW - 36} height={ih} rx="4" /></clipPath>
           <BtGrad id={`gb${uid}`} v={m.scoreBefore} y1={bot - hh(m.scoreBefore)} y2={bot} />
           <BtGrad id={`ga${uid}`} v={m.scoreAfter} y1={bot - hh(m.scoreAfter)} y2={bot} />
+          <linearGradient id={`fl${uid}`} gradientUnits="userSpaceOnUse" x1="0" y1={BY + 18} x2="0" y2={BY + 18 + 300} spreadMethod="repeat">
+            <stop offset="0" stopColor={SHADOW} />
+            <stop offset=".25" stopColor={PAL.mid} />
+            <stop offset=".5" stopColor={SHADOW} />
+            <stop offset=".75" stopColor={PAL.mid} />
+            <stop offset="1" stopColor={SHADOW} />
+            {!reduced() && <animateTransform attributeName="gradientTransform" type="translate" from="0 0" to="0 300" dur="9s" repeatCount="indefinite" />}
+          </linearGradient>
+          <filter id={`bl${uid}`} x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="9" /></filter>
         </defs>
         <rect x={BX + 16} y={BY + 16} width={BW} height={BHT} rx="18" fill={SHADOW} />
         <rect x={BX + 55} y={BY - 22 + 16} width="80" height="26" rx="7" fill={SHADOW} />
         <rect x={BX + 39} y={BY - 24} width="72" height="26" rx="7" fill={BT_CREAM} />
         <rect x={BX} y={BY} width={BW} height={BHT} rx="18" fill={SHADOW} stroke={BT_CREAM} strokeWidth="9" />
         <g clipPath={`url(#bc${uid})`}>
+          <rect x={BX} y={BY + 18} width={BW} height={ih} fill={`url(#fl${uid})`} />
+          <g filter={`url(#bl${uid})`}>
+            <ellipse className="n5-wob" cx={BX + BW / 2} cy={BY + 70} rx={BW * 0.55} ry="20" fill={PAL.lt} opacity=".35" />
+            <ellipse className="n5-wob" cx={BX + BW / 2} cy={BY + 190} rx={BW * 0.55} ry="20" fill={PAL.lt} opacity=".35" style={{ animationDelay: "-2s" }} />
+          </g>
           <rect className="bt-base" x={BX} y={bot - hh(m.scoreBefore)} width={BW} height={hh(m.scoreBefore)} fill={done ? `url(#ga${uid})` : `url(#gb${uid})`} />
           <rect className={`bt-gain${on ? " bt-on" : ""}`} x={BX} y={bot - hh(m.scoreAfter)} width={BW} height={Math.max(0, hh(m.scoreAfter) - hh(m.scoreBefore))} fill={done ? `url(#ga${uid})` : "#fff"} />
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((k) => (
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].filter((k) => BY + 18 + (ih * k) / 10 >= bot - hh(m.scoreAfter) - 2).map((k) => (
             <rect key={k} x={BX} y={BY + 18 + (ih * k) / 10 - 2} width={BW} height="4" fill={SHADOW} />
           ))}
         </g>
@@ -1141,14 +1303,20 @@ function CombinedScreen({ c, before, active, onNote }: { c: NonNullable<ScoreT["
   }, [active]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Slide bg={BT_BG} fg="#fff" active={active} r={r}>
+    <Slide bg="#07150f" fg="#fff" active={active} r={r}>
+      <div className="fl-blob" style={{ width: 320, height: 320, left: -90, top: 60, background: "#0fd98a", opacity: 0.8, animation: "n3-m1 8s ease-in-out infinite" }} />
+      <div className="fl-blob" style={{ width: 280, height: 280, right: -110, top: 330, background: "#0a7a55", animation: "n4-m2 9s ease-in-out infinite" }} />
+      <div className="fl-blob" style={{ width: 240, height: 240, left: 40, bottom: -70, background: "#22d3ee", opacity: 0.7, animation: "n4-m3 10s ease-in-out infinite" }} />
+      <div className="fl-blob" style={{ width: 220, height: 220, right: -30, top: -60, background: "#fcd34d", opacity: 0.45, animation: "n3-m1 12s ease-in-out infinite reverse" }} />
+      <div className="fl-vig" />
+      <div className="fl-grain" />
       <svg className="bt-svg" viewBox="0 0 360 640" width="360" height="640" aria-hidden="true">
-        <Battery id={`c${uid}`} x={110} y={92} w={140} h={290} before={before} after={c.scoreAfter} cur on={on} done={done} ghost={false} />
+        <Battery id={`c${uid}`} x={110} y={92} w={140} h={290} before={before} after={c.scoreAfter} cur on={on} done={done} ghost={false} inner="rgba(4,14,10,.55)" sep="rgba(4,14,10,.45)" />
       </svg>
       <div className="ws-lab bt-lab ws-in" style={delay(".1s")}>Together</div>
-      <div className="bt-k ws-in" style={{ ...delay(".4s"), top: 408, left: 0, width: W, textAlign: "center", paddingLeft: "0.2em", boxSizing: "border-box" }}>Score if you do {c.moves.length === 1 ? "it" : "them all"}</div>
-      <div className="bt-num ws-in" style={{ ...delay(".4s"), top: 424, left: 0, width: W, textAlign: "center", fontSize: 92, color: done ? btCol(c.scoreAfter) : BT_CREAM }}><span ref={numEl}>{before}</span></div>
-      <div className="bt-from ws-in" style={delay(".8s")}>{before} → {c.scoreAfter}</div>
+      <div className="bt-k ws-in" style={{ ...delay(".4s"), color: "#d9e8df", top: 408, left: 0, width: W, textAlign: "center", paddingLeft: "0.2em", boxSizing: "border-box" }}>Score if you do {c.moves.length === 1 ? "it" : "them all"}</div>
+      <div className="bt-num ws-in" style={{ ...delay(".4s"), top: 424, left: 0, width: W, textAlign: "center", fontSize: 92, color: done ? "#fff" : BT_CREAM }}><span ref={numEl}>{before}</span></div>
+      <div className="bt-from ws-in" style={{ ...delay(".8s"), color: "#d9e8df" }}>{before} → {c.scoreAfter}</div>
       <button type="button" className="ws-pill bt-btn ws-in" data-nohit style={delay("1s")} onClick={onNote}>Show me the numbers</button>
     </Slide>
   );
@@ -1215,7 +1383,13 @@ function LineupScreen({ kicker, stats, active }: { kicker: string; stats: StatT[
 
   return (
     <Slide bg="#0b0720" fg="#fff" active={active} r={r}>
-      <div className="ws-blob" style={{ width: 300, height: 300, background: "#4c1d95", right: -120, top: 360, opacity: 0.55 }} />
+      {/* Fondo vivo: manchas con los colores de las barras, que se desplazan despacio. */}
+      {[0, 1, 2].map((i) => {
+        const c = stats[i] && (stats[i].value as number) < 0 ? "#ff4d17" : ROW_GRAD[i % ROW_GRAD.length].split(",")[0];
+        const pos = [{ width: 260, height: 260, right: -100, top: 340, opacity: 0.5 }, { width: 240, height: 240, left: -100, top: 420, opacity: 0.4 }, { width: 240, height: 240, right: 0, bottom: -90, opacity: 0.4 }][i];
+        return <div key={i} className="ws-blob n6-blob" style={{ ...pos, background: c, animation: `n6-${"abc"[i]} ${[9, 10, 11][i]}s ease-in-out infinite` }} />;
+      })}
+      <div className="fl-vig" style={{ opacity: 0.55 }} />
       <div className="ws-lab ws-in" style={delay(".1s")}>{kicker}</div>
       <div className="ws-lu">
         {stats.map((s, i) => {
@@ -1673,8 +1847,9 @@ function MoreScreen({ section, active, onOpen }: { section: Section; active: boo
   const tabs = moreTabs(section);
   return (
     <Slide bg={th.bg} fg="#fff" active={active} r={r}>
-      <div className="ws-blob" style={{ width: 340, height: 340, background: th.a, left: -120, top: 330, opacity: 0.6 }} />
-      <div className="ws-blob" style={{ width: 260, height: 260, background: th.b, right: -100, top: -60, opacity: 0.45, animationDelay: "-4s" }} />
+      {/* Fondo vivo: un degradado cónico con los dos colores de la categoría que gira muy despacio. */}
+      <div className="n7-cone" style={{ background: `conic-gradient(from 0deg, ${th.a}, ${th.b}, ${th.bg}, ${th.a})` }} />
+      <div className="fl-vig" style={{ opacity: 0.5 }} />
       <div className="ws-lab ws-in" style={delay(".1s")}>{section.title}</div>
       <div className="wm-end">
         <div className="ws-A ws-in" style={{ ...delay(".25s"), fontSize: 68, lineHeight: 0.95 }}>The full<br />picture</div>
@@ -2035,11 +2210,11 @@ export function WrappedStory({ section, probes, answers, hasMore, startAt, coupl
     if (sc.k === "recap") return couple && recap ? <PairRecapScreen probes={recap} couple={couple} active={active} /> : null;
     if (sc.k === "head") {
       const h = section.headline;
-      if (h && isShare(h) && typeof h.value === "number") return <RingScreen uid={`${section.id}-h`} kicker={section.title} label={h.label} value={h.value} canHold={section.id === "retirement"} active={active} />;
+      if (h && isShare(h) && typeof h.value === "number") return <RingScreen uid={`${section.id}-h`} kicker={section.title} label={h.label} value={h.value} canHold={section.id === "retirement"} active={active} blue={section.id === "savings"} />;
       if (h && typeof h.value === "number") return <MarqueeScreen kicker={section.title} label={h.label} kind={h.kind} value={h.value} variant={0} active={active} tint={HEAD_TINT[section.id]} />;
       return <YouScreen probe={synth("text", section.title, "neutral", [1])} answer={0} tone="neutral" active={active} x={{ lab: "Your plan" }} />;
     }
-    if (sc.k === "ring") return <RingScreen uid={`${section.id}-${sc.i}`} kicker={section.title} label={sc.stat.label} value={sc.stat.value as number} canHold={false} active={active} fire={section.id === "debt" && i === screens.findIndex((q) => q.k === "ring")} />;
+    if (sc.k === "ring") return <RingScreen uid={`${section.id}-${sc.i}`} kicker={section.title} label={sc.stat.label} value={sc.stat.value as number} canHold={false} active={active} fire={section.id === "debt" && i === screens.findIndex((q) => q.k === "ring")} blue={section.id === "savings"} />;
     if (sc.k === "vs") {
       if (sc.variant % 3 === 1) return <LifeScreen kicker={sc.kicker} kind={sc.kind} have={sc.have} rec={sc.rec} word={sc.word} active={active} />;
       if (sc.variant % 3 === 2) return <ScanScreen kicker={sc.kicker} kind={sc.kind} have={sc.have} rec={sc.rec} word={sc.word} hl={haveLabel(sc.kicker, !!couple)} active={active} />;
@@ -2074,16 +2249,18 @@ export function WrappedStory({ section, probes, answers, hasMore, startAt, coupl
 }
 
 // ---- La portada del análisis como historia ----
-type CoverScreen = { k: "score" } | { k: "pillars" } | { k: "move"; i: number } | { k: "comb" };
+type CoverScreen = { k: "score" } | { k: "pillars" } | { k: "rank" } | { k: "go" } | { k: "move"; i: number } | { k: "comb" };
 
 export function CoverStory({ analysis, hasMore, startAt }: { analysis: Analysis; hasMore: boolean; startAt?: number }) {
   const s = analysis.score;
-  const screens = useMemo<CoverScreen[]>(() => [{ k: "score" }, { k: "pillars" }, ...s.moves.map((_, i) => ({ k: "move", i }) as CoverScreen), ...(s.combined ? [{ k: "comb" } as CoverScreen] : [])], [s]);
+  const screens = useMemo<CoverScreen[]>(() => [{ k: "score" }, { k: "pillars" }, { k: "rank" }, ...s.moves.map((_, i) => ({ k: "move", i }) as CoverScreen), ...(s.combined ? [{ k: "comb" } as CoverScreen] : []), ...(s.moves.length ? [{ k: "go" } as CoverScreen] : [])], [s]);
   const render = (i: number, active: boolean, openSheet: (rows: Rows) => void) => {
     const sc = screens[i];
     if (!sc) return null;
     if (sc.k === "score") return <ScoreScreen s={s} active={active} onMeaning={() => openSheet([["Your score", `${s.value} / 100 · ${s.band}`], ["What it means", s.message]])} />;
     if (sc.k === "pillars") return <PillarsScreen pillars={s.pillars} active={active} />;
+    if (sc.k === "rank") return <RankScreen pillars={s.pillars} active={active} />;
+    if (sc.k === "go") return <StartScreen s={s} active={active} />;
     if (sc.k === "move") return <MoveScreen moves={s.moves} i={sc.i} active={active} />;
     const c = s.combined;
     if (!c) return null;
