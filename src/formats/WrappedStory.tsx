@@ -1730,6 +1730,11 @@ function StoryEngine({ n, render, light, label, hasMore, more, startAt }: { n: n
     };
   }, [s.idx, s.prev]);
 
+  // Avisa de la tarjeta actual para que la barra de progreso de la app (src/story/StoryProgress) se llene poco a poco.
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("samepage:story", { detail: { idx: s.idx, n } }));
+  }, [s.idx, n]);
+
   const onTap = (e: MouseEvent<HTMLDivElement>) => {
     if ((e.target as HTMLElement).closest("[data-nohit]") || sheet || moreOpen) return;
     const rect = e.currentTarget.getBoundingClientRect();

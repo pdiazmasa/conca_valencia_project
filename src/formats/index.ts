@@ -4,6 +4,7 @@ import { DashboardFull } from "../dashboard/DashboardFull";
 import { Dashboard } from "./Dashboard";
 import { Informe } from "./Informe";
 import { AudioAsk, AudioPage, AudioReveal } from "./Audio";
+import { LIFELINE_FORMAT } from "../lifeline/format";
 
 export const FORMATS: Record<FormatId, FormatDef> = {
   wrapped: {
@@ -34,9 +35,10 @@ export const FORMATS: Record<FormatId, FormatDef> = {
     tagline: "A plain written report of your plan.",
     Reveal: Informe,
   },
+  lifeline: LIFELINE_FORMAT,
 };
 
-export const FORMAT_ORDER: FormatId[] = ["wrapped", "dashboard", "audio", "informe"];
+export const FORMAT_ORDER: FormatId[] = ["wrapped", "dashboard", "audio", "informe", "lifeline"];
 
 // Formato por defecto según la edad: 0–29 Wrapped · 30–54 Dashboard · 55+ Audio.
 export function formatForAge(age: number | null): FormatId {

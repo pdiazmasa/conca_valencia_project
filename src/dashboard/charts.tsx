@@ -1,4 +1,5 @@
 import { useId } from "react";
+import { CountUp } from "./CountUp";
 import { formatStat, formatValue, revealContext, truthValue, type Probe } from "../data";
 
 // Orden de prioridad para elegir la sonda principal de "The one thing to know" en la portada.
@@ -29,6 +30,7 @@ export type KeyInsightProps = {
   probes?: Probe[];
   currentAge?: number | null;
   scoreValue?: number;
+  hideHeader?: boolean;
 };
 
 // Tarjeta principal de portada ("The one thing to know"): destaca el giro crítico del plan.
@@ -37,6 +39,7 @@ export function KeyInsight({
   probes,
   currentAge,
   scoreValue,
+  hideHeader = false,
 }: KeyInsightProps) {
   const clipId = `dbx-ins-${useId().replace(/:/g, "")}`;
   const active = probe ?? (probes ? pickKeyInsightProbe(probes) : null);
@@ -68,8 +71,12 @@ export function KeyInsight({
 
     return (
       <div className="dbx-insight-wrap">
-        <p className="eyebrow">The one thing to know</p>
-        <h2 className="dbx-insight-title">{`Your savings run out at ${runOutAge}`}</h2>
+        {!hideHeader && (
+          <>
+            <p className="eyebrow">The one thing to know</p>
+            <h2 className="dbx-insight-title">{`Your savings run out at ${runOutAge}`}</h2>
+          </>
+        )}
 
         <div className="dbx-chart-wrap">
           <svg
@@ -132,7 +139,7 @@ export function KeyInsight({
           </svg>
         </div>
 
-        {typeof scoreValue === "number" && scoreValue >= 70 && (
+        {!hideHeader && typeof scoreValue === "number" && scoreValue >= 70 && (
           <p className="dbx-caption">
             A high score doesn&apos;t mean your savings last.
           </p>
@@ -151,10 +158,14 @@ export function KeyInsight({
 
     return (
       <div className="dbx-insight-wrap">
-        <p className="eyebrow">The one thing to know</p>
-        <h2 className="dbx-insight-title">
-          {`${formatStat("usd", toRet)} of your ${formatStat("usd", totalSaved)} yearly savings goes to retirement`}
-        </h2>
+        {!hideHeader && (
+          <>
+            <p className="eyebrow">The one thing to know</p>
+            <h2 className="dbx-insight-title">
+              {`${formatStat("usd", toRet)} of your ${formatStat("usd", totalSaved)} yearly savings goes to retirement`}
+            </h2>
+          </>
+        )}
 
         <div className="dbx-chart-wrap">
           <svg
@@ -219,10 +230,14 @@ export function KeyInsight({
 
     return (
       <div className="dbx-insight-wrap">
-        <p className="eyebrow">The one thing to know</p>
-        <h2 className="dbx-insight-title">
-          {`Of every ${fmtCardUsd(payment)} card payment, only ${fmtCardUsd(principal)} reduces your debt`}
-        </h2>
+        {!hideHeader && (
+          <>
+            <p className="eyebrow">The one thing to know</p>
+            <h2 className="dbx-insight-title">
+              {`Of every ${fmtCardUsd(payment)} card payment, only ${fmtCardUsd(principal)} reduces your debt`}
+            </h2>
+          </>
+        )}
 
         <div className="dbx-chart-wrap">
           <svg
@@ -273,7 +288,7 @@ export function KeyInsight({
           </svg>
         </div>
 
-        <p className="dbx-caption">{`Your card charges ${aprPct}%`}</p>
+        {!hideHeader && <p className="dbx-caption">{`Your card charges ${aprPct}%`}</p>}
       </div>
     );
   }
@@ -282,11 +297,11 @@ export function KeyInsight({
   const val = truthValue(active) ?? 0;
   return (
     <div className="dbx-insight-wrap">
-      <p className="eyebrow">The one thing to know</p>
+      {!hideHeader && <p className="eyebrow">The one thing to know</p>}
       <h2 className="dbx-insight-title tone-bad">
         {`Your plan: ${formatValue(active.input, val)}`}
       </h2>
-      <p className="dbx-caption">{revealContext(active)}</p>
+      {!hideHeader && <p className="dbx-caption">{revealContext(active)}</p>}
     </div>
   );
 }
@@ -523,6 +538,20 @@ export function GuessGap({ probes, answers }: GuessGapProps) {
   );
 }
 
+const SHORT_PROBE_LABELS: Record<string, string> = {
+  colchon: "Emergency cash",
+  tarjeta: "Card payment",
+  ahorros: "Savings run out",
+  destino: "Retirement share",
+  seguro: "Life insurance",
+  mezcla: "Stock mix",
+  fiscal: "Tax strategy",
+};
+
+export function shortProbeLabel(probe: Probe): string {
+  return SHORT_PROBE_LABELS[probe.id] ?? probe.question;
+}
+
 // Sujetamos cualquier puntuación al rango 0..100 para las coordenadas geométricas.
 const clampScore = (v: number) => Math.min(100, Math.max(0, v));
 
@@ -688,6 +717,77 @@ export function ScoreGauge({ value, band, potential, caps = [] }: ScoreGaugeProp
   );
 }
 
+// Versión compacta del gauge para widget 1x1 en móvil: arco limpio en SVG y tipografía HTML nítida.
+export function ScoreGaugeMini({ value, band, potential, caps = [] }: ScoreGaugeProps) {
+  const cx = 80;
+  const cy = 66;
+  const r = 52;
+  const safeValue = clampScore(value);
+  const resolvedBand = band ?? defaultBand(safeValue);
+  const hasPotential = typeof potential === "number" && potential > safeValue;
+  const safePotential = hasPotential ? clampScore(potential) : undefined;
+  const isBad = safeValue < 40;
+
+  const trackPath = describeSemiArc(cx, cy, r, 0, 100);
+  const valuePath = describeSemiArc(cx, cy, r, 0, safeValue);
+  const potentialPath =
+    safePotential !== undefined ? describeSemiArc(cx, cy, r, safeValue, safePotential) : "";
+
+  return (
+    <div className="dbx-gmini-wrap">
+      <div className="dbx-gmini-arc">
+        <svg
+          className="dbx-svg dbx-gmini-svg"
+          viewBox="0 0 160 78"
+          preserveAspectRatio="xMidYMid meet"
+          aria-hidden="true"
+        >
+          <path d={trackPath} className="dbx-gmini-track" fill="none" strokeLinecap="round" />
+          {potentialPath && (
+            <path d={potentialPath} className="dbx-gmini-potential" fill="none" strokeLinecap="round" />
+          )}
+          {valuePath && (
+            <path
+              d={valuePath}
+              pathLength={100}
+              className={`dbx-gmini-fill${isBad ? " dbx-is-bad" : ""}`}
+              fill="none"
+              strokeLinecap="round"
+            />
+          )}
+          {caps.map((cap, idx) => {
+            const inner = polarSemi(cx, cy, r - 7, cap.cappedAt);
+            const outer = polarSemi(cx, cy, r + 7, cap.cappedAt);
+            return (
+              <line
+                key={`${cap.cappedAt}-${idx}`}
+                x1={inner.x}
+                y1={inner.y}
+                x2={outer.x}
+                y2={outer.y}
+                className="dbx-gauge-cap-line"
+              />
+            );
+          })}
+        </svg>
+        <div className="dbx-gmini-center">
+          <span className={`dbx-gmini-score${isBad ? " tone-bad" : ""}`}>
+            <CountUp value={safeValue} duration={900} />
+          </span>
+          <span className="dbx-gmini-max">/ 100</span>
+        </div>
+      </div>
+
+      <div className="dbx-gmini-meta">
+        <span className={`dbx-pill-status${isBad ? " dbx-pill-bad" : ""}`}>{resolvedBand}</span>
+        {safePotential !== undefined && (
+          <span className="dbx-gmini-upto">{`Up to ${safePotential}`}</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // Formatea los nombres de los 5 pilares evitando jerga y partiendo en 2 líneas los largos.
 function pillarLabelLines(name: string): string[] {
   if (name.includes("Liquidity")) return ["Cash for", "emergencies"];
@@ -705,14 +805,15 @@ function pillarLabelLines(name: string): string[] {
 
 export type PillarRadarProps = {
   pillars: PillarItem[];
+  compact?: boolean;
 };
 
 // Radar de 5 ejes (0-100) con anillos guía, polígono relleno suave y valor debajo de cada etiqueta.
-export function PillarRadar({ pillars }: PillarRadarProps) {
+export function PillarRadar({ pillars, compact = false }: PillarRadarProps) {
   const count = pillars.length || 5;
-  const cx = 180;
-  const cy = 138;
-  const maxR = 66;
+  const cx = compact ? 80 : 180;
+  const cy = compact ? 66 : 138;
+  const maxR = compact ? 52 : 66;
   const levels = [25, 50, 75, 100];
 
   const angleFor = (i: number) => -Math.PI / 2 + (i * 2 * Math.PI) / count;
@@ -740,8 +841,8 @@ export function PillarRadar({ pillars }: PillarRadarProps) {
   return (
     <div className="dbx-chart-wrap">
       <svg
-        className="dbx-svg dbx-radar-svg"
-        viewBox="0 0 360 280"
+        className={`dbx-svg dbx-radar-svg${compact ? " dbx-radar-compact" : ""}`}
+        viewBox={compact ? "0 0 160 128" : "0 0 360 280"}
         preserveAspectRatio="xMidYMid meet"
         role="img"
         aria-label={`Score by area radar chart: ${ariaSummary}.`}
@@ -778,6 +879,22 @@ export function PillarRadar({ pillars }: PillarRadarProps) {
         {/* Vértices, etiquetas (1 o 2 líneas) y valor debajo de cada etiqueta */}
         {pillars.map((p, i) => {
           const vertex = pointAt(i, p.score);
+          const isLow = p.score < 40;
+
+          if (compact) {
+            return (
+              <circle
+                key={p.name}
+                cx={vertex.x}
+                cy={vertex.y}
+                r={3.5}
+                className={`dbx-radar-dot ${isLow ? "dbx-is-bad-dot" : ""}`}
+              >
+                <title>{`${plainLabel(p.name)}: ${p.score}/100`}</title>
+              </circle>
+            );
+          }
+
           const cos = Math.cos(angleFor(i));
           const sin = Math.sin(angleFor(i));
           const lines = pillarLabelLines(p.name);
@@ -808,7 +925,6 @@ export function PillarRadar({ pillars }: PillarRadarProps) {
               : cy + maxR * sin - 4 - ((lines.length - 1) * lineStep) / 2;
 
           const valueY = firstLineY + (lines.length - 1) * lineStep + 16;
-          const isLow = p.score < 40;
 
           return (
             <g key={p.name} className="dbx-radar-node">
@@ -1104,661 +1220,16 @@ export function MovesWaterfall({ before, moves, combined }: MovesWaterfallProps)
   );
 }
 
-export type TargetBarsProps = {
-  items: TargetBarItem[];
-  ratio?: boolean;
-};
-
-// Barras horizontales en SVG comparando valor actual frente a objetivo opcional.
-export function TargetBars({ items, ratio = false }: TargetBarsProps) {
-  const kind = ratio ? "pct" : "usd";
-  const fmt = (v: number) => formatStat(kind, v);
-
-  const maxVal = Math.max(
-    ...items.map((item) => Math.max(item.value, item.target ?? 0)),
-    1
-  );
-
-  const vbW = 340;
-  const rowH = 44;
-  const vbH = Math.max(48, items.length * rowH + 6);
-  const trackX = 4;
-  const trackW = vbW - 8;
-
-  const ariaDesc = items
-    .map(
-      (i) =>
-        `${plainLabel(i.label)}: ${fmt(i.value)}${
-          i.target !== undefined ? ` (target ${fmt(i.target)})` : ""
-        }`
-    )
-    .join(", ");
-
-  return (
-    <div className="dbx-chart-wrap">
-      <svg
-        className="dbx-svg dbx-targetbars-svg"
-        viewBox={`0 0 ${vbW} ${vbH}`}
-        preserveAspectRatio="xMidYMid meet"
-        role="img"
-        aria-label={`Comparison bars: ${ariaDesc}.`}
-      >
-        {items.map((item, idx) => {
-          const yBase = idx * rowH;
-          const labelY = yBase + 15;
-          const trackY = yBase + 23;
-          const trackH = 9;
-          const displayLabel = plainLabel(item.label);
-
-          const fillRatio = Math.min(1, Math.max(0, item.value / maxVal));
-          const fillW = fillRatio * trackW;
-
-          const hasTarget = typeof item.target === "number";
-          const targetRatio = hasTarget
-            ? Math.min(1, Math.max(0, (item.target ?? 0) / maxVal))
-            : null;
-          const targetX = targetRatio !== null ? trackX + targetRatio * trackW : null;
-
-          return (
-            <g key={item.label} className="dbx-tbar-row">
-              <title>
-                {`${displayLabel}: ${fmt(item.value)}${
-                  hasTarget && item.target !== undefined
-                    ? ` · target ${fmt(item.target)}`
-                    : ""
-                }`}
-              </title>
-
-              {/* Cabecera con nombre e importe/porcentaje */}
-              <text x={trackX} y={labelY} textAnchor="start" className="dbx-tbar-label">
-                {displayLabel}
-              </text>
-              <text
-                x={trackX + trackW}
-                y={labelY}
-                textAnchor="end"
-                className="dbx-tbar-amount"
-              >
-                {fmt(item.value)}
-                {hasTarget && item.target !== undefined && (
-                  <tspan className="dbx-tbar-target-text">{` · target ${fmt(item.target)}`}</tspan>
-                )}
-              </text>
-
-              {/* Pista gris de fondo */}
-              <rect
-                x={trackX}
-                y={trackY}
-                width={trackW}
-                height={trackH}
-                rx={4.5}
-                className="dbx-tbar-track"
-              />
-
-              {/* Barra de valor actual */}
-              {fillW > 0 && (
-                <rect
-                  x={trackX}
-                  y={trackY}
-                  width={Math.max(4, fillW)}
-                  height={trackH}
-                  rx={4.5}
-                  className="dbx-tbar-fill"
-                />
-              )}
-
-              {/* Marca vertical del target cuando existe */}
-              {targetX !== null && (
-                <g className="dbx-tbar-target-mark">
-                  <line
-                    x1={targetX}
-                    y1={trackY - 4}
-                    x2={targetX}
-                    y2={trackY + trackH + 4}
-                    className="dbx-tbar-target-line"
-                  />
-                </g>
-              )}
-            </g>
-          );
-        })}
-      </svg>
-    </div>
-  );
-}
-
-// ---- 5. Ring: anillo de porcentaje 0-1 (clamp visual a 100%, texto real) ----
-export type RingProps = {
-  value: number;
-  label: string;
-  bad?: boolean;
-};
-
-export function Ring({ value, label, bad = false }: RingProps) {
-  const clamped = Math.min(1, Math.max(0, value));
-  const pctText = formatStat("pct", value);
-  const cleanLabel = plainLabel(label);
-
-  const cx = 48;
-  const cy = 48;
-  const r = 38;
-
-  return (
-    <div className="dbx-ring-wrap">
-      <svg
-        className="dbx-svg dbx-ring-svg"
-        viewBox="0 0 96 96"
-        preserveAspectRatio="xMidYMid meet"
-        role="img"
-        aria-label={`${cleanLabel}: ${pctText}`}
-      >
-        <circle
-          cx={cx}
-          cy={cy}
-          r={r}
-          className="dbx-ring-track"
-          fill="none"
-        />
-        {clamped > 0.001 && (
-          <circle
-            cx={cx}
-            cy={cy}
-            r={r}
-            pathLength={100}
-            strokeDasharray={`${(clamped * 100).toFixed(2)} 100`}
-            transform={`rotate(-90 ${cx} ${cy})`}
-            className={`dbx-ring-fill ${bad ? "dbx-is-bad" : ""}`}
-            fill="none"
-            strokeLinecap="round"
-          />
-        )}
-        <text
-          x={cx}
-          y={cy + 6}
-          textAnchor="middle"
-          className={`dbx-ring-value ${bad ? "dbx-is-bad-text" : ""}`}
-        >
-          {pctText}
-        </text>
-      </svg>
-      <p className="eyebrow dbx-ring-label">{cleanLabel}</p>
-    </div>
-  );
-}
-
-// ---- 6a. MonthBoxes: 12 casillas para meses cubiertos por el fondo de emergencia ----
-export type MonthBoxesProps = {
-  months: number;
-  label?: string;
-};
-
-export function MonthBoxes({ months, label = "Emergency cash covers" }: MonthBoxesProps) {
-  const filled = Math.min(12, Math.max(0, Math.round(months)));
-  const isBad = months < 4;
-  const cleanLabel = plainLabel(label);
-  const displayMonths = formatStat("months", months);
-
-  const vbW = 340;
-  const vbH = 30;
-  const gap = 5;
-  const boxW = (vbW - gap * 11) / 12;
-  const boxH = 22;
-
-  return (
-    <div className="dbx-mboxes-wrap">
-      <div className="dbx-mboxes-head">
-        <p className="eyebrow">{cleanLabel}</p>
-        <span className={`dbx-mboxes-val ${isBad ? "tone-bad" : ""}`}>
-          {displayMonths}
-        </span>
-      </div>
-      <div className="dbx-chart-wrap">
-        <svg
-          className="dbx-svg dbx-mboxes-svg"
-          viewBox={`0 0 ${vbW} ${vbH}`}
-          preserveAspectRatio="xMidYMid meet"
-          role="img"
-          aria-label={`${cleanLabel}: ${displayMonths} (${filled} of 12 boxes filled)`}
-        >
-          {Array.from({ length: 12 }, (_, i) => {
-            const x = i * (boxW + gap);
-            const isOn = i < filled;
-            return (
-              <rect
-                key={i}
-                x={x}
-                y={4}
-                width={boxW}
-                height={boxH}
-                rx={5}
-                className={`dbx-mbox ${
-                  isOn ? (isBad ? "dbx-mbox-bad" : "dbx-mbox-on") : "dbx-mbox-off"
-                }`}
-              />
-            );
-          })}
-        </svg>
-      </div>
-    </div>
-  );
-}
-
-// ---- 6b. VsBar: barras "you have" vs marca "recommended" (rojo solo si have < recommended) ----
+// Fila de cobertura: lo que hay frente al mínimo recomendado.
 export type VsBarRow = {
   label: string;
   have: number;
   recommended: number;
 };
 
-export type VsBarProps = {
-  rows: VsBarRow[];
-};
-
-export function VsBar({ rows }: VsBarProps) {
-  if (rows.length === 0) return null;
-
-  const vbW = 340;
-  const rowH = 52;
-  const vbH = rows.length * rowH;
-  const trackX = 6;
-  const trackW = vbW - 12;
-
-  const ariaDesc = rows
-    .map(
-      (r) =>
-        `${plainLabel(r.label)}: you have ${formatStat("usd", r.have)}, recommended ${formatStat(
-          "usd",
-          r.recommended
-        )}`
-    )
-    .join("; ");
-
-  return (
-    <div className="dbx-chart-wrap">
-      <svg
-        className="dbx-svg dbx-vsbar-svg"
-        viewBox={`0 0 ${vbW} ${vbH}`}
-        preserveAspectRatio="xMidYMid meet"
-        role="img"
-        aria-label={`Coverage comparison: ${ariaDesc}.`}
-      >
-        {rows.map((row, idx) => {
-          const yBase = idx * rowH;
-          const labelY = yBase + 16;
-          const trackY = yBase + 25;
-          const trackH = 10;
-          const isShort = row.have < row.recommended;
-          const maxVal = Math.max(row.have, row.recommended, 1);
-          const haveRatio = Math.min(1, Math.max(0, row.have / maxVal));
-          const recRatio = Math.min(1, Math.max(0, row.recommended / maxVal));
-          const haveW = haveRatio * trackW;
-          const recX = trackX + recRatio * trackW;
-          const clean = plainLabel(row.label);
-
-          return (
-            <g key={row.label} className="dbx-vs-row">
-              <title>
-                {`${clean}: have ${formatStat("usd", row.have)} vs recommended ${formatStat(
-                  "usd",
-                  row.recommended
-                )}`}
-              </title>
-
-              <text x={trackX} y={labelY} textAnchor="start" className="dbx-tbar-label">
-                {clean}
-              </text>
-              <text x={trackX + trackW} y={labelY} textAnchor="end" className="dbx-tbar-amount">
-                <tspan className={isShort ? "dbx-is-bad-text" : ""}>
-                  {formatStat("usd", row.have)}
-                </tspan>
-                <tspan className="dbx-tbar-target-text">
-                  {` / rec. ${formatStat("usd", row.recommended)}`}
-                </tspan>
-              </text>
-
-              <rect
-                x={trackX}
-                y={trackY}
-                width={trackW}
-                height={trackH}
-                rx={5}
-                className="dbx-tbar-track"
-              />
-
-              {/* Barra de cobertura actual (si es 0 y falta cobertura, pintamos una muesca roja) */}
-              {(haveW > 0 || isShort) && (
-                <rect
-                  x={trackX}
-                  y={trackY}
-                  width={haveW > 0 ? Math.max(6, haveW) : 6}
-                  height={trackH}
-                  rx={5}
-                  className={`dbx-tbar-fill ${isShort ? "dbx-is-bad-fill" : ""}`}
-                />
-              )}
-
-              {/* Marca vertical del mínimo recomendado */}
-              <line
-                x1={recX}
-                y1={trackY - 4}
-                x2={recX}
-                y2={trackY + trackH + 4}
-                className={`dbx-vs-rec-line ${isShort ? "dbx-is-bad" : ""}`}
-              />
-            </g>
-          );
-        })}
-      </svg>
-    </div>
-  );
-}
-
-// ---- 7. DebtBars: barras ordenadas por balance desc con rate a la derecha (rate >= 0.15 en rojo) ----
+// Una deuda: saldo y tipo de interés.
 export type DebtBarRow = {
   name: string;
   balance: number;
   rate: number;
 };
-
-export type DebtBarsProps = {
-  rows: DebtBarRow[];
-};
-
-export function DebtBars({ rows }: DebtBarsProps) {
-  if (rows.length === 0) return null;
-
-  const sorted = [...rows].sort((a, b) => b.balance - a.balance);
-  const maxBalance = Math.max(...sorted.map((r) => r.balance), 1);
-
-  const vbW = 340;
-  const rowH = 46;
-  const vbH = sorted.length * rowH;
-  const trackX = 4;
-  const rateColW = 58;
-  const trackW = vbW - trackX - rateColW;
-
-  const ariaDesc = sorted
-    .map(
-      (r) =>
-        `${r.name}: ${formatStat("usd", r.balance)} at ${formatStat("pct", r.rate)}`
-    )
-    .join("; ");
-
-  return (
-    <div className="dbx-chart-wrap">
-      <svg
-        className="dbx-svg dbx-debtbars-svg"
-        viewBox={`0 0 ${vbW} ${vbH}`}
-        preserveAspectRatio="xMidYMid meet"
-        role="img"
-        aria-label={`Debts by balance: ${ariaDesc}.`}
-      >
-        {sorted.map((row, idx) => {
-          const yBase = idx * rowH;
-          const labelY = yBase + 15;
-          const trackY = yBase + 23;
-          const trackH = 10;
-          const isHighRate = row.rate >= 0.15;
-          const fillW = Math.max(6, (row.balance / maxBalance) * trackW);
-          const rateText = formatStat("pct", row.rate);
-
-          return (
-            <g key={`${row.name}-${idx}`} className="dbx-dbar-row">
-              <title>{`${row.name}: ${formatStat("usd", row.balance)} (${rateText} APR)`}</title>
-
-              <text x={trackX} y={labelY} textAnchor="start" className="dbx-tbar-label">
-                {row.name}
-              </text>
-              <text
-                x={trackX + trackW}
-                y={labelY}
-                textAnchor="end"
-                className="dbx-tbar-amount"
-              >
-                {formatStat("usd", row.balance)}
-              </text>
-
-              <rect
-                x={trackX}
-                y={trackY}
-                width={trackW}
-                height={trackH}
-                rx={5}
-                className="dbx-tbar-track"
-              />
-
-              <rect
-                x={trackX}
-                y={trackY}
-                width={fillW}
-                height={trackH}
-                rx={5}
-                className={`dbx-tbar-fill ${isHighRate ? "dbx-is-bad-fill" : ""}`}
-              />
-
-              {/* Etiqueta de tipo de interés a la derecha */}
-              <text
-                x={vbW - 4}
-                y={trackY + 8.5}
-                textAnchor="end"
-                className={`dbx-dbar-rate ${isHighRate ? "dbx-is-bad-text" : ""}`}
-              >
-                {rateText}
-              </text>
-            </g>
-          );
-        })}
-      </svg>
-    </div>
-  );
-}
-
-// ---- 8a. StackBar: barra 100% apilada en tonos de gris con leyenda de porcentajes ----
-const STACK_TONES = ["#0a0a0a", "#404040", "#737373", "#a3a3a3", "#d4d4d4"];
-
-export type StackSegment = {
-  label: string;
-  value: number;
-};
-
-export type StackBarProps = {
-  segments: StackSegment[];
-  rowLabel?: string;
-  showLegend?: boolean;
-  compareSegments?: StackSegment[];
-};
-
-export function StackBar({
-  segments,
-  rowLabel,
-  showLegend = true,
-  compareSegments,
-}: StackBarProps) {
-  // Id único por instancia para el clipPath (evita choques entre varias barras).
-  const clipId = `dbx-stack-clip-${useId().replace(/:/g, "")}`;
-  const total = segments.reduce((sum, s) => sum + Math.max(0, s.value), 0) || 1;
-  const compareTotal = compareSegments
-    ? compareSegments.reduce((sum, s) => sum + Math.max(0, s.value), 0) || 1
-    : null;
-
-  const vbW = 340;
-  const vbH = 26;
-  const barH = 18;
-  const barY = 4;
-
-  let cursorX = 0;
-  const rects = segments.map((s, idx) => {
-    const share = Math.max(0, s.value) / total;
-    const w = share * vbW;
-    const x = cursorX;
-    cursorX += w;
-    return {
-      label: plainLabel(s.label),
-      share,
-      x,
-      w,
-      color: STACK_TONES[idx % STACK_TONES.length],
-    };
-  });
-
-  const ariaDesc = rects
-    .map((r) => `${r.label} ${formatStat("pct", r.share)}`)
-    .join(", ");
-
-  return (
-    <div className="dbx-stack-wrap">
-      {rowLabel && (
-        <div className="dbx-stack-head">
-          <span className="dbx-stack-row-label">{rowLabel}</span>
-        </div>
-      )}
-      <div className="dbx-chart-wrap">
-        <svg
-          className="dbx-svg dbx-stack-svg"
-          viewBox={`0 0 ${vbW} ${vbH}`}
-          preserveAspectRatio="xMidYMid meet"
-          role="img"
-          aria-label={`${rowLabel ? `${rowLabel}: ` : "Stacked breakdown: "}${ariaDesc}.`}
-        >
-          <clipPath id={clipId}>
-            <rect x={0} y={barY} width={vbW} height={barH} rx={6} />
-          </clipPath>
-          <g clipPath={`url(#${clipId})`}>
-            {rects.map((r, idx) => (
-              <g key={r.label}>
-                <title>{`${r.label}: ${formatStat("pct", r.share)}`}</title>
-                <rect
-                  x={r.x}
-                  y={barY}
-                  width={Math.max(0, r.w - (idx < rects.length - 1 ? 1.5 : 0))}
-                  height={barH}
-                  fill={r.color}
-                />
-              </g>
-            ))}
-          </g>
-        </svg>
-      </div>
-
-      {showLegend && (
-        <ul className="dbx-stack-legend">
-          {rects.map((r, idx) => {
-            const cmpShare =
-              compareSegments && compareTotal
-                ? Math.max(0, compareSegments[idx]?.value ?? 0) / compareTotal
-                : null;
-            return (
-              <li key={r.label} className="dbx-stack-legend-item">
-                <span
-                  className="dbx-stack-swatch"
-                  style={{ background: r.color }}
-                  aria-hidden="true"
-                />
-                <span className="dbx-stack-legend-label">{r.label}</span>
-                <strong className="dbx-stack-legend-pct">
-                  {cmpShare !== null
-                    ? `${formatStat("pct", cmpShare)} → ${formatStat("pct", r.share)}`
-                    : formatStat("pct", r.share)}
-                </strong>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-    </div>
-  );
-}
-
-// ---- 8b. BalanceBar: Headline Net worth encima + dos barras proporcionales Assets vs Debts ----
-export type BalanceBarProps = {
-  netWorth: number;
-  assets: number;
-  debts: number;
-  headlineLabel?: string;
-};
-
-export function BalanceBar({
-  netWorth,
-  assets,
-  debts,
-  headlineLabel = "Net worth",
-}: BalanceBarProps) {
-  const maxVal = Math.max(assets, debts, 1);
-  const vbW = 340;
-  const rowH = 42;
-  const vbH = rowH * 2;
-  const trackX = 4;
-  const trackW = vbW - 8;
-
-  const rows = [
-    { label: "Total assets", value: assets, isDebt: false },
-    { label: "Total debts", value: debts, isDebt: true },
-  ];
-
-  return (
-    <div className="dbx-balance-wrap">
-      <div className="dbx-balance-headline">
-        <p className="eyebrow">{plainLabel(headlineLabel)}</p>
-        <p className={`stat-value dbx-headline-value ${netWorth < 0 ? "tone-bad" : ""}`}>
-          {formatStat("usd", netWorth)}
-        </p>
-      </div>
-
-      <div className="dbx-chart-wrap">
-        <svg
-          className="dbx-svg dbx-balance-svg"
-          viewBox={`0 0 ${vbW} ${vbH}`}
-          preserveAspectRatio="xMidYMid meet"
-          role="img"
-          aria-label={`${plainLabel(headlineLabel)} ${formatStat("usd", netWorth)}: Total assets ${formatStat(
-            "usd",
-            assets
-          )}, Total debts ${formatStat("usd", debts)}.`}
-        >
-          {rows.map((r, idx) => {
-            const yBase = idx * rowH;
-            const labelY = yBase + 14;
-            const trackY = yBase + 22;
-            const trackH = 10;
-            const fillW =
-              r.value > 0 ? Math.max(6, (r.value / maxVal) * trackW) : 0;
-
-            return (
-              <g key={r.label}>
-                <text x={trackX} y={labelY} textAnchor="start" className="dbx-tbar-label">
-                  {r.label}
-                </text>
-                <text
-                  x={trackX + trackW}
-                  y={labelY}
-                  textAnchor="end"
-                  className="dbx-tbar-amount"
-                >
-                  {formatStat("usd", r.value)}
-                </text>
-                <rect
-                  x={trackX}
-                  y={trackY}
-                  width={trackW}
-                  height={trackH}
-                  rx={5}
-                  className="dbx-tbar-track"
-                />
-                {fillW > 0 && (
-                  <rect
-                    x={trackX}
-                    y={trackY}
-                    width={fillW}
-                    height={trackH}
-                    rx={5}
-                    className={`dbx-tbar-fill ${r.isDebt ? "dbx-balance-debt-fill" : ""}`}
-                  />
-                )}
-              </g>
-            );
-          })}
-        </svg>
-      </div>
-    </div>
-  );
-}

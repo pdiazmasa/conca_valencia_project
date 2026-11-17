@@ -15,6 +15,7 @@ import {
 import { formatStat } from "../data";
 import { plainLabel } from "../dashboard/charts";
 import { useFitToViewport } from "../dashboard/useFitToViewport";
+import { CountUp } from "../dashboard/CountUp";
 import type { PageProps } from "../formats/types";
 import {
   buildLifeline,
@@ -288,14 +289,16 @@ function ScoreNote({
       className={`lfl-note ${className}`}
       aria-label={to !== null ? `Score ${from} to ${to}` : `Score ${from}`}
     >
-      <span>{from}</span>
+      <span aria-hidden="true">
+        <CountUp value={from} />
+      </span>
       {to !== null && (
         <>
           <span className="lfl-note-arrow" aria-hidden="true">
             {" → "}
           </span>
           <span className={dim ? "lfl-note-dim" : ""} aria-hidden="true">
-            {to}
+            <CountUp value={to} delay={500} />
           </span>
         </>
       )}
@@ -373,7 +376,9 @@ function DotsSummary({ dots }: { dots: ChristmasDot[] }) {
     <div className="lfl-summary">
       {items.map((it) => (
         <p key={it.text} className="lfl-summary-item">
-          <span className={`lfl-summary-n ${it.bad ? "lfl-bad" : ""}`}>{it.n}</span>
+          <span className={`lfl-summary-n ${it.bad ? "lfl-bad" : ""}`}>
+            <CountUp value={it.n} duration={1000} delay={300} />
+          </span>
           <span className="lfl-summary-text">{it.text}</span>
         </p>
       ))}
@@ -443,9 +448,16 @@ function LineList({
   showSteps: boolean;
   label: string;
 }) {
+  const [ref, seen] = useSeen<HTMLOListElement>();
+  const [all, setAll] = useState(false);
+  // Se enseñan los 5 primeros momentos (en orden de fecha); "Show N more" despliega el resto.
+  const LIMIT = 5;
+  const hidden = moments.length - LIMIT;
+  const visible = all || hidden <= 0 ? moments : moments.slice(0, LIMIT);
   return (
-    <ol className="lfl-line" aria-label={label}>
-      {moments.map((moment, idx) => (
+    <>
+    <ol ref={ref} className={`lfl-line ${seen ? "lfl-line-in" : ""}`} aria-label={label}>
+      {visible.map((moment, idx) => (
         <LineRow
           key={moment.id}
           moment={moment}
@@ -457,6 +469,12 @@ function LineList({
         />
       ))}
     </ol>
+    {hidden > 0 && (
+      <button type="button" className="lfl-more" onClick={() => setAll((v) => !v)} aria-expanded={all}>
+        {all ? "Show less" : `Show ${hidden} more`}
+      </button>
+    )}
+    </>
   );
 }
 
@@ -828,17 +846,16 @@ function CoverMobile({ data, mode, setMode, scoreTo, scoreBannerText }: ViewProp
         </h1>
         <p className="lfl-hero-lede">{data.leadText}</p>
         <FamilyAges data={data} />
-      </section>
-
-      {/* 2. Navidades */}
-      <section className="lfl-scene lfl-scene-xmas" aria-label="Christmases in your plan">
-        <div className="lfl-dots-head">
-          <span className="lfl-eyebrow">Every Christmas from here</span>
-          <span className="lfl-dots-sub">1 dot = 1 Christmas</span>
+        {/* 2. Navidades, en la misma tarjeta para no obligar a hacer scroll */}
+        <div className="lfl-xmas-inline" aria-label="Christmases in your plan">
+          <div className="lfl-dots-head">
+            <span className="lfl-eyebrow">Every Christmas from here</span>
+            <span className="lfl-dots-sub">1 dot = 1 Christmas</span>
+          </div>
+          <DotsSummary dots={data.dots} />
+          <DotsGrid dots={data.dots} cols={12} />
+          <DotsLegend dots={data.dots} />
         </div>
-        <DotsGrid dots={data.dots} cols={8} />
-        <DotsLegend dots={data.dots} />
-        <DotsSummary dots={data.dots} />
       </section>
 
       {/* 3. Línea */}

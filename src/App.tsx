@@ -1,15 +1,17 @@
-import { useMemo, useState } from "react";
-import { ANALYSIS, FAMILIES, SECTION_OF_PROBE, formatValue, peopleOf, truthValue, type Family, type Person } from "./data";
-import { FORMATS, FORMAT_ORDER, formatForAge, type FormatId } from "./formats";
+import { useEffect, useMemo, useState } from "react";
+import { ANALYSIS, FAMILIES, SECTION_OF_PROBE, formatValue, peopleOf, type Family, type Person } from "./data";
+import { FORMATS, formatForAge, type FormatId } from "./formats";
 import { DashboardPage } from "./formats/DashboardPage";
 import type { AnalysisPage } from "./formats/types";
-import { StatValue, toneLabel } from "./formats/Dashboard";
+import { StatValue } from "./formats/Dashboard";
 import { AudioTurn } from "./formats/Audio";
 import { WrappedTurn } from "./formats/Wrapped";
 import { CoupleContext, CoupleRevealAdapter, type CoupleData } from "./analysis/CoupleReveal";
 import LoadingScreen from "./LoadingScreen";
 import { NextStepsScreen } from "./NextSteps";
 import { Brand } from "./brand/Brand";
+import { StoryProgress } from "./story/StoryProgress";
+import { FormatChooser } from "./finale/FormatChooser";
 
 type Dir = "forward" | "back";
 // turn: "X, responde" (solo con varias personas) · age: edad (decide el formato) · ask: preguntas de intuición ·
@@ -218,9 +220,11 @@ function AnalysisScreen({
     [couple, people, allAnswers, family.id],
   );
   if (!page) return null;
+  // Wrapped se ve como historias de Instagram: pantalla completa en móvil y barras que se llenan tarjeta a tarjeta.
+  const story = format === "wrapped";
   return (
-    <main className="content">
-      <Progress total={pages.length} current={step} />
+    <main className={`content${story ? " is-story" : ""}`}>
+      {story ? <StoryProgress total={pages.length} current={step} /> : <Progress total={pages.length} current={step} />}
       <div className={`reveal-slot${couple ? " is-couple" : ""}`}>
         <CoupleContext.Provider value={coupleData}>
           <Page family={family} analysis={ANALYSIS[family.id]} page={page} answers={allAnswers[0] ?? {}} Reveal={couple ? CoupleRevealAdapter : def.Reveal} />
@@ -249,96 +253,6 @@ function TurnScreen({ person, people, index, format, onNext }: { person: Person;
       <div className="actions">
         <button type="button" className="pill pill-filled" onClick={onNext}>
           Start
-        </button>
-      </div>
-    </main>
-  );
-}
-
-function SummaryScreen({
-  family,
-  people,
-  answers,
-  onChangeFormat,
-  onNextSteps,
-}: {
-  family: Family;
-  people: Person[];
-  answers: Record<number, Record<string, number>>;
-  onChangeFormat: (f: FormatId) => void;
-  onNextSteps: () => void;
-}) {
-  // Sondas con valor real numérico para contabilizar aciertos (margen <= 10 % del rango).
-  const scorable = family.probes.filter((p) => truthValue(p) !== null);
-  const hitsOf = (i: number) =>
-    scorable.filter((p) => {
-      const real = truthValue(p)!;
-      const a = answers[i]?.[p.id] ?? p.input.initial;
-      return Math.abs(a - real) <= 0.1 * (p.input.max - p.input.min);
-    }).length;
-
-  const clampPct = (v: number, min: number, max: number) =>
-    Math.min(100, Math.max(0, ((v - min) / (max - min)) * 100));
-
-  return (
-    <main className="content">
-      <h1>Summary</h1>
-
-      {people.length === 1 && (
-        <section className="card summary-score" style={{ marginTop: 24 }}>
-          <p className="eyebrow">CLOSE GUESSES</p>
-          <p className="stat-value">
-            {hitsOf(0)} <span className="stat-unit">of {scorable.length}</span>
-          </p>
-        </section>
-      )}
-
-      <ul className="summary-list">
-        {family.probes.map((p) => {
-          const real = truthValue(p);
-          const realPct = real !== null ? clampPct(real, p.input.min, p.input.max) : 0;
-          const badgeTone =
-            p.tone === "bad" ? "badge-outline" : p.tone === "good" ? "badge-solid" : "badge-soft";
-
-          return (
-            <li key={p.id} className="card summary-card">
-              <div className="card-head">
-                <p className="eyebrow summary-q">{p.question}</p>
-                <span className={`badge badge-dot ${badgeTone}`}>{toneLabel[p.tone]}</span>
-              </div>
-              <StatValue probe={p} v={real} className={`sm tone-${p.tone}`} />
-              {real !== null && (
-                <div className="summary-bar" aria-hidden="true">
-                  {people.map((_, i) => (
-                    <span key={i} className="summary-mark summary-mark-you" style={{ left: `${clampPct(answers[i]?.[p.id] ?? p.input.initial, p.input.min, p.input.max)}%` }} />
-                  ))}
-                  <span className={`summary-mark summary-mark-plan tone-${p.tone}`} style={{ left: `${realPct}%` }} />
-                </div>
-              )}
-              {people.map((person, i) => (
-                <p key={person.name} className="summary-you">
-                  {people.length > 1 ? person.name : "You"}: {formatValue(p.input, answers[i]?.[p.id] ?? p.input.initial)}
-                </p>
-              ))}
-            </li>
-          );
-        })}
-      </ul>
-
-      <section className="other-formats">
-        <h2 className="section-title">See it another way</h2>
-        <div className="format-pills" role="group" aria-label="See in other formats">
-          {FORMAT_ORDER.map((id) => (
-            <button key={id} type="button" className="format-pill" onClick={() => onChangeFormat(id)}>
-              {FORMATS[id].name}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      <div className="actions">
-        <button type="button" className="pill pill-filled" onClick={onNextSteps}>
-          Your next steps
         </button>
       </div>
     </main>
@@ -422,6 +336,16 @@ export default function App() {
   const changeFormat = (format: FormatId) =>
     go(() => ({ formatOverride: format, person: 0, index: 0, step: 0, phase: "analysis" as Phase }));
 
+  useEffect(() => {
+    const handleNextSteps = () => {
+      if (s.family && s.phase === "analysis") {
+        go(() => ({ phase: "steps" as Phase }));
+      }
+    };
+    window.addEventListener("samepage:next-steps", handleNextSteps);
+    return () => window.removeEventListener("samepage:next-steps", handleNextSteps);
+  }, [s.family, s.phase]);
+
   const family = s.family;
   const format = formatOf(s);
   const screenKey = family ? `${s.phase}-${family.id}-${s.person}-${s.phase === "analysis" ? s.step : s.index}-${format}` : "family";
@@ -447,7 +371,7 @@ export default function App() {
         ) : s.phase === "analysis" ? (
           <AnalysisScreen family={family} format={format} step={s.step} people={s.people} allAnswers={s.answers} onNext={nextStep} />
         ) : s.phase === "done" ? (
-          <SummaryScreen family={family} people={s.people} answers={s.answers} onChangeFormat={changeFormat} onNextSteps={() => go(() => ({ phase: "steps" as Phase }))} />
+          <FormatChooser current={format} onChangeFormat={changeFormat} onNextSteps={() => go(() => ({ phase: "steps" as Phase }))} />
         ) : s.phase === "steps" ? (
           <NextStepsScreen
             family={family}

@@ -1,143 +1,92 @@
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useRef, type MouseEvent, type ReactNode } from "react";
 
-export type ChartCardProps = {
+export type WidgetSize = "small" | "medium" | "large";
+
+export type WidgetCardProps = {
+  size: WidgetSize;
   eyebrow: string;
-  title?: string;
-  takeaway: ReactNode;
-  children?: ReactNode;
-  more?: ReactNode;
-  moreLabel?: string;
-  className?: string;
-  tone?: "default" | "alert";
+  headline?: ReactNode;
   badge?: ReactNode;
-};
-
-// Mismo corte que el CSS: a partir de 1024 px el "More" se abre como popover anclado a la tarjeta.
-const DESKTOP_QUERY = "(min-width: 1024px)";
-const isDesktop = (): boolean =>
-  typeof window !== "undefined" && typeof window.matchMedia === "function" && window.matchMedia(DESKTOP_QUERY).matches;
-
-// Desplegable reutilizable con botón redondo "+" que gira 45° a "×" y anima altura/opacidad.
-// En PC (>= 1024 px) el panel se abre como popover (position: absolute) para que la página no crezca.
-export type ChartExpandProps = {
-  label?: string;
-  children: ReactNode;
+  support?: ReactNode;
+  footerAction?: ReactNode;
+  children?: ReactNode;
+  onOpen: (triggerEl: HTMLElement | null) => void;
+  tone?: "default" | "alert";
   className?: string;
+  ariaLabel?: string;
 };
 
-export function ChartExpand({
-  label = "What does this chart show?",
-  children,
-  className,
-}: ChartExpandProps): JSX.Element {
-  const [open, setOpen] = useState(false);
-  const panelId = `dbx-cc-more-${useId().replace(/:/g, "")}`;
-  const rootRef = useRef<HTMLDivElement>(null);
-  const toggleRef = useRef<HTMLButtonElement>(null);
-
-  // Popover en PC: Esc y clic (o toque) fuera lo cierran. En móvil no se escucha nada.
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "Escape" || !isDesktop()) return;
-      setOpen(false);
-      toggleRef.current?.focus();
-    };
-    const onPointer = (e: MouseEvent | TouchEvent) => {
-      if (!isDesktop()) return;
-      const target = e.target as Node | null;
-      if (target && rootRef.current && !rootRef.current.contains(target)) setOpen(false);
-    };
-    document.addEventListener("keydown", onKey);
-    document.addEventListener("mousedown", onPointer);
-    document.addEventListener("touchstart", onPointer);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("mousedown", onPointer);
-      document.removeEventListener("touchstart", onPointer);
-    };
-  }, [open]);
-
-  return (
-    <div ref={rootRef} className={`dbx-cc-expand${className ? ` ${className}` : ""}`}>
-      <button
-        ref={toggleRef}
-        type="button"
-        className={`dbx-cc-toggle${open ? " is-open" : ""}`}
-        aria-expanded={open}
-        aria-controls={panelId}
-        title={label}
-        onClick={() => setOpen((prev) => !prev)}
-      >
-        <span className="dbx-cc-plus" aria-hidden="true">
-          +
-        </span>
-        <span className="dbx-cc-toggle-label">{label}</span>
-      </button>
-
-      <div
-        id={panelId}
-        className={`dbx-cc-collapse${open ? " is-open" : ""}`}
-        aria-hidden={!open}
-      >
-        <div className="dbx-cc-more">
-          {/* Solo se ve en PC (popover); en móvil el CSS lo oculta */}
-          <button
-            type="button"
-            className="dbx-cc-close"
-            aria-label="Close"
-            tabIndex={open ? 0 : -1}
-            onClick={() => {
-              setOpen(false);
-              toggleRef.current?.focus();
-            }}
-          >
-            <span aria-hidden="true">×</span>
-          </button>
-          {children}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Tarjeta estándar del dashboard: "una gráfica, una frase en negrita y un + para saber más".
-export function ChartCard({
+// Tarjeta de widget estilo iOS: blanca, radio 28px, plana con anillo sutil de 1px y sin scroll interno.
+// Toda la superficie abre el detalle, salvo los botones internos (como "Pick your first step").
+export function WidgetCard({
+  size,
   eyebrow,
-  title,
-  takeaway,
-  children,
-  more,
-  moreLabel = "What does this chart show?",
-  className,
-  tone = "default",
+  headline,
   badge,
-}: ChartCardProps): JSX.Element {
-  const toneClass = tone === "alert" ? " dbx-cc-alert" : "";
+  support,
+  footerAction,
+  children,
+  onOpen,
+  tone = "default",
+  className,
+  ariaLabel,
+}: WidgetCardProps): JSX.Element {
+  const detailsBtnRef = useRef<HTMLButtonElement>(null);
+
+  const handleSurfaceClick = (e: MouseEvent<HTMLElement>) => {
+    const target = e.target as HTMLElement | null;
+    if (target?.closest("button, a, input, select, textarea")) return;
+    onOpen(detailsBtnRef.current);
+  };
+
+  const sizeClass = `dbx-w-${size}`;
+  const toneClass = tone === "alert" ? " dbx-w-alert" : "";
   const extraClass = className ? ` ${className}` : "";
 
   return (
-    <section className={`card dbx-cc${toneClass}${extraClass}`}>
-      <div className="dbx-cc-head">
-        <div className="dbx-cc-titles">
-          <p className="eyebrow dbx-cc-eyebrow">{eyebrow}</p>
-          {title && <h2 className="dbx-cc-title">{title}</h2>}
+    <article
+      className={`dbx-widget ${sizeClass}${toneClass}${extraClass}`}
+      onClick={handleSurfaceClick}
+    >
+      <div className="dbx-w-head">
+        <p className="dbx-eyebrow dbx-w-eyebrow">{eyebrow}</p>
+        <div className="dbx-w-head-right">
+          {badge && <div className="dbx-w-badge">{badge}</div>}
+          <button
+            ref={detailsBtnRef}
+            type="button"
+            className="dbx-w-details"
+            aria-label={ariaLabel ? `Details: ${ariaLabel}` : `Details for ${eyebrow}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpen(e.currentTarget);
+            }}
+          >
+            <span className="dbx-w-details-text">Details</span>
+            <svg className="dbx-w-chev" viewBox="0 0 8 14" aria-hidden="true">
+              <path d="M1.5 1.5 6.5 7l-5 5.5" fill="none" />
+            </svg>
+          </button>
         </div>
-        {badge && <div className="dbx-cc-badge">{badge}</div>}
       </div>
 
-      {children && <div className="dbx-cc-chart">{children}</div>}
+      {headline && <div className="dbx-w-headline">{headline}</div>}
 
-      <div className="dbx-cc-footer">
-        {/* En PC el takeaway se recorta a 2 líneas: el texto completo queda en el title */}
-        <p
-          className="dbx-cc-takeaway"
-          title={typeof takeaway === "string" ? takeaway : undefined}
-        >
-          {takeaway}
-        </p>
-        {more && <ChartExpand label={moreLabel}>{more}</ChartExpand>}
-      </div>
-    </section>
+      {children && <div className="dbx-w-visual">{children}</div>}
+
+      {(support || footerAction) && (
+        <div className="dbx-w-foot">
+          {support && (
+            <p
+              className="dbx-w-support"
+              title={typeof support === "string" ? support : undefined}
+            >
+              {support}
+            </p>
+          )}
+          {footerAction && <div className="dbx-w-actions">{footerAction}</div>}
+        </div>
+      )}
+    </article>
   );
 }

@@ -1,0 +1,161 @@
+/* Wrapped como historias de Instagram. Todo cuelga de .is-story (solo con el formato Wrapped en pantalla). */
+
+/* ---- Barra de progreso: una barra por página que se llena tarjeta a tarjeta ---- */
+.sp-story-progress {
+  display: flex;
+  gap: 4px;
+  margin-top: 16px;
+}
+
+.sp-story-seg {
+  flex: 1;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--hairline);
+  overflow: hidden;
+}
+
+.sp-story-seg i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ink);
+  transform-origin: left center;
+  transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* La barra pequeña de dentro de la tarjeta sobra: la grande ya lleva la cuenta. */
+.is-story .ws-pg {
+  display: none;
+}
+
+/* ---- Móvil: pantalla completa, fondo negro, sin logo; atrás discreto arriba a la izquierda ---- */
+@media (max-width: 767px) {
+  /* Todo negro, también lo que asoma por detrás (rebote del scroll, zona de la barra del navegador). */
+  html:has(.content.is-story),
+  body:has(.content.is-story) {
+    background: #000;
+  }
+
+  .app:has(.content.is-story) {
+    position: relative;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .app:has(.content.is-story) .brand-pill {
+    display: none;
+  }
+
+  .app:has(.content.is-story) .topbar {
+    position: absolute;
+    top: calc(env(safe-area-inset-top, 0px) + 20px);
+    left: 8px;
+    height: auto;
+    padding: 0;
+    z-index: 20;
+  }
+
+  .app:has(.content.is-story) .topbar .icon-btn {
+    width: 34px;
+    height: 34px;
+    background: rgba(255, 255, 255, 0.12);
+    border-color: transparent;
+    color: #fff;
+  }
+
+  .content.is-story {
+    max-width: none;
+    height: 100%;
+    min-height: 0;
+    padding: calc(env(safe-area-inset-top, 0px) + 8px) 8px calc(env(safe-area-inset-bottom, 0px) + 10px);
+  }
+
+  .is-story .sp-story-progress {
+    margin-top: 0;
+    gap: 3px;
+  }
+
+  .is-story .sp-story-seg {
+    height: 3px;
+    background: rgba(255, 255, 255, 0.28);
+  }
+
+  .is-story .sp-story-seg i {
+    background: #fff;
+  }
+
+  /* La historia ocupa todo el hueco libre, centrada y en 9:16. */
+  .is-story .reveal-slot {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .is-story .reveal-slot > * {
+    width: 100%;
+  }
+
+  .is-story .ws-wrap {
+    max-width: none;
+    width: min(100%, calc((100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 136px) * 0.5625));
+  }
+
+  .is-story .ws-stage {
+    border-radius: 16px;
+    box-shadow: none;
+  }
+
+  /* Botón para saltar la sección entera: fantasma translúcido sobre negro, como los controles de las historias. */
+  .is-story .actions {
+    margin-top: 0;
+    padding-top: 10px;
+    justify-content: center;
+  }
+
+  .is-story .actions .pill-filled {
+    flex: 0 0 auto;
+    height: 40px;
+    padding: 0 18px 0 20px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .is-story .actions .pill-filled::after {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-top: 1.6px solid currentColor;
+    border-right: 1.6px solid currentColor;
+    transform: rotate(45deg);
+    margin-left: 2px;
+  }
+
+  .is-story .actions .pill-filled:hover {
+    background: rgba(255, 255, 255, 0.16);
+  }
+
+  .is-story .actions .pill-filled:active {
+    transform: scale(0.96);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-story-seg i {
+    transition: none;
+  }
+}

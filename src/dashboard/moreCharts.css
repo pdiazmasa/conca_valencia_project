@@ -1,5 +1,5 @@
-/* Estilos de las 5 piezas visuales adicionales del Dashboard (prefijo dbx-mc-*).
-   Usa únicamente las variables existentes en src/styles.css. Móvil primero (340-390 px). */
+/* Estilos de las 5 piezas visuales secundarias del Dashboard (prefijo dbx-mc-*).
+   Se muestran dentro del detalle (hoja inferior / modal) a tamaño legible y sin recortes. */
 
 .dbx-mc-wrap {
   display: flex;
@@ -19,16 +19,11 @@
   flex-wrap: wrap;
 }
 
-/* Oculta la cabecera interna cuando el componente se integra dentro de ChartCard para no duplicar el eyebrow */
-.dbx-cc-chart .dbx-mc-head {
-  display: none;
-}
-
 .dbx-mc-total {
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--ink);
+  color: var(--dbx-ink, #1d1d1f);
   font-variant-numeric: tabular-nums;
 }
 
@@ -47,17 +42,17 @@
 }
 
 .dbx-mc-caption {
-  margin-top: 2px;
+  margin: 2px 0 0;
   font-size: 13px;
   line-height: 1.4;
-  color: var(--muted);
+  color: var(--dbx-slate, #707070);
 }
 
 /* ---- 1. PillarPoints ("Where your points come from") ---- */
 .dbx-mc-pillar-label {
   font-size: 13px;
   font-weight: 500;
-  fill: var(--ink);
+  fill: var(--dbx-ink, #1d1d1f);
 }
 
 .dbx-mc-pillar-label-gap {
@@ -67,43 +62,43 @@
 .dbx-mc-pillar-pts {
   font-size: 13px;
   font-weight: 600;
-  fill: var(--ink);
+  fill: var(--dbx-ink, #1d1d1f);
   font-variant-numeric: tabular-nums;
 }
 
 .dbx-mc-pillar-pts-bad {
-  fill: var(--ember);
+  fill: var(--dbx-red, #e7000b);
 }
 
 .dbx-mc-pillar-bg-track {
-  fill: var(--surface-alt);
+  fill: var(--dbx-frost, #fafafc);
 }
 
 .dbx-mc-pillar-max-track {
-  fill: var(--hairline);
+  fill: var(--dbx-ring, rgb(230, 230, 232));
 }
 
 .dbx-mc-pillar-fill {
-  fill: var(--ink);
+  fill: var(--dbx-ink, #1d1d1f);
   transform-box: fill-box;
   transform-origin: left center;
-  animation: dbx-mc-bar-in 650ms var(--ease) both;
+  animation: dbx-mc-bar-in 650ms var(--dbx-ease, ease) both;
 }
 
 .dbx-mc-pillar-fill-bad {
-  fill: var(--ember);
+  fill: var(--dbx-red, #e7000b);
 }
 
 .dbx-mc-gap-pill {
-  fill: var(--paper);
-  stroke: var(--ember);
+  fill: var(--dbx-paper, #ffffff);
+  stroke: var(--dbx-red, #e7000b);
   stroke-width: 1px;
 }
 
 .dbx-mc-gap-pill-text {
   font-size: 10.5px;
   font-weight: 600;
-  fill: var(--ember);
+  fill: var(--dbx-red, #e7000b);
   letter-spacing: 0.01em;
 }
 
@@ -111,81 +106,81 @@
 .dbx-mc-tl-axis-label {
   font-size: 11.5px;
   font-weight: 500;
-  fill: var(--muted);
+  fill: var(--dbx-slate, #707070);
   font-variant-numeric: tabular-nums;
 }
 
 .dbx-mc-tl-guide {
-  stroke: var(--hairline);
+  stroke: var(--dbx-ring, rgb(230, 230, 232));
   stroke-width: 1px;
   stroke-dasharray: 2 3;
 }
 
 .dbx-mc-tl-guide-bad {
-  stroke: var(--ember);
+  stroke: var(--dbx-red, #e7000b);
   stroke-opacity: 0.45;
 }
 
 .dbx-mc-tl-name {
   font-size: 13px;
   font-weight: 600;
-  fill: var(--ink);
+  fill: var(--dbx-ink, #1d1d1f);
 }
 
 .dbx-mc-tl-age {
   font-size: 11.5px;
   font-weight: 400;
-  fill: var(--muted);
+  fill: var(--dbx-slate, #707070);
   font-variant-numeric: tabular-nums;
 }
 
 .dbx-mc-tl-track {
-  stroke: var(--hairline);
+  stroke: var(--dbx-ring, rgb(230, 230, 232));
   stroke-width: 4px;
 }
 
 .dbx-mc-tl-track-ok {
-  stroke: var(--ink);
+  stroke: var(--dbx-ink, #1d1d1f);
   stroke-width: 4px;
 }
 
 .dbx-mc-tl-track-bad {
-  stroke: var(--ember);
+  stroke: var(--dbx-red, #e7000b);
   stroke-width: 4px;
 }
 
 .dbx-mc-tl-dot-now {
-  fill: var(--paper);
-  stroke: var(--ink);
+  fill: var(--dbx-paper, #ffffff);
+  stroke: var(--dbx-ink, #1d1d1f);
   stroke-width: 2px;
 }
 
 .dbx-mc-tl-dot {
-  fill: var(--ink);
-  stroke: var(--paper);
+  fill: var(--dbx-ink, #1d1d1f);
+  stroke: var(--dbx-paper, #ffffff);
   stroke-width: 1.5px;
 }
 
 .dbx-mc-tl-dot-bad {
-  fill: var(--ember);
-  stroke: var(--paper);
+  fill: var(--dbx-red, #e7000b);
+  stroke: var(--dbx-paper, #ffffff);
   stroke-width: 1.5px;
 }
 
 .dbx-mc-tl-tag {
   font-size: 11px;
   font-weight: 600;
-  fill: var(--ink);
+  fill: var(--dbx-ink, #1d1d1f);
   font-variant-numeric: tabular-nums;
 }
 
 .dbx-mc-tl-tag-muted {
-  fill: var(--muted);
+  fill: var(--dbx-slate, #707070);
   font-weight: 500;
 }
 
 .dbx-mc-tl-tag-bad {
-  fill: var(--ember);
+  fill: var(--dbx-red, #e7000b);
 }
 
 .dbx-mc-tl-chips {
@@ -200,20 +195,19 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 2px 9px;
-  border-radius: 18px;
-  background: var(--surface-alt);
-  border: 1px solid var(--hairline);
+  padding: 3px 10px;
+  border-radius: 9999px;
+  background: var(--dbx-canvas, #f5f5f7);
   font-size: 12px;
   font-weight: 500;
-  color: var(--ink);
+  color: var(--dbx-ink, #1d1d1f);
   font-variant-numeric: tabular-nums;
 }
 
 .dbx-mc-tl-chip-bad {
-  color: var(--ember);
-  border-color: var(--ember);
-  background: var(--paper);
+  color: var(--dbx-red, #e7000b);
+  box-shadow: var(--dbx-red, #e7000b) 0 0 0 1px;
+  background: var(--dbx-paper, #ffffff);
   font-weight: 600;
 }
 
@@ -221,91 +215,91 @@
 .dbx-mc-debt-name {
   font-size: 13px;
   font-weight: 500;
-  fill: var(--ink);
+  fill: var(--dbx-ink, #1d1d1f);
 }
 
 .dbx-mc-debt-amount {
   font-size: 13px;
   font-weight: 600;
-  fill: var(--ink);
+  fill: var(--dbx-ink, #1d1d1f);
   font-variant-numeric: tabular-nums;
 }
 
 .dbx-mc-debt-track {
-  fill: var(--hairline);
+  fill: var(--dbx-ring, rgb(230, 230, 232));
 }
 
 .dbx-mc-debt-fill {
-  fill: var(--ink);
+  fill: var(--dbx-ink, #1d1d1f);
   transform-box: fill-box;
   transform-origin: left center;
-  animation: dbx-mc-bar-in 650ms var(--ease) both;
+  animation: dbx-mc-bar-in 650ms var(--dbx-ease, ease) both;
 }
 
 .dbx-mc-debt-fill-bad {
-  fill: var(--ember);
+  fill: var(--dbx-red, #e7000b);
 }
 
 .dbx-mc-debt-rate {
   font-size: 12.5px;
   font-weight: 600;
-  fill: var(--muted);
+  fill: var(--dbx-slate, #707070);
   font-variant-numeric: tabular-nums;
 }
 
 .dbx-mc-debt-rate-bad {
-  fill: var(--ember);
+  fill: var(--dbx-red, #e7000b);
 }
 
 /* ---- 4. SwingRange ("How bumpy the last 3 years were") ---- */
 .dbx-mc-swing-track {
-  fill: var(--hairline);
+  fill: var(--dbx-ring, rgb(230, 230, 232));
 }
 
 .dbx-mc-swing-band {
-  fill: var(--ink);
+  fill: var(--dbx-ink, #1d1d1f);
   transform-box: fill-box;
   transform-origin: center;
-  animation: dbx-mc-scale-x 650ms var(--ease) both;
+  animation: dbx-mc-scale-x 650ms var(--dbx-ease, ease) both;
 }
 
 .dbx-mc-swing-zero {
-  stroke: var(--paper);
+  stroke: var(--dbx-paper, #ffffff);
   stroke-width: 2px;
 }
 
 .dbx-mc-swing-zero-tick {
-  stroke: var(--ink);
+  stroke: var(--dbx-ink, #1d1d1f);
   stroke-width: 1.5px;
 }
 
 .dbx-mc-swing-edge {
-  stroke: var(--ink);
+  stroke: var(--dbx-ink, #1d1d1f);
   stroke-width: 2px;
 }
 
 .dbx-mc-swing-dot {
-  fill: var(--paper);
-  stroke: var(--ink);
+  fill: var(--dbx-paper, #ffffff);
+  stroke: var(--dbx-ink, #1d1d1f);
   stroke-width: 2.5px;
 }
 
 .dbx-mc-swing-val {
   font-size: 14px;
   font-weight: 600;
-  fill: var(--ink);
+  fill: var(--dbx-ink, #1d1d1f);
   font-variant-numeric: tabular-nums;
 }
 
 .dbx-mc-swing-zero-label {
   font-size: 12px;
   font-weight: 500;
-  fill: var(--muted);
+  fill: var(--dbx-slate, #707070);
   font-variant-numeric: tabular-nums;
 }
 
 .dbx-mc-swing-bracket {
-  stroke: var(--muted);
+  stroke: var(--dbx-steel, #86868b);
   stroke-width: 1.25px;
   fill: none;
 }
@@ -313,7 +307,7 @@
 .dbx-mc-swing-band-label {
   font-size: 12px;
   font-weight: 600;
-  fill: var(--ink);
+  fill: var(--dbx-ink, #1d1d1f);
 }
 
 /* ---- 5. AdvisorPriorities ("Your advisor's recommendations") ---- */
@@ -327,7 +321,7 @@
 
 .dbx-mc-prio-item {
   display: grid;
-  grid-template-columns: 36px minmax(0, 1fr);
+  grid-template-columns: 34px minmax(0, 1fr);
   gap: 12px;
   position: relative;
 }
@@ -339,18 +333,17 @@
 }
 
 .dbx-mc-prio-num {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   display: grid;
   place-items: center;
   font-family: var(--mono);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-  background: var(--surface-alt);
-  border: 1.5px solid var(--hairline);
-  color: var(--ink);
+  background: var(--dbx-canvas, #f5f5f7);
+  color: var(--dbx-ink, #1d1d1f);
   flex-shrink: 0;
   z-index: 1;
 }
@@ -359,7 +352,7 @@
   width: 2px;
   flex: 1;
   min-height: 14px;
-  background: var(--hairline);
+  background: var(--dbx-ring, rgb(230, 230, 232));
   margin: 4px 0;
 }
 
@@ -379,34 +372,25 @@
   font-size: 15px;
   font-weight: 600;
   line-height: 1.35;
-  color: var(--ink);
+  color: var(--dbx-ink, #1d1d1f);
 }
 
 .dbx-mc-prio-detail {
+  margin: 0;
   font-size: 13.5px;
   line-height: 1.45;
-  color: var(--muted);
+  color: var(--dbx-slate, #707070);
 }
 
 /* ---- Animaciones y movimiento reducido ---- */
 @keyframes dbx-mc-bar-in {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
 
 @keyframes dbx-mc-scale-x {
-  from {
-    opacity: 0;
-    transform: scaleX(0.35);
-  }
-  to {
-    opacity: 1;
-    transform: scaleX(1);
-  }
+  from { opacity: 0; transform: scaleX(0.35); }
+  to { opacity: 1; transform: scaleX(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -415,86 +399,5 @@
   .dbx-mc-swing-band {
     animation: none !important;
     transform: none !important;
-  }
-}
-
-
-/* ---- PC (>= 1024 px): las gráficas adicionales escalan al alto de la tarjeta compacta ----
-   Por debajo de 1024 px no se aplica nada (móvil igual que antes). */
-@media (min-width: 1024px) {
-  .dbx-cc-chart .dbx-mc-wrap {
-    gap: 4px;
-  }
-
-  /* Portada: el contenedor del SVG ocupa el resto y el SVG se ajusta (meet) al alto disponible */
-  .dbx-cover .dbx-mc-chart-wrap {
-    flex: 1 1 0;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .dbx-cover .dbx-mc-svg {
-    flex: 1 1 0;
-    min-height: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  /* Hitos de la línea temporal: chips más pequeños para no robar alto al gráfico */
-  .dbx-cover .dbx-mc-tl-chips {
-    flex: none;
-    gap: 4px;
-    margin-top: 0;
-  }
-
-  .dbx-cover .dbx-mc-tl-chip {
-    padding: 1px 7px;
-    font-size: 11px;
-  }
-
-  /* Prioridades del asesor: lista compacta que puede hacer scroll interno si no cabe */
-  .dbx-cover .dbx-mc-prio-list {
-    flex: 1 1 0;
-    min-height: 0;
-    overflow-y: auto;
-    scrollbar-width: thin;
-  }
-
-  .dbx-cover .dbx-mc-prio-item {
-    grid-template-columns: 20px minmax(0, 1fr);
-    gap: 8px;
-  }
-
-  .dbx-cover .dbx-mc-prio-num {
-    width: 20px;
-    height: 20px;
-    font-size: 11px;
-    border-width: 1px;
-  }
-
-  .dbx-cover .dbx-mc-prio-line {
-    min-height: 4px;
-    margin: 2px 0;
-  }
-
-  .dbx-cover .dbx-mc-prio-body {
-    gap: 1px;
-    padding-bottom: 6px;
-  }
-
-  .dbx-cover .dbx-mc-prio-title {
-    font-size: 12px;
-    line-height: 1.25;
-  }
-
-  .dbx-cover .dbx-mc-prio-detail {
-    font-size: 11px;
-    line-height: 1.3;
-  }
-
-  /* Sección: las gráficas de la columna derecha no se estiran con el ancho de 5 columnas */
-  .dbx-section .dbx-mc-svg {
-    max-height: 190px;
   }
 }

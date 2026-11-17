@@ -1,519 +1,475 @@
-/* Estilos del Dashboard extendido (prefijo dbx-).
-   Usa únicamente los tokens de :root definidos en src/styles.css. */
+/* Dashboard estilo widgets iOS + guía design_apple.md (prefijo dbx-, sin selectores globales). */
+
+.dbx-fit {
+  width: 100%;
+  min-width: 0;
+}
+
+.dbx-root,
+.dbx-modal-backdrop {
+  --dbx-canvas: #f5f5f7;
+  --dbx-paper: #ffffff;
+  --dbx-frost: #fafafc;
+  --dbx-ink: #1d1d1f;
+  --dbx-slate: #707070;
+  --dbx-steel: #86868b;
+  --dbx-hairline: #d6d6d6;
+  --dbx-ring: rgb(230, 230, 232);
+  --dbx-blue: #0071e3;
+  --dbx-red: #e7000b;
+  --dbx-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  font-family: var(--font);
+  color: var(--dbx-ink);
+}
 
 .dbx-root {
-  container-type: inline-size;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  font-size: 15px;
 }
 
-.dbx-root .card + .card,
-.dbx-root .card + .dbx-more-card {
-  margin-top: 0;
-}
-
-/* Pie de gráfica de una frase corta en texto pequeño muted */
-.dbx-caption {
-  margin-top: 6px;
-  font-size: 13px;
-  line-height: 1.4;
-  color: var(--muted);
-}
-
-/* Desplegable "Read more" cerrado por defecto */
-.dbx-more {
-  margin-top: 4px;
-  border-top: 1px solid var(--hairline);
-  padding-top: 10px;
-}
-
-.dbx-more-card {
-  border-top: 1px solid var(--hairline);
-  padding: 14px 20px;
-}
-
-.dbx-more > summary {
-  cursor: pointer;
-  font-size: 13px;
+.dbx-eyebrow {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.25;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   font-weight: 600;
-  color: var(--muted);
-  list-style: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  user-select: none;
+  color: var(--dbx-slate);
 }
 
-.dbx-more > summary::-webkit-details-marker {
+/* ---- Cabecera compacta de página ---- */
+/* Móvil: el nombre de la familia encima del título. En PC van en una línea (ver más abajo). */
+.dbx-page-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 2px 6px 0;
+  min-width: 0;
+}
+
+.dbx-page-title {
+  margin: 2px 0 0;
+  font-size: 26px;
+  line-height: 1.12;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--dbx-ink);
+}
+
+.dbx-page-who {
+  color: var(--dbx-slate);
+}
+
+/* ---- Rejilla de widgets iOS (móvil: 2 columnas) ---- */
+.dbx-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+
+.dbx-w-small {
+  grid-column: span 1;
+}
+
+.dbx-w-medium,
+.dbx-w-large {
+  grid-column: span 2;
+}
+
+/* Si una sección se queda con un solo pequeño, ocupa el ancho entero para no dejar hueco. */
+.dbx-grid-section[data-count="2"] > .dbx-s-small {
+  grid-column: span 2;
+}
+
+/* En portada: Radar oculto por defecto; aparece en pareja (.is-couple) o cuando no hay respuestas (.dbx-no-guess) */
+.dbx-grid-cover .dbx-a-radar {
   display: none;
 }
 
-.dbx-more > summary::after {
-  content: "+";
-  font-size: 15px;
-  line-height: 1;
-  color: var(--muted);
+.is-couple .dbx-grid-cover .dbx-a-radar,
+.dbx-grid-cover.dbx-no-guess .dbx-a-radar {
+  display: flex;
 }
 
-.dbx-more[open] > summary::after {
-  content: "−";
+.dbx-grid-cover.dbx-no-guess .dbx-guess-card {
+  display: none;
 }
 
-.dbx-more-body {
-  margin-top: 12px;
+/* ---- Tarjeta Widget Apple/iOS ---- */
+.dbx-widget {
+  background: var(--dbx-paper);
+  border-radius: 28px;
+  box-shadow: var(--dbx-ring) 0 0 0 1px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  container-type: inline-size;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 180ms var(--dbx-ease), box-shadow 180ms var(--dbx-ease);
 }
 
-.dbx-more-block {
+.dbx-widget:active {
+  transform: scale(0.98);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dbx-widget:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px rgba(29, 29, 31, 0.08), rgb(215, 215, 218) 0 0 0 1px;
+  }
+
+  .dbx-widget:active {
+    transform: scale(0.98);
+  }
+}
+
+.dbx-w-alert .dbx-w-eyebrow {
+  color: var(--dbx-red);
+}
+
+.dbx-w-head {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   gap: 8px;
+  min-width: 0;
 }
 
-.dbx-more-text {
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--ink-soft);
+.dbx-w-eyebrow {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* ---- 0a. KeyInsight ("The one thing to know") ---- */
-.dbx-insight-card {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.dbx-w-head-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
-.dbx-insight-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.dbx-w-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: var(--dbx-canvas);
+  color: var(--dbx-ink);
+  font-size: 11.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
-.dbx-insight-title {
-  margin-top: 2px;
-  font-size: 24px;
+/* Único acento azul #0071e3: enlace Details y píldora Pick your first step */
+.dbx-w-details {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 2px 4px;
+  margin: -2px -4px;
+  font-family: var(--font);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--dbx-blue);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.dbx-w-details:hover {
+  text-decoration: underline;
+}
+
+/* En widgets estrechos (pequeños en móvil) "Details" se queda en una flecha, como en iOS,
+   y la etiqueta del widget puede ocupar dos líneas en vez de cortarse. */
+.dbx-w-chev {
+  display: none;
+  width: 8px;
+  height: 14px;
+  stroke: currentColor;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@container (max-width: 199px) {
+  .dbx-w-head {
+    align-items: flex-start;
+  }
+
+  .dbx-w-eyebrow {
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .dbx-w-details {
+    padding: 2px 6px;
+    margin: -2px -6px -2px 0;
+    color: var(--dbx-steel);
+  }
+
+  .dbx-w-details-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .dbx-w-chev {
+    display: block;
+  }
+}
+
+.dbx-w-details:focus-visible,
+.dbx-pill-blue:focus-visible,
+.dbx-modal-close:focus-visible {
+  outline: 2px solid var(--dbx-blue);
+  outline-offset: 2px;
+}
+
+.dbx-pill-blue {
+  appearance: none;
+  border: 0;
+  background: var(--dbx-blue);
+  color: #ffffff;
+  border-radius: 9999px;
+  padding: 8px 16px;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
   line-height: 1.2;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 150ms var(--dbx-ease), opacity 150ms var(--dbx-ease);
+}
+
+.dbx-pill-blue:hover {
+  opacity: 0.92;
+}
+
+.dbx-pill-blue:active {
+  transform: scale(0.97);
+}
+
+/* Titulares y cifras grandes dentro de widgets */
+.dbx-w-headline {
+  min-width: 0;
+}
+
+.dbx-w-title {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.18;
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: var(--ink);
+  color: var(--dbx-ink);
   font-variant-numeric: tabular-nums;
 }
 
-.dbx-insight-line-ok {
-  stroke: var(--ink);
-  stroke-width: 8px;
-}
-
-.dbx-insight-line-bad {
-  stroke: var(--ember);
-  stroke-width: 8px;
-}
-
-.dbx-insight-dot-ok {
-  fill: var(--ink);
-  stroke: var(--paper);
-  stroke-width: 1.5px;
-}
-
-.dbx-insight-dot-bad {
-  fill: var(--ember);
-  stroke: var(--paper);
-  stroke-width: 1.5px;
-}
-
-.dbx-insight-svg-label {
-  font-size: 12px;
-  font-weight: 600;
-  fill: var(--ink-soft);
-  font-variant-numeric: tabular-nums;
-}
-
-.dbx-insight-bar-ok {
-  fill: var(--ink);
-}
-
-.dbx-insight-bar-bad {
-  fill: var(--ember);
-}
-
-.dbx-insight-bar-rest {
-  fill: var(--hairline);
-}
-
-/* ---- 0. GuessGap ("Your guesses vs your plan") ---- */
-.dbx-guess-card {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.dbx-guess-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.dbx-guess-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.dbx-guess-title {
-  margin-top: 4px;
-  font-size: 20px;
-  line-height: 1.25;
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  color: var(--ink);
-}
-
-.dbx-guess-badge {
-  font-size: 13px;
-  font-weight: 600;
-  flex-shrink: 0;
-}
-
-.dbx-guess-list {
-  list-style: none;
+.dbx-w-num {
   margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.dbx-guess-row {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 12px 0;
-  border-top: 1px solid var(--hairline);
-}
-
-.dbx-guess-row:last-child {
-  padding-bottom: 2px;
-}
-
-.dbx-guess-question {
-  font-size: 15px;
+  font-size: 28px;
+  line-height: 1.06;
   font-weight: 600;
-  line-height: 1.35;
-  color: var(--ink);
-}
-
-.dbx-guess-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  flex-wrap: wrap;
-  font-size: 13px;
-  color: var(--ink-soft);
+  letter-spacing: -0.035em;
+  color: var(--dbx-ink);
   font-variant-numeric: tabular-nums;
-}
-
-.dbx-guess-track {
-  stroke: var(--hairline);
-  stroke-width: 4px;
-}
-
-.dbx-guess-segment {
-  stroke: var(--ink);
-  stroke-width: 4px;
-}
-
-.dbx-guess-segment.dbx-is-bad {
-  stroke: var(--ember);
-}
-
-.dbx-guess-you-dot {
-  fill: var(--paper);
-  stroke: var(--ink-soft);
-  stroke-width: 2px;
-}
-
-.dbx-guess-plan-dot {
-  fill: var(--ink);
-  stroke: var(--paper);
-  stroke-width: 1.5px;
-}
-
-.dbx-guess-plan-dot.dbx-is-bad-dot {
-  fill: var(--ember);
-}
-
-.dbx-guess-dot-label {
-  font-size: 12px;
-  font-weight: 600;
-  fill: var(--ink-soft);
-}
-
-.dbx-guess-plan-label {
-  fill: var(--ink);
-}
-
-.dbx-guess-whole-plan {
-  margin-top: 2px;
-  padding: 8px 12px;
-  border-radius: 12px;
-  background: var(--surface-alt);
-  border: 1px solid var(--hairline);
-  font-size: 13px;
-  line-height: 1.4;
-  color: var(--ink-soft);
-}
-
-/* Mini-leyenda gráfica de GuessGap */
-.dbx-guess-legend {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding-top: 8px;
-  border-top: 1px solid var(--hairline);
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.dbx-guess-legend-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.dbx-guess-legend-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.dbx-guess-legend-you {
-  background: var(--paper);
-  border: 2px solid var(--ink-soft);
-}
-
-.dbx-guess-legend-plan {
-  background: var(--ink);
-}
-
-/* ---- Portada (Cover) ---- */
-.dbx-hero-card {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.dbx-hero-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.dbx-cover-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 16px;
-}
-
-.dbx-card {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-width: 0;
-}
-
-.dbx-wf-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.dbx-wf-unlock {
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-  font-variant-numeric: tabular-nums;
-}
-
-.dbx-cap-chips {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.dbx-cap-label {
-  font-size: 12px;
-  color: var(--muted);
-  margin-right: 2px;
-}
-
-.dbx-cap-chip {
-  font-size: 12px;
-  padding: 2px 8px;
-}
-
-/* Lista de acciones (moves) dentro de Read more */
-.dbx-moves-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.dbx-move-item {
-  padding: 10px 12px;
-  border-radius: 14px;
-  background: var(--surface-alt);
-  border: 1px solid var(--hairline);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.dbx-move-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.dbx-move-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ink);
-}
-
-.dbx-move-badges {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-}
-
-.dbx-move-action {
-  font-size: 14px;
-  line-height: 1.45;
-  color: var(--ink-soft);
-}
-
-.dbx-combined-note {
-  font-size: 13px;
-  line-height: 1.45;
-  color: var(--muted);
-  padding-top: 6px;
-  border-top: 1px solid var(--hairline);
-}
-
-/* ---- Vista de Sección ---- */
-.dbx-section-header {
-  padding-top: 4px;
-}
-
-.dbx-main-visual {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.dbx-split-hero {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--hairline);
-}
-
-.dbx-headline-compact {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-}
-
-.dbx-headline-value {
-  font-size: 38px;
   word-break: break-word;
 }
 
-.dbx-kpi-card {
-  padding: 16px 20px;
+.dbx-w-num.tone-bad {
+  color: var(--dbx-red);
 }
 
-.dbx-stats-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px 12px;
-}
-
-.dbx-table-wrap {
-  overflow-x: auto;
-  max-width: 100%;
-}
-
-.dbx-look-text {
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--ink-soft);
-}
-
-.dbx-recs-list {
-  margin: 0;
-  padding-left: 18px;
+.dbx-w-hero-stat {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.dbx-rec-item {
-  font-size: 14px;
-  line-height: 1.45;
-  color: var(--ink-soft);
-}
-
-/* Oculta etiquetas sobre la línea de LineChart y muestra leyenda en fila debajo */
-.dbx-chart-card .line-chart-marker-label {
-  display: none;
-}
-
-.dbx-milestone-legend {
-  margin-top: 10px;
-  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
 }
 
-.dbx-milestone-chip {
-  font-size: 12px;
-  padding: 2px 8px;
+.dbx-w-hero-label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--dbx-slate);
+}
+
+.dbx-w-hero-num {
+  font-size: 32px;
+  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  color: var(--dbx-ink);
   font-variant-numeric: tabular-nums;
 }
 
-.dbx-milestone-bad {
-  color: var(--ember);
-  border-color: var(--ember);
+.dbx-w-hero-num.tone-bad {
+  color: var(--dbx-red);
 }
 
-/* ---- Gráficas SVG ---- */
+.dbx-w-visual {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.dbx-w-foot {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  min-width: 0;
+}
+
+.dbx-w-support {
+  margin: 0;
+  flex: 1 1 120px;
+  min-width: 0;
+  font-size: 12.5px;
+  line-height: 1.32;
+  color: var(--dbx-slate);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.dbx-w-actions {
+  flex-shrink: 0;
+}
+
+/* ---- Arco pequeño de la nota (ScoreGaugeMini) ---- */
+
+.dbx-gmini-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.dbx-gmini-arc {
+  position: relative;
+  width: 100%;
+  max-width: 138px;
+}
+
+.dbx-gmini-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.dbx-gmini-track {
+  stroke: var(--dbx-ring);
+  stroke-width: 12px;
+}
+
+.dbx-gmini-potential {
+  stroke: var(--dbx-steel);
+  stroke-width: 12px;
+  stroke-dasharray: 3 5;
+}
+
+.dbx-gmini-fill {
+  stroke: var(--dbx-ink);
+  stroke-width: 12px;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: dbx-arc-in 700ms var(--dbx-ease) forwards;
+}
+
+.dbx-gmini-fill.dbx-is-bad {
+  stroke: var(--dbx-red);
+}
+
+.dbx-gmini-center {
+  position: absolute;
+  inset: auto 0 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.dbx-gmini-score {
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  color: var(--dbx-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-gmini-score.tone-bad {
+  color: var(--dbx-red);
+}
+
+.dbx-gmini-max {
+  font-size: 11px;
+  color: var(--dbx-slate);
+  margin-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-gmini-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.dbx-pill-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: var(--dbx-canvas);
+  color: var(--dbx-ink);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.dbx-pill-status.dbx-pill-bad {
+  color: var(--dbx-red);
+  background: #fff5f5;
+}
+
+.dbx-gmini-upto {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--dbx-slate);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Gráficas SVG principales ---- */
 .dbx-chart-wrap {
   width: 100%;
   max-width: 100%;
@@ -530,36 +486,101 @@
 
 .dbx-svg-axis-label {
   font-size: 12px;
-  fill: var(--muted);
+  fill: var(--dbx-slate);
   font-variant-numeric: tabular-nums;
 }
 
-/* 1. ScoreGauge */
+/* KeyInsight */
+.dbx-insight-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dbx-insight-title {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--dbx-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-insight-line-ok {
+  stroke: var(--dbx-ink);
+  stroke-width: 8px;
+}
+
+.dbx-insight-line-bad {
+  stroke: var(--dbx-red);
+  stroke-width: 8px;
+}
+
+.dbx-insight-dot-ok {
+  fill: var(--dbx-ink);
+  stroke: var(--dbx-paper);
+  stroke-width: 1.5px;
+}
+
+.dbx-insight-dot-bad {
+  fill: var(--dbx-red);
+  stroke: var(--dbx-paper);
+  stroke-width: 1.5px;
+}
+
+.dbx-insight-svg-label {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--dbx-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-insight-bar-ok {
+  fill: var(--dbx-ink);
+}
+
+.dbx-insight-bar-bad {
+  fill: var(--dbx-red);
+}
+
+.dbx-insight-bar-rest {
+  fill: var(--dbx-ring);
+}
+
+.dbx-caption {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--dbx-slate);
+}
+
+/* ScoreGauge completo */
 .dbx-gauge-track {
-  stroke: var(--hairline);
+  stroke: var(--dbx-ring);
   stroke-width: 14px;
 }
 
 .dbx-gauge-potential {
-  stroke: var(--muted);
+  stroke: var(--dbx-steel);
   stroke-width: 14px;
   stroke-dasharray: 4 6;
 }
 
 .dbx-gauge-fill {
-  stroke: var(--ink);
+  stroke: var(--dbx-ink);
   stroke-width: 14px;
   stroke-dasharray: 100;
   stroke-dashoffset: 100;
-  animation: dbx-arc-in 750ms var(--ease) forwards;
+  animation: dbx-arc-in 750ms var(--dbx-ease) forwards;
 }
 
 .dbx-gauge-fill.dbx-is-bad {
-  stroke: var(--ember);
+  stroke: var(--dbx-red);
 }
 
 .dbx-gauge-cap-line {
-  stroke: var(--ember);
+  stroke: var(--dbx-red);
   stroke-width: 2.5px;
   stroke-linecap: round;
 }
@@ -567,7 +588,7 @@
 .dbx-gauge-up-to {
   font-size: 12px;
   font-weight: 600;
-  fill: var(--ink-soft);
+  fill: var(--dbx-ink);
   font-variant-numeric: tabular-nums;
 }
 
@@ -575,88 +596,86 @@
   font-size: 44px;
   font-weight: 600;
   letter-spacing: -0.04em;
-  fill: var(--ink);
+  fill: var(--dbx-ink);
   font-variant-numeric: tabular-nums;
 }
 
 .dbx-is-bad-text {
-  fill: var(--ember);
+  fill: var(--dbx-red);
 }
 
 .dbx-gauge-band {
   font-size: 13px;
   font-weight: 500;
-  fill: var(--muted);
+  fill: var(--dbx-slate);
 }
 
-/* 2. PillarRadar */
+/* PillarRadar */
 .dbx-radar-ring {
   fill: none;
-  stroke: var(--hairline);
+  stroke: var(--dbx-ring);
   stroke-width: 1px;
 }
 
 .dbx-radar-axis {
-  stroke: var(--hairline);
+  stroke: var(--dbx-ring);
   stroke-width: 1px;
 }
 
 .dbx-radar-area {
-  fill: var(--ink);
+  fill: var(--dbx-ink);
   fill-opacity: 0.08;
-  stroke: var(--ink);
+  stroke: var(--dbx-ink);
   stroke-width: 2px;
   stroke-linejoin: round;
   transform-box: fill-box;
   transform-origin: center;
-  animation: dbx-scale-in 650ms var(--ease) both;
+  animation: dbx-scale-in 650ms var(--dbx-ease) both;
 }
 
 .dbx-radar-dot {
-  fill: var(--ink);
-  stroke: var(--paper);
+  fill: var(--dbx-ink);
+  stroke: var(--dbx-paper);
   stroke-width: 1.5px;
 }
 
 .dbx-radar-dot.dbx-is-bad-dot {
-  fill: var(--ember);
+  fill: var(--dbx-red);
 }
 
 .dbx-radar-label {
   font-size: 12px;
   font-weight: 500;
-  fill: var(--ink-soft);
+  fill: var(--dbx-ink);
 }
 
 .dbx-radar-value {
   font-size: 12.5px;
   font-weight: 600;
-  fill: var(--ink);
+  fill: var(--dbx-ink);
   font-variant-numeric: tabular-nums;
 }
 
-/* 3. MovesWaterfall */
+.dbx-radar-compact {
+  max-height: 112px;
+}
+
+/* MovesWaterfall */
 .dbx-wf-wrap {
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
-
-.dbx-wf-biggest-lift {
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.35;
-  color: var(--ink);
-  font-variant-numeric: tabular-nums;
+  width: 100%;
+  min-height: 0;
 }
 
 .dbx-wf-grid {
-  stroke: var(--hairline);
+  stroke: var(--dbx-ring);
   stroke-width: 1px;
 }
 
 .dbx-wf-connector {
-  stroke: var(--muted);
+  stroke: var(--dbx-steel);
   stroke-width: 1px;
   stroke-dasharray: 2 3;
 }
@@ -664,409 +683,86 @@
 .dbx-wf-bar {
   transform-box: fill-box;
   transform-origin: bottom;
-  animation: dbx-bar-up 600ms var(--ease) both;
+  animation: dbx-bar-up 600ms var(--dbx-ease) both;
 }
 
 .dbx-wf-bar-base {
-  fill: var(--muted);
+  fill: var(--dbx-steel);
 }
 
-.dbx-wf-bar-step {
-  fill: var(--ink);
+.dbx-wf-bar-step,
+.dbx-wf-bar-best {
+  fill: var(--dbx-ink);
 }
 
 .dbx-wf-bar-muted {
-  fill: var(--muted);
-}
-
-.dbx-wf-bar-best {
-  fill: var(--ink);
+  fill: var(--dbx-steel);
 }
 
 .dbx-wf-bar-total {
-  fill: var(--ink-soft);
+  fill: var(--dbx-ink);
 }
 
 .dbx-wf-value {
   font-size: 12.5px;
   font-weight: 600;
-  fill: var(--ink);
+  fill: var(--dbx-ink);
   font-variant-numeric: tabular-nums;
 }
 
 .dbx-wf-value-muted {
-  fill: var(--muted);
+  fill: var(--dbx-slate);
 }
 
 .dbx-wf-label {
   font-size: 12px;
-  fill: var(--ink-soft);
+  fill: var(--dbx-ink);
 }
 
 .dbx-wf-effort-pill {
-  fill: var(--canvas);
-  stroke: var(--hairline);
+  fill: var(--dbx-canvas);
+  stroke: var(--dbx-ring);
   stroke-width: 1px;
 }
 
 .dbx-wf-effort-text {
   font-size: 11px;
   font-weight: 500;
-  fill: var(--muted);
+  fill: var(--dbx-slate);
 }
 
-/* 4. TargetBars / VsBar / DebtBars */
-.dbx-tbar-label {
-  font-size: 13px;
-  font-weight: 500;
-  fill: var(--ink);
+/* Hitos de la línea de patrimonio */
+
+.dbx-modal-panel .line-chart-marker-label {
+  display: none;
 }
 
-.dbx-tbar-amount {
-  font-size: 13px;
-  font-weight: 500;
-  fill: var(--ink);
-  font-variant-numeric: tabular-nums;
-}
-
-.dbx-tbar-target-text {
-  fill: var(--muted);
-  font-weight: 400;
-}
-
-.dbx-tbar-track {
-  fill: var(--hairline);
-}
-
-.dbx-tbar-fill {
-  fill: var(--ink);
-  transform-box: fill-box;
-  transform-origin: left center;
-  animation: dbx-bar-right 650ms var(--ease) both;
-}
-
-.dbx-tbar-fill.dbx-is-bad-fill {
-  fill: var(--ember);
-}
-
-.dbx-tbar-target-line,
-.dbx-vs-rec-line {
-  stroke: var(--ink-soft);
-  stroke-width: 2.5px;
-  stroke-linecap: round;
-}
-
-.dbx-vs-rec-line.dbx-is-bad {
-  stroke: var(--ember);
-}
-
-.dbx-dbar-rate {
-  font-size: 13px;
-  font-weight: 600;
-  fill: var(--muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.dbx-dbar-rate.dbx-is-bad-text {
-  fill: var(--ember);
-}
-
-/* 5. Ring */
-.dbx-ring-wrap {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.dbx-ring-svg {
-  width: 76px;
-  height: 76px;
-  flex-shrink: 0;
-}
-
-.dbx-ring-track {
-  stroke: var(--hairline);
-  stroke-width: 9px;
-}
-
-.dbx-ring-fill {
-  stroke: var(--ink);
-  stroke-width: 9px;
-}
-
-.dbx-ring-fill.dbx-is-bad {
-  stroke: var(--ember);
-}
-
-.dbx-ring-value {
-  font-size: 18px;
-  font-weight: 600;
-  fill: var(--ink);
-  font-variant-numeric: tabular-nums;
-}
-
-.dbx-ring-label {
-  max-width: 140px;
-}
-
-/* 6. MonthBoxes */
-.dbx-mboxes-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.dbx-mboxes-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.dbx-mboxes-val {
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
-}
-
-.dbx-mbox-off {
-  fill: var(--hairline);
-}
-
-.dbx-mbox-on {
-  fill: var(--ink);
-}
-
-.dbx-mbox-bad {
-  fill: var(--ember);
-}
-
-/* 7. StackBar & BalanceBar */
-.dbx-portfolio-stacks {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.dbx-stack-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.dbx-stack-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.dbx-stack-row-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--ink-soft);
-}
-
-.dbx-stack-legend {
-  list-style: none;
-  margin: 4px 0 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 14px;
-}
-
-.dbx-stack-legend-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: var(--ink-soft);
-  font-variant-numeric: tabular-nums;
-}
-
-.dbx-stack-swatch {
-  width: 10px;
-  height: 10px;
-  border-radius: 3px;
-  flex-shrink: 0;
-}
-
-.dbx-stack-legend-pct {
-  font-weight: 600;
-  color: var(--ink);
-}
-
-.dbx-balance-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--hairline);
-}
-
-.dbx-balance-headline {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.dbx-balance-debt-fill {
-  fill: var(--muted);
-}
-
-/* ---- Animaciones ---- */
-@keyframes dbx-arc-in {
-  from {
-    stroke-dashoffset: 100;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes dbx-scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.75);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes dbx-bar-up {
-  from {
-    opacity: 0;
-    transform: scaleY(0.15);
-  }
-  to {
-    opacity: 1;
-    transform: scaleY(1);
-  }
-}
-
-@keyframes dbx-bar-right {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-
-/* ---- Contenedor amplio (>= 760px) ---- */
-@container (min-width: 760px) {
-  .dbx-cover-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: start;
-  }
-
-  .dbx-stats-grid {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  }
-}
-
-/* ---- Accesibilidad: movimiento reducido ---- */
-@media (prefers-reduced-motion: reduce) {
-  .dbx-gauge-fill,
-  .dbx-radar-area,
-  .dbx-wf-bar,
-  .dbx-tbar-fill {
-    animation: none !important;
-    stroke-dashoffset: 0 !important;
-    transform: none !important;
-  }
-}
-
-/* Cifras clave de la línea de patrimonio (hoy, máximo y final): dan escala a una gráfica sin eje de cifras */
-.dbx-nw-figures {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-  margin: 8px 0 12px;
-}
-.dbx-nw-fig {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-.dbx-nw-label {
-  font-size: 12px;
-  line-height: 1.3;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.dbx-nw-value {
-  font-size: 19px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-}
-.dbx-nw-bad {
-  color: var(--ember);
-}
-
-/* ---- Cabecera de portada (dbx-head-*) ---- */
-.dbx-head {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 20px;
-}
-
-.dbx-head-eyebrow {
-  color: var(--muted);
-}
-
-.dbx-head-title {
-  font-size: 28px;
-  line-height: 1.14;
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  color: var(--ink);
-}
-
-.dbx-head-lede {
-  font-size: 15px;
-  line-height: 1.45;
-  color: var(--muted);
-}
-
-.dbx-head-chips {
+.dbx-milestone-legend {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 6px;
-  margin-top: 4px;
 }
 
-.dbx-head-chip {
+.dbx-milestone-chip {
+  font-size: 11.5px;
+  padding: 2px 8px;
   font-variant-numeric: tabular-nums;
 }
 
-.dbx-head-summary {
-  margin-top: 6px;
-  padding-top: 10px;
-  border-top: 1px solid var(--hairline);
+.dbx-milestone-bad {
+  color: var(--dbx-red);
+  border-color: var(--dbx-red);
 }
 
-/* ---- Patrón ChartCard (dbx-cc-*) ---- */
-.dbx-cc {
+/* ---- GuessGap completo (dentro del modal de detalle) ---- */
+.dbx-guess-wrap {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  min-width: 0;
+  gap: 12px;
 }
 
-.dbx-cc-alert .dbx-cc-eyebrow {
-  color: var(--ember);
-}
-
-.dbx-cc-head {
+.dbx-guess-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -1074,752 +770,1280 @@
   flex-wrap: wrap;
 }
 
-.dbx-cc-titles {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-  flex: 1 1 200px;
+.dbx-guess-title {
+  margin: 4px 0 0;
+  font-size: 20px;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--dbx-ink);
 }
 
-.dbx-cc-title {
-  font-size: 21px;
-  line-height: 1.22;
+.dbx-guess-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dbx-guess-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 0;
+  border-top: 1px solid var(--dbx-ring);
+}
+
+.dbx-guess-row:first-child {
+  border-top: 0;
+  padding-top: 2px;
+}
+
+.dbx-guess-question {
+  font-size: 15px;
   font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--ink);
+  line-height: 1.35;
+  color: var(--dbx-ink);
+}
+
+.dbx-guess-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--dbx-slate);
   font-variant-numeric: tabular-nums;
 }
 
-.dbx-cc-badge {
+.dbx-guess-track {
+  stroke: var(--dbx-ring);
+  stroke-width: 4px;
+}
+
+.dbx-guess-segment {
+  stroke: var(--dbx-ink);
+  stroke-width: 4px;
+}
+
+.dbx-guess-segment.dbx-is-bad {
+  stroke: var(--dbx-red);
+}
+
+.dbx-guess-you-dot {
+  fill: var(--dbx-paper);
+  stroke: var(--dbx-slate);
+  stroke-width: 2px;
+}
+
+.dbx-guess-plan-dot {
+  fill: var(--dbx-ink);
+  stroke: var(--dbx-paper);
+  stroke-width: 1.5px;
+}
+
+.dbx-guess-plan-dot.dbx-is-bad-dot {
+  fill: var(--dbx-red);
+}
+
+.dbx-guess-dot-label {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--dbx-slate);
+}
+
+.dbx-guess-plan-label {
+  fill: var(--dbx-ink);
+}
+
+.dbx-guess-whole-plan {
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--dbx-canvas);
+  font-size: 13px;
+  color: var(--dbx-ink);
+}
+
+.dbx-guess-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 8px;
+  border-top: 1px solid var(--dbx-ring);
+  font-size: 13px;
+  color: var(--dbx-slate);
+}
+
+.dbx-guess-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dbx-guess-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dbx-guess-legend-you {
+  background: var(--dbx-paper);
+  border: 2px solid var(--dbx-slate);
+}
+
+.dbx-guess-legend-plan {
+  background: var(--dbx-ink);
+}
+
+/* ---- Modal / Hoja inferior de detalle (WidgetDetailModal) ---- */
+.dbx-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(29, 29, 31, 0.42);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  animation: dbx-fade-in 180ms var(--dbx-ease) both;
+}
+
+.dbx-modal-panel {
+  width: 100%;
+  max-height: 92dvh;
+  background: var(--dbx-canvas);
+  color: var(--dbx-ink);
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.16);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  outline: none;
+  animation: dbx-sheet-up 240ms var(--dbx-ease) both;
+}
+
+.dbx-modal-grabber {
+  width: 36px;
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--dbx-hairline);
+  margin: 10px auto 0;
   flex-shrink: 0;
 }
 
-.dbx-cc-chart {
+.dbx-modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px 14px;
+  background: var(--dbx-paper);
+  border-bottom: 1px solid var(--dbx-ring);
+  flex-shrink: 0;
+}
+
+.dbx-modal-alert .dbx-modal-eyebrow {
+  color: var(--dbx-red);
+}
+
+.dbx-modal-titles {
+  min-width: 0;
+}
+
+.dbx-modal-title {
+  margin: 4px 0 0;
+  font-size: 20px;
+  line-height: 1.22;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--dbx-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--dbx-canvas);
+  color: var(--dbx-ink);
+  font-size: 20px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.dbx-modal-close:hover {
+  background: var(--dbx-ring);
+}
+
+.dbx-modal-body {
+  padding: 16px 20px 28px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dbx-detail-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dbx-detail-card {
+  background: var(--dbx-paper);
+  border-radius: 24px;
+  box-shadow: var(--dbx-ring) 0 0 0 1px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
   min-width: 0;
 }
 
-/* Evita duplicar cabeceras y pies internos cuando KeyInsight o GuessGap van dentro de ChartCard */
-.dbx-cc-chart .dbx-insight-wrap > .eyebrow,
-.dbx-cc-chart .dbx-insight-wrap > .dbx-insight-title,
-.dbx-cc-chart .dbx-insight-wrap > .dbx-caption,
-.dbx-cc-chart .dbx-guess-header {
-  display: none;
+.dbx-detail-lead {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.45;
+  font-weight: 600;
+  color: var(--dbx-ink);
 }
 
-.dbx-cc-chart .dbx-guess-row:first-child {
-  border-top: none;
-  padding-top: 2px;
+.dbx-detail-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--dbx-slate);
 }
 
-.dbx-cc-footer {
+.dbx-detail-probes .a-probes .card {
+  border: 0;
+  box-shadow: var(--dbx-ring) 0 0 0 1px;
+  background: var(--dbx-frost);
+  border-radius: 18px;
+}
+
+.dbx-cap-chips {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.dbx-cap-label {
+  font-size: 12px;
+  color: var(--dbx-slate);
+}
+
+.dbx-cap-chip {
+  font-size: 12px;
+  padding: 2px 8px;
+}
+
+.dbx-moves-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding-top: 10px;
-  border-top: 1px solid var(--hairline);
 }
 
-.dbx-cc-takeaway {
-  font-size: 15px;
-  line-height: 1.42;
+.dbx-move-item {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: var(--dbx-canvas);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dbx-move-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dbx-move-title {
+  font-size: 14px;
   font-weight: 600;
-  color: var(--ink);
+  color: var(--dbx-ink);
+}
+
+.dbx-move-badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dbx-move-action {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--dbx-slate);
+}
+
+.dbx-combined-note {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--dbx-slate);
+  padding-top: 8px;
+  border-top: 1px solid var(--dbx-ring);
+}
+
+.dbx-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 12px;
+}
+
+.dbx-table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.dbx-more-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dbx-recs-list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dbx-rec-item {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--dbx-ink);
+}
+
+/* ---- Animaciones ---- */
+@keyframes dbx-arc-in {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes dbx-scale-in {
+  from { opacity: 0; transform: scale(0.75); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes dbx-bar-up {
+  from { opacity: 0; transform: scaleY(0.15); }
+  to { opacity: 1; transform: scaleY(1); }
+}
+
+@keyframes dbx-bar-right {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes dbx-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes dbx-sheet-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================= Piezas de widget en HTML (widgets.tsx) ================= */
+.dbx-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Unidad pequeña junto a la cifra grande: "1 of 3 close", "$30 of $300", "60 → 78 all steps together". */
+.dbx-w-unit {
+  font-size: max(12px, 0.4em);
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--dbx-slate);
+  white-space: nowrap;
+}
+
+.dbx-w-arrow {
+  margin: 0 0.16em;
+  font-weight: 400;
+  color: var(--dbx-steel);
+}
+
+/* Pista "tú frente al plan": riel, tramo entre respuesta y plan, y los puntos. */
+.dbx-track {
+  position: relative;
+  height: 16px;
+  margin: 0 7px;
+  min-width: 0;
+}
+
+.dbx-track-rail {
+  position: absolute;
+  left: -7px;
+  right: -7px;
+  top: 50%;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 2px;
+  background: var(--dbx-ring);
+}
+
+.dbx-track-gap {
+  position: absolute;
+  top: 50%;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 2px;
+  background: var(--dbx-ink);
+}
+
+.dbx-track-gap.dbx-is-bad {
+  background: var(--dbx-red);
+}
+
+.dbx-track-dot {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.dbx-track-you {
+  background: var(--dbx-paper);
+  border: 2px solid var(--dbx-slate);
+}
+
+.dbx-track-you-b {
+  background: var(--dbx-slate);
+  border-color: var(--dbx-paper);
+}
+
+.dbx-track-plan {
+  background: var(--dbx-ink);
+  border: 2px solid var(--dbx-paper);
+}
+
+.dbx-track-plan.dbx-is-bad {
+  background: var(--dbx-red);
+}
+
+/* Barra fina de proporción */
+.dbx-minibar {
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--dbx-ring);
+}
+
+.dbx-minibar-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  min-width: 8px;
+  border-radius: 4px;
+  background: var(--dbx-ink);
+  transform-origin: left center;
+  animation: dbx-bar-right 650ms var(--dbx-ease) both;
+}
+
+.dbx-minibar-fill.dbx-is-soft {
+  background: var(--dbx-steel);
+}
+
+.dbx-minibar-fill.dbx-is-bad {
+  background: var(--dbx-red);
+}
+
+.dbx-minibar-target {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+  margin-left: -1px;
+  border-radius: 1px;
+  background: var(--dbx-ink);
+}
+
+/* Anillo con la cifra dentro */
+.dbx-ringstat {
+  position: relative;
+  width: 104px;
+  height: 104px;
+  margin: 0 auto;
+  flex: none;
+}
+
+.dbx-ringstat-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.dbx-ringstat-track {
+  stroke: var(--dbx-ring);
+  stroke-width: 10px;
+}
+
+.dbx-ringstat-fill {
+  stroke: var(--dbx-ink);
+  stroke-width: 10px;
+}
+
+.dbx-ringstat-fill.dbx-is-bad {
+  stroke: var(--dbx-red);
+}
+
+.dbx-ringstat-num {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--dbx-ink);
   font-variant-numeric: tabular-nums;
 }
 
-.dbx-cc-expand {
+.dbx-ringstat-num.tone-bad {
+  color: var(--dbx-red);
+}
+
+/* 12 casillas de meses */
+.dbx-months {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 5px;
+  width: 100%;
+}
+
+.dbx-month {
+  height: 18px;
+  border-radius: 5px;
+  background: var(--dbx-ring);
+}
+
+.dbx-month-on {
+  background: var(--dbx-ink);
+}
+
+.dbx-month-bad {
+  background: var(--dbx-red);
+}
+
+/* Filas de barras: nombre, cifra y barra */
+.dbx-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-}
-
-.dbx-cc-toggle {
-  appearance: none;
-  background: none;
-  border: 0;
-  padding: 2px 0;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  align-self: flex-start;
-  text-align: left;
-  color: var(--muted);
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 600;
-  user-select: none;
-  transition: color 180ms var(--ease);
-}
-
-.dbx-cc-toggle:hover {
-  color: var(--ink);
-}
-
-.dbx-cc-toggle:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 3px;
-  border-radius: 14px;
-}
-
-.dbx-cc-plus {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 1px solid var(--hairline);
-  background: var(--paper);
-  color: var(--ink);
-  display: inline-grid;
-  place-items: center;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1;
-  flex-shrink: 0;
-  transition:
-    transform 240ms var(--ease),
-    background-color 180ms var(--ease),
-    color 180ms var(--ease),
-    border-color 180ms var(--ease);
-}
-
-.dbx-cc-toggle:hover .dbx-cc-plus {
-  border-color: var(--ink);
-}
-
-.dbx-cc-toggle.is-open {
-  color: var(--ink);
-}
-
-.dbx-cc-toggle.is-open .dbx-cc-plus {
-  transform: rotate(45deg);
-  background: var(--ink);
-  color: var(--paper);
-  border-color: var(--ink);
-}
-
-.dbx-cc-toggle-label {
-  line-height: 1.3;
-}
-
-.dbx-cc-collapse {
-  display: grid;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  margin-top: 0;
-  transition:
-    grid-template-rows 260ms var(--ease),
-    opacity 220ms var(--ease),
-    margin-top 260ms var(--ease);
-}
-
-.dbx-cc-collapse.is-open {
-  grid-template-rows: 1fr;
-  opacity: 1;
-  margin-top: 10px;
-}
-
-.dbx-cc-more {
-  overflow: hidden;
-  min-height: 0;
-}
-
-@container (min-width: 760px) {
-  .dbx-head {
-    padding: 24px;
-  }
-
-  .dbx-head-title {
-    font-size: 34px;
-  }
-
-  .dbx-cc-title {
-    font-size: 23px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .dbx-cc-plus,
-  .dbx-cc-collapse,
-  .dbx-cc-toggle {
-    transition: none !important;
-  }
-}
-
-
-/* ================= PC: panel sin scroll (>= 1024 px) =================
-   Por debajo de 1024 px nada de lo que sigue se aplica (móvil igual que antes).
-   El hook useFitToViewport escala .dbx-root con transform si aun así no cabe en la ventana:
-   por eso aquí no hay ningún position: fixed y los popovers son position: absolute. */
-
-/* Base (móvil y PC): envoltorio neutro, columna lateral transparente y elementos solo de PC ocultos */
-.dbx-fit {
+  gap: 10px;
   width: 100%;
   min-width: 0;
 }
 
-.dbx-side {
-  display: contents;
+.dbx-row {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
 }
 
-.dbx-section-fig,
-.dbx-cc-close {
+.dbx-row-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.dbx-row-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+  color: var(--dbx-ink);
+}
+
+.dbx-row-value {
+  flex-shrink: 0;
+  font-weight: 600;
+  color: var(--dbx-ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.dbx-row-value-muted {
+  font-weight: 500;
+  color: var(--dbx-slate);
+}
+
+.dbx-row-note {
+  margin-left: 6px;
+  font-weight: 400;
+  color: var(--dbx-slate);
+}
+
+.dbx-row-note.tone-bad {
+  font-weight: 600;
+  color: var(--dbx-red);
+}
+
+.dbx-row-bar {
+  position: relative;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--dbx-ring);
+}
+
+.dbx-row-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  min-width: 6px;
+  border-radius: 3px;
+  background: var(--dbx-ink);
+  transform-origin: left center;
+  animation: dbx-bar-right 650ms var(--dbx-ease) both;
+}
+
+.dbx-row-fill.dbx-is-soft {
+  background: var(--dbx-steel);
+}
+
+.dbx-row-fill.dbx-is-bad {
+  background: var(--dbx-red);
+}
+
+.dbx-row-target {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+  margin-left: -1px;
+  border-radius: 1px;
+  background: var(--dbx-ink);
+}
+
+.dbx-row-target.dbx-is-bad {
+  background: var(--dbx-red);
+}
+
+/* Nota por área: nombre y nota arriba, barra debajo (en widgets anchos, todo en una línea) */
+.dbx-pillars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+}
+
+.dbx-pillar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 4px 8px;
+  font-size: 12.5px;
+  line-height: 1.25;
+}
+
+.dbx-pillar-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+  color: var(--dbx-ink);
+}
+
+.dbx-pillar-score {
+  grid-column: 2;
+  grid-row: 1;
+  font-weight: 600;
+  color: var(--dbx-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-pillar-score.tone-bad {
+  color: var(--dbx-red);
+}
+
+.dbx-pillar-bar {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  position: relative;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--dbx-ring);
+}
+
+.dbx-pillar-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 3px;
+  background: var(--dbx-ink);
+  transform-origin: left center;
+  animation: dbx-bar-right 650ms var(--dbx-ease) both;
+}
+
+.dbx-pillar-fill.dbx-is-bad {
+  background: var(--dbx-red);
+}
+
+/* Lista de preguntas de la portada */
+.dbx-gl {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+}
+
+.dbx-gl-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.dbx-gl-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 1.3;
+  font-weight: 500;
+  color: var(--dbx-ink);
+}
+
+.dbx-gl-none {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--dbx-slate);
+}
+
+.dbx-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dbx-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dbx-legend-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.dbx-legend-you {
+  background: var(--dbx-paper);
+  border: 2px solid var(--dbx-slate);
+}
+
+.dbx-legend-plan {
+  background: var(--dbx-ink);
+}
+
+/* En widgets anchos (PC, o el ancho entero en móvil) cada fila va en una sola línea. */
+@container (min-width: 200px) {
+  .dbx-gl-row {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .dbx-gl-name {
+    flex: 0 0 47%;
+  }
+
+  .dbx-gl-row .dbx-track {
+    flex: 1 1 0;
+  }
+
+  .dbx-gl-none {
+    flex: 1 1 0;
+  }
+
+  .dbx-pillar {
+    grid-template-columns: max-content minmax(36px, 1fr) 26px;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .dbx-pillar-bar {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .dbx-pillar-score {
+    grid-column: 3;
+    text-align: right;
+  }
+}
+
+/* ---- Widget protagonista de sección: cifra y frase + gráfica ---- */
+.dbx-hero-split {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.dbx-hero-side {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.dbx-hero-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.dbx-hero-label {
+  font-size: 12.5px;
+  line-height: 1.3;
+  font-weight: 500;
+  color: var(--dbx-slate);
+}
+
+.dbx-hero-num {
+  font-size: 34px;
+  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  color: var(--dbx-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-hero-num.tone-bad {
+  color: var(--dbx-red);
+}
+
+.dbx-hero-title {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--dbx-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-hero-take {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--dbx-slate);
+}
+
+.dbx-hero-figs {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.dbx-hero-fig {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.dbx-hero-fig dt {
+  font-size: 11px;
+  line-height: 1.25;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--dbx-slate);
+}
+
+.dbx-hero-fig dd {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--dbx-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dbx-hero-fig dd.tone-bad {
+  color: var(--dbx-red);
+}
+
+.dbx-hero-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* La línea de patrimonio no trae las etiquetas de los hitos: van en los chips de debajo. */
+.dbx-hero-main .line-chart-marker-label {
   display: none;
 }
 
-@keyframes dbx-pop-in {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+.dbx-hero-empty {
+  margin: 0;
+  font-size: clamp(24px, 4.5dvh, 34px);
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--dbx-steel);
+  text-align: center;
 }
 
+.dbx-hero-more {
+  margin: 0;
+  font-size: 12px;
+  color: var(--dbx-slate);
+}
+
+/* ================= PC (>= 1024 px): una fila de widgets a la altura de la ventana ================= */
 @media (min-width: 1024px) {
-  /* 1) Envoltorio: sale del contenedor estrecho de la app (.content, máx. 480 px) sin tocar estilos ajenos */
+  /* El dashboard sale de la columna de 480 px de la app y ocupa el ancho de la ventana. */
   .dbx-fit {
     width: min(1320px, calc(100vw - 48px));
     margin-left: calc((100% - min(1320px, calc(100vw - 48px))) / 2);
+    /* En pantallas altas baja un poco, para no quedar pegado arriba con un hueco debajo. */
+    padding-top: clamp(0px, calc((100dvh - 720px) * 0.33), 80px);
   }
 
+  /* 250 px es lo que ocupa la app alrededor: barra superior, progreso y botón Next.
+     La página (título y fila de widgets) se ajusta a lo que queda, sin encoger nada. */
   .dbx-root {
-    gap: 10px;
-    font-size: 14px;
+    gap: 14px;
+    height: clamp(300px, calc(100dvh - 250px), 560px);
   }
 
-  /* 4) Tarjetas compactas: padding 14-16, eyebrow 11, takeaway a 2 líneas y la gráfica ocupa el resto */
-  .dbx-root .dbx-cc {
-    position: relative;
-    gap: 8px;
-    padding: 14px 16px;
-    min-height: 0;
-  }
-
-  .dbx-root .dbx-cc-eyebrow,
-  .dbx-root .dbx-cc-head .eyebrow {
-    font-size: 11px;
-    line-height: 1.25;
-  }
-
-  .dbx-root .dbx-cc-head {
-    gap: 6px;
-  }
-
-  .dbx-root .dbx-cc-titles {
-    gap: 2px;
-    flex: 1 1 120px;
-  }
-
-  .dbx-root .dbx-cc-title {
-    font-size: 16px;
-    line-height: 1.2;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .dbx-root .dbx-mc-total,
-  .dbx-root .dbx-wf-unlock {
-    font-size: 13px;
-  }
-
-  .dbx-root .dbx-cc-chart {
-    flex: 1 1 0;
-    min-height: 0;
-    gap: 6px;
-    overflow: hidden;
-  }
-
-  .dbx-root .dbx-cc-footer {
+  /* Título a la izquierda y nombre de la familia a la derecha. */
+  .dbx-page-head {
+    flex: none;
     flex-direction: row;
-    align-items: flex-start;
-    gap: 8px;
-    padding-top: 8px;
-  }
-
-  .dbx-root .dbx-cc-takeaway {
-    flex: 1;
-    min-width: 0;
-    font-size: 12.5px;
-    line-height: 1.35;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .dbx-root .dbx-cc-footer .dbx-cc-expand {
-    flex: none;
-  }
-
-  /* En el pie de las tarjetas el "+" queda solo como botón redondo (el texto sigue para lectores de pantalla) */
-  .dbx-root .dbx-cc-footer .dbx-cc-toggle-label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
-  }
-
-  /* ---- 5) "More" como popover anclado a la tarjeta (position: absolute, nunca fixed) ---- */
-  .dbx-root .dbx-cc-collapse {
-    display: none;
-    position: absolute;
-    z-index: 30;
-    top: 8px;
-    left: 8px;
-    right: 8px;
-    max-height: 60vh;
-    margin: 0;
-    padding: 14px 16px;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    opacity: 1;
-    background: var(--paper);
-    border: 1px solid var(--hairline);
-    border-radius: 18px;
-    box-shadow:
-      0 12px 32px rgba(0, 0, 0, 0.14),
-      var(--card-shadow);
-    transition: none;
-  }
-
-  .dbx-root .dbx-cc-collapse.is-open {
-    display: block;
-    margin-top: 0;
-    animation: dbx-pop-in 160ms var(--ease) both;
-  }
-
-  /* Las tarjetas de la fila inferior abren el popover hacia arriba para no empujar la página */
-  .dbx-root .dbx-a-guess .dbx-cc-collapse,
-  .dbx-root .dbx-a-moves .dbx-cc-collapse,
-  .dbx-root .dbx-a-timeline .dbx-cc-collapse,
-  .dbx-root .dbx-a-prio .dbx-cc-collapse {
-    top: auto;
-    bottom: 8px;
-  }
-
-  .dbx-root .dbx-cc-more {
-    overflow: visible;
-  }
-
-  .dbx-root .dbx-cc-more .dbx-more-body {
-    margin-top: 0;
-    gap: 10px;
-  }
-
-  .dbx-root .dbx-cc-more .dbx-more-text {
-    font-size: 13px;
-    line-height: 1.45;
-  }
-
-  .dbx-root .dbx-cc-close {
-    display: grid;
-    place-items: center;
-    position: sticky;
-    top: 0;
-    float: right;
-    width: 24px;
-    height: 24px;
-    margin: 0 0 6px 10px;
-    padding: 0;
-    border: 1px solid var(--hairline);
-    border-radius: 50%;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: var(--font);
-    font-size: 16px;
-    line-height: 1;
-    cursor: pointer;
-    z-index: 1;
-  }
-
-  .dbx-root .dbx-cc-close:hover {
-    border-color: var(--ink);
-  }
-
-  .dbx-root .dbx-cc-close:focus-visible {
-    outline: 2px solid var(--ink);
-    outline-offset: 2px;
-  }
-
-  /* ---- 2) Portada: rejilla de 4 columnas con grid-template-areas (las calcula DashboardFull) ---- */
-  .dbx-root.dbx-cover {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-template-areas: var(
-      --dbx-areas,
-      "head head head head" "insight gauge radar points" "guess moves timeline prio"
-    );
-    grid-template-rows: auto;
-    grid-auto-rows: minmax(0, 1fr);
-    gap: 10px;
-    /* Alto del panel: la ventana menos la barra superior, la progresión y el botón Next de la app */
-    height: max(548px, calc(100vh - 250px));
-  }
-
-  /* En pareja la app oculta GuessGap (.is-couple .dbx-guess-card): FamilyTimeline se queda 2 columnas */
-  .is-couple .dbx-root.dbx-cover {
-    grid-template-areas: var(
-      --dbx-areas-couple,
-      "head head head head" "insight gauge radar points" "moves timeline timeline prio"
-    );
-  }
-
-  .dbx-cover .dbx-cover-grid {
-    display: contents;
-  }
-
-  .dbx-cover .dbx-head {
-    grid-area: head;
-  }
-
-  .dbx-cover .dbx-a-insight {
-    grid-area: insight;
-  }
-
-  .dbx-cover .dbx-a-gauge {
-    grid-area: gauge;
-  }
-
-  .dbx-cover .dbx-a-radar {
-    grid-area: radar;
-  }
-
-  .dbx-cover .dbx-a-points {
-    grid-area: points;
-  }
-
-  .dbx-cover .dbx-a-guess {
-    grid-area: guess;
-  }
-
-  .dbx-cover .dbx-a-moves {
-    grid-area: moves;
-  }
-
-  .dbx-cover .dbx-a-timeline {
-    grid-area: timeline;
-  }
-
-  .dbx-cover .dbx-a-prio {
-    grid-area: prio;
-  }
-
-  /* Cabecera compacta de una fila: título y lede a la izquierda, chips y botón del resumen a la derecha */
-  .dbx-root .dbx-head {
-    position: relative;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto auto;
-    grid-template-areas:
-      "eyebrow eyebrow chips sum"
-      "title lede chips sum";
-    align-items: center;
-    column-gap: 16px;
-    row-gap: 0;
-    padding: 10px 16px;
-  }
-
-  .dbx-root .dbx-head-eyebrow {
-    grid-area: eyebrow;
-    font-size: 11px;
-  }
-
-  .dbx-root .dbx-head-title {
-    grid-area: title;
-    font-size: 22px;
-    line-height: 1.15;
-  }
-
-  .dbx-root .dbx-head-lede {
-    grid-area: lede;
-    font-size: 12.5px;
-    line-height: 1.35;
-  }
-
-  .dbx-root .dbx-head-chips {
-    grid-area: chips;
-    justify-content: flex-end;
-    margin: 0;
-  }
-
-  .dbx-root .dbx-head-summary {
-    grid-area: sum;
-    margin: 0;
-    padding: 0;
-    border: 0;
-  }
-
-  .dbx-root .dbx-head .dbx-cc-toggle {
-    padding: 5px 12px 5px 6px;
-    border: 1px solid var(--hairline);
-    border-radius: 18px;
-    background: var(--paper);
-    color: var(--ink);
-  }
-
-  .dbx-root .dbx-head .dbx-cc-toggle:hover {
-    border-color: var(--ink);
-  }
-
-  .dbx-root .dbx-head .dbx-cc-collapse {
-    top: calc(100% + 6px);
-    bottom: auto;
-    left: auto;
-    right: 0;
-    width: min(640px, 100%);
-  }
-
-  /* Portada: el gráfico (un único bloque dentro de la tarjeta) ocupa el resto y los SVG escalan al alto disponible */
-  .dbx-cover .dbx-cc-chart > * {
-    flex: 1 1 0;
-    min-height: 0;
-  }
-
-  .dbx-cover .dbx-cc-chart > .dbx-cap-chips {
-    flex: none;
-    gap: 4px;
-  }
-
-  .dbx-cover .dbx-cap-label,
-  .dbx-cover .dbx-cap-chip {
-    font-size: 11px;
-  }
-
-  .dbx-cover .dbx-cc-chart .dbx-chart-wrap {
-    flex: 1 1 0;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .dbx-cover .dbx-cc-chart .dbx-svg {
-    flex: 1 1 0;
-    min-height: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .dbx-cover .dbx-insight-wrap,
-  .dbx-cover .dbx-wf-wrap,
-  .dbx-cover .dbx-guess-wrap {
-    gap: 4px;
-  }
-
-  /* GuessGap: cada pregunta en una fila (texto a la izquierda, pista a la derecha) para que quepan todas */
-  .dbx-cover .dbx-guess-list {
-    flex: 1 1 0;
-    min-height: 0;
-    overflow-y: auto;
-    scrollbar-width: thin;
-  }
-
-  .dbx-cover .dbx-guess-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-areas:
-      "q s"
-      "m s";
-    column-gap: 10px;
-    row-gap: 1px;
-    align-items: center;
-    padding: 4px 0;
-  }
-
-  .dbx-cover .dbx-guess-question {
-    grid-area: q;
-    font-size: 11.5px;
-    line-height: 1.25;
-  }
-
-  .dbx-cover .dbx-guess-meta {
-    grid-area: m;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    gap: 10px;
-    font-size: 11px;
-  }
-
-  .dbx-cover .dbx-guess-row .dbx-chart-wrap {
-    grid-area: s;
-    flex: none;
-  }
-
-  .dbx-cover .dbx-cc-chart .dbx-guess-svg {
-    flex: none;
-    height: auto;
-  }
-
-  .dbx-cover .dbx-guess-whole-plan {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    margin: 0;
-    padding: 4px 8px;
-    font-size: 11px;
-  }
-
-  .dbx-cover .dbx-guess-legend {
-    flex: none;
-    padding-top: 4px;
-    font-size: 11px;
-  }
-
-  /* ---- 3) Sección: rejilla de 12 columnas ---- */
-  .dbx-root.dbx-section {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: auto minmax(0, auto);
-    column-gap: 12px;
-    row-gap: 10px;
-    align-items: stretch;
-    min-height: max(548px, calc(100vh - 250px));
-  }
-
-  .dbx-section .dbx-section-header {
-    grid-column: 1 / -1;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
+    align-items: baseline;
     gap: 16px;
-    padding: 0 4px;
+    padding: 0 6px;
   }
 
-  .dbx-section .dbx-section-header .a-title {
-    font-size: 28px;
-    line-height: 1.1;
-  }
-
-  .dbx-section .dbx-section-fig {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 2px;
-  }
-
-  .dbx-section .dbx-section-fig .eyebrow {
-    font-size: 11px;
-  }
-
-  .dbx-section .dbx-section-fig .stat-value {
-    font-size: 30px;
-  }
-
-  .dbx-section .dbx-main-card {
-    grid-column: 1 / span 7;
-    grid-row: 2;
-  }
-
-  .dbx-section .dbx-side {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    grid-column: 8 / span 5;
-    grid-row: 2;
-    min-width: 0;
-  }
-
-  /* Orden de la columna derecha: stats en mosaico, tarjeta secundaria y reveals */
-  .dbx-section .dbx-kpi-card {
-    order: 0;
-  }
-
-  .dbx-section .dbx-side-card {
-    order: 1;
-  }
-
-  .dbx-section .dbx-probes {
+  .dbx-page-who {
     order: 2;
+    margin-left: auto;
   }
 
-  .dbx-section .dbx-cc-chart {
-    flex: 1 1 auto;
-    overflow: visible;
-    justify-content: center;
+  .dbx-page-title {
+    font-size: 26px;
   }
 
-  /* Los SVG de sección no se estiran con el ancho de 7 columnas: tope de alto, centrados (meet) */
-  .dbx-section .dbx-svg {
-    max-height: 300px;
+  .dbx-grid {
+    flex: 1 1 0;
+    min-height: 0;
+    gap: 16px;
+    grid-template-rows: minmax(0, 1fr);
   }
 
-  .dbx-section .dbx-main-visual {
+  /* Portada: cuatro widgets en fila; el protagonista y el de pasos, algo más anchos. */
+  .dbx-grid-cover {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.15fr);
+  }
+
+  .dbx-grid-cover > .dbx-widget {
+    grid-column: auto;
+    grid-row: 1;
+  }
+
+  /* Secciones: el protagonista ocupa dos columnas y cada pequeño, una. */
+  .dbx-grid-section {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .dbx-grid-section > .dbx-s-hero {
+    grid-column: span 2;
+    grid-row: 1;
+  }
+
+  .dbx-grid-section > .dbx-s-small,
+  .dbx-grid-section[data-count="3"] > .dbx-s-small:nth-child(3) {
+    grid-column: span 1;
+    grid-row: 1;
+  }
+
+  .dbx-grid-section[data-count="2"] > .dbx-s-hero {
+    grid-column: span 3;
+  }
+
+  .dbx-grid-section[data-count="1"] > .dbx-s-hero {
+    grid-column: span 4;
+  }
+
+  .dbx-widget {
+    padding: 20px 22px;
+  }
+
+  .dbx-w-title {
+    font-size: clamp(20px, 3.5dvh, 25px);
+  }
+
+  .dbx-w-support {
+    font-size: 13px;
+  }
+
+  /* Las gráficas crecen con la altura de la ventana, igual que los widgets. */
+  .dbx-gmini-arc {
+    max-width: clamp(160px, 30dvh, 240px);
+  }
+
+  .dbx-gmini-score {
+    font-size: clamp(38px, 7dvh, 56px);
+  }
+
+  .dbx-gmini-max {
+    font-size: 12px;
+  }
+
+  .dbx-ringstat {
+    width: clamp(108px, 21dvh, 168px);
+    height: clamp(108px, 21dvh, 168px);
+  }
+
+  .dbx-ringstat-num {
+    font-size: clamp(25px, 4.6dvh, 36px);
+  }
+
+  .dbx-month {
+    height: clamp(18px, 3.6dvh, 28px);
+    border-radius: 6px;
+  }
+
+  .dbx-rows {
+    gap: clamp(8px, 1.9dvh, 16px);
+  }
+
+  .dbx-row-head {
+    font-size: 13.5px;
+  }
+
+  .dbx-row-bar {
+    height: clamp(6px, 1.2dvh, 9px);
+    border-radius: 5px;
+  }
+
+  .dbx-row-fill {
+    border-radius: 5px;
+  }
+
+  .dbx-pillars,
+  .dbx-gl {
+    gap: clamp(8px, 2dvh, 16px);
+  }
+
+  .dbx-pillar,
+  .dbx-gl-name {
+    font-size: 13px;
+  }
+
+  /* Protagonista: cifra y frase a la izquierda, gráfica a la derecha. */
+  .dbx-grid .dbx-hero-split {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 28px;
+  }
+
+  .dbx-grid .dbx-hero-side {
+    flex: 0 0 32%;
     gap: 10px;
+    padding-top: 2px;
   }
 
-  .dbx-section .dbx-headline-value {
-    font-size: 30px;
+  .dbx-grid .dbx-hero-main {
+    flex: 1 1 0;
   }
 
-  .dbx-section .dbx-split-hero {
-    padding-bottom: 8px;
+  .dbx-grid .dbx-hero-num {
+    font-size: clamp(32px, 6dvh, 46px);
   }
 
-  .dbx-section .dbx-nw-figures {
-    margin: 4px 0 6px;
+  .dbx-grid .dbx-hero-title {
+    font-size: clamp(19px, 3.3dvh, 24px);
   }
 
-  .dbx-section .dbx-nw-value {
-    font-size: 17px;
+  .dbx-grid .dbx-hero-figs {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(6px, 1.6dvh, 14px);
   }
 
-  .dbx-section .dbx-kpi-card {
-    padding: 14px 16px;
+  .dbx-grid .dbx-hero-fig dd {
+    font-size: clamp(19px, 3.4dvh, 26px);
   }
 
-  .dbx-section .dbx-stats-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px 14px;
+  /* La línea de patrimonio se estira hasta llenar el alto que le queda al widget. */
+  .dbx-grid .dbx-hero-main .line-chart {
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
   }
 
-  .dbx-section .dbx-kpi-card .eyebrow {
-    font-size: 11px;
+  .dbx-grid .dbx-hero-main .line-chart-stage {
+    flex: 1 1 0;
+    min-height: 70px;
+    height: auto !important;
   }
 
-  .dbx-section .dbx-kpi-card .stat-small {
-    margin-top: 2px;
-    font-size: 18px;
+  /* Modal centrado en PC */
+  .dbx-modal-backdrop {
+    align-items: center;
+    padding: 24px;
   }
 
-  /* Reveals de las sondas: compactos y en columnas si hay más de una */
-  .dbx-section .dbx-probes {
-    padding: 14px 16px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 12px;
+  .dbx-modal-panel {
+    max-width: 740px;
+    max-height: 86dvh;
+    border-radius: 28px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.22);
+    animation: dbx-fade-in 180ms var(--dbx-ease) both;
   }
 
-  .dbx-section .dbx-probes > * + * {
-    border-top: 0;
-    padding-top: 0;
+  .dbx-modal-grabber {
+    display: none;
   }
 
-  .dbx-section .dbx-probes .stat-value {
-    font-size: 30px;
+  .dbx-modal-head {
+    padding: 20px 28px 16px;
   }
 
-  .dbx-section .dbx-probes .question-sm,
-  .dbx-section .dbx-probes .hero-sub,
-  .dbx-section .dbx-probes .context {
-    font-size: 12.5px;
-    line-height: 1.35;
+  .dbx-modal-title {
+    font-size: 24px;
   }
 
-  .dbx-section .dbx-probes .card {
-    padding: 10px 12px;
-    margin-top: 8px !important;
+  .dbx-modal-body {
+    padding: 20px 28px 28px;
+  }
+
+  .dbx-stats-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-@media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
-  .dbx-root .dbx-cc-collapse.is-open {
-    animation: none;
+/* Ventanas bajas (portátil con el navegador sin maximizar): menos aire para que todo quepa. */
+@media (min-width: 1024px) and (max-height: 660px) {
+  .dbx-root {
+    gap: 10px;
+  }
+
+  .dbx-page-title {
+    font-size: 22px;
+  }
+
+  .dbx-widget {
+    padding: 16px 20px;
+    gap: 8px;
+  }
+
+  .dbx-grid .dbx-hero-split {
+    gap: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dbx-widget,
+.dbx-pill-blue,
+.dbx-gauge-fill,
+.dbx-gmini-fill,
+.dbx-radar-area,
+.dbx-wf-bar,
+.dbx-modal-backdrop,
+.dbx-modal-panel,
+.dbx-minibar-fill,
+.dbx-row-fill,
+.dbx-pillar-fill {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+}
+
+/* ---- Tooltip al pasar el cursor por una gráfica (solo con ratón; en táctil no aparece) ---- */
+@media (hover: hover) and (pointer: fine) {
+  .dbx-tip {
+    position: relative;
+  }
+
+  .dbx-tip::after {
+    content: attr(data-tip);
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 6px);
+    transform: translate(-50%, 4px);
+    z-index: 5;
+    width: max-content;
+    max-width: min(240px, 90cqw);
+    padding: 6px 10px;
+    border-radius: 10px;
+    background: var(--dbx-ink);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    text-align: center;
+    white-space: normal;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 140ms var(--dbx-ease), transform 140ms var(--dbx-ease);
+  }
+
+  .dbx-tip:hover::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
+    transition-delay: 120ms;
   }
 }
