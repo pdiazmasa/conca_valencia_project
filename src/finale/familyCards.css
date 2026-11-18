@@ -123,18 +123,6 @@
     color: #1d1d1f;
   }
 
-  .fc-meta {
-    font-size: 14px;
-    color: #1d1d1f;
-  }
-
-  .fc-ages {
-    min-height: 2.7em; /* dos líneas siempre, para que los círculos queden a la misma altura */
-    font-size: 13px;
-    line-height: 1.35;
-    color: #707070;
-  }
-
   .fc-go {
     position: absolute;
     top: 22px;

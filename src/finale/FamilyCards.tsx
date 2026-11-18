@@ -3,20 +3,12 @@ import "./familyCards.css";
 
 // Selección de familia en PC: 4 tarjetas grandes en fila, con el mismo estilo que "See it your way".
 // En móvil no se ven (sigue la lista de App.tsx); en PC la lista se esconde (familyCards.css).
-// No enseña la nota ni ninguna cifra del plan: eso se adivina después.
+// Solo el nombre de la familia: ni nota, ni cifras, ni edades.
 
 type Member = NonNullable<Family["household"]>[number];
 
 function initial(name: string) {
   return name.trim().charAt(0).toUpperCase();
-}
-
-function membersLine(members: Member[]) {
-  const adults = members.filter((m) => m.role !== "child").length;
-  const kids = members.length - adults;
-  const parts = [adults === 1 ? "1 adult" : `${adults} adults`];
-  if (kids > 0) parts.push(kids === 1 ? "1 child" : `${kids} children`);
-  return parts.join(" · ");
 }
 
 // Dibujo del hogar: un círculo por persona, los adultos grandes y los hijos pequeños.
@@ -46,8 +38,6 @@ export function FamilyCards({ onPick }: { onPick: (f: Family) => void }) {
             <Household members={members} />
             <span className="fc-body">
               <span className="fc-name">{f.name}</span>
-              <span className="fc-meta">{membersLine(members)}</span>
-              <span className="fc-ages">{members.map((m) => `${m.name} ${m.age}`).join(" · ")}</span>
             </span>
             <span className="fc-go" aria-hidden="true">
               <svg width="8" height="14" viewBox="0 0 8 14" fill="none">
