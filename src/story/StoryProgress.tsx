@@ -29,9 +29,24 @@ export function StoryProgress({ total, current }: { total: number; current: numb
     };
   }, []);
 
+  // En PC, las flechas del teclado pasan de tarjeta aunque la historia no tenga el foco
+  // (si lo tiene, ya lo hace el propio StoryEngine y no hay que repetirlo).
+  useEffect(() => {
+    const on = (e: KeyboardEvent) => {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      const el = document.activeElement as HTMLElement | null;
+      if (el?.closest(".ws-stage") || el?.closest("input, textarea, select, [contenteditable='true']")) return;
+      e.preventDefault();
+      tapStory(e.key === "ArrowLeft" ? "prev" : "next");
+    };
+    window.addEventListener("keydown", on);
+    return () => window.removeEventListener("keydown", on);
+  }, []);
+
   const partial = tick && tick.n > 0 ? (tick.idx + 1) / tick.n : 0;
 
   return (
+    <>
     <div
       className="sp-story-progress"
       role="progressbar"
@@ -49,5 +64,24 @@ export function StoryProgress({ total, current }: { total: number; current: numb
         );
       })}
     </div>
+    {/* Flechas a los lados de la tarjeta, como Spotify Wrapped en PC. En móvil no se ven (story.css). */}
+    <button type="button" className="sp-story-nav is-prev" aria-label="Previous card" onClick={() => tapStory("prev")}>
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+    </button>
+    <button type="button" className="sp-story-nav is-next" aria-label="Next card" onClick={() => tapStory("next")}>
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+    </button>
+    </>
   );
+}
+
+// Hace lo mismo que tocar la tarjeta en el lado izquierdo (atrás) o derecho (adelante).
+// Así se reutiliza toda la lógica del StoryEngine de Wrapped sin tocarlo.
+function tapStory(dir: "prev" | "next") {
+  // Solo la historia principal (las de los lados, StoryPeek, también tienen .ws-stage).
+  const stage = document.querySelector<HTMLElement>(".content.is-story .reveal-slot .ws-stage");
+  if (!stage) return;
+  const r = stage.getBoundingClientRect();
+  const x = dir === "prev" ? r.left + 4 : r.right - 4;
+  stage.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, clientX: x, clientY: r.top + r.height / 2 }));
 }

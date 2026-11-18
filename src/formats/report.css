@@ -1,0 +1,628 @@
+/* Formato Report (informe): estética de documento impreso sobre papel blanco,
+   columna de lectura de 680 px, jerarquía tipográfica Geist y tablas con filetes finos. */
+
+.content:has(.rpt-page) {
+  max-width: 712px;
+}
+
+.rpt-page {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  color: var(--ink);
+  font-family: var(--font);
+}
+
+.rpt-sheet {
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  padding: 24px 20px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  overflow: hidden;
+}
+
+@media (min-width: 560px) {
+  .rpt-sheet {
+    padding: 40px 44px 48px;
+    gap: 32px;
+  }
+}
+
+/* ---- Cabecera documental ---- */
+.rpt-doc-header {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.rpt-doc-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.rpt-kicker {
+  font-size: 11px;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.rpt-family-name {
+  font-size: 28px;
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+
+@media (min-width: 560px) {
+  .rpt-family-name {
+    font-size: 34px;
+  }
+}
+
+.rpt-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-size: 13px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.rpt-meta span + span::before {
+  content: "·";
+  margin-right: 16px;
+  color: var(--hairline);
+}
+
+/* Cabecera compacta en páginas de sección */
+.rpt-running-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.rpt-running-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.rpt-running-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.rpt-running-sub {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ---- Botón Download PDF ---- */
+.rpt-print-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 18px;
+  border: 1px solid var(--hairline);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.rpt-print-btn:hover {
+  background: var(--surface-alt);
+  border-color: var(--ink);
+}
+
+.rpt-print-btn:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* ---- Bloques y títulos de apartado ---- */
+.rpt-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rpt-block + .rpt-block {
+  padding-top: 24px;
+  border-top: 1px solid var(--hairline);
+}
+
+.rpt-section-heading {
+  font-size: 12px;
+  line-height: 1.35;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* ---- At a glance (portada) ---- */
+.rpt-glance-score {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 16px;
+  background: var(--surface-alt);
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+}
+
+.rpt-score-main {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.rpt-score-num {
+  font-size: 40px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+.rpt-score-of {
+  font-size: 16px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.rpt-score-band {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+  padding: 3px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--hairline);
+  background: var(--paper);
+}
+
+.rpt-score-msg {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+/* ---- Tablas documentales ---- */
+.rpt-table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.rpt-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+}
+
+.rpt-table th {
+  text-align: left;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 8px 12px 8px 0;
+  border-bottom: 1px solid var(--ink);
+  white-space: nowrap;
+}
+
+.rpt-table td {
+  padding: 10px 12px 10px 0;
+  border-bottom: 1px solid var(--hairline);
+  vertical-align: top;
+  color: var(--ink);
+}
+
+.rpt-table th:last-child,
+.rpt-table td:last-child {
+  padding-right: 0;
+}
+
+.rpt-table-kv td:first-child {
+  color: var(--ink-soft);
+}
+
+.rpt-table-kv td:last-child,
+.rpt-table th.rpt-num,
+.rpt-table td.rpt-num {
+  text-align: right;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.rpt-probe-q {
+  font-weight: 500;
+  min-width: 150px;
+}
+
+.rpt-probe-note {
+  display: block;
+  margin-top: 3px;
+  font-size: 12.5px;
+  color: var(--muted);
+  font-weight: 400;
+  white-space: normal;
+}
+
+/* En pareja las sondas llegan vacías y la tabla de respuestas se omite */
+.is-couple .rpt-probes-block {
+  display: none;
+}
+
+/* ---- Prosa y párrafos ---- */
+.rpt-prose {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rpt-prose p {
+  font-size: 15px;
+  line-height: 1.62;
+  color: var(--ink-soft);
+}
+
+.rpt-callout {
+  padding: 14px 16px;
+  background: var(--surface-alt);
+  border-left: 3px solid var(--ink);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+/* ---- Índice (Contents) ---- */
+.rpt-contents {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.rpt-contents li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--hairline);
+  font-size: 14.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.rpt-contents-left {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
+.rpt-contents-num {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  flex: none;
+}
+
+.rpt-contents-title {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.rpt-contents-stat {
+  font-size: 13.5px;
+  color: var(--muted);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ---- Listas numeradas (Recommendations) ---- */
+.rpt-ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  counter-reset: rpt-item;
+}
+
+.rpt-ol li {
+  counter-increment: rpt-item;
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 10px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.rpt-ol li::before {
+  content: counter(rpt-item) ".";
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Cabecera de capítulo (Sección N de 6) ---- */
+.rpt-chapter-head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.rpt-chapter-num {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.rpt-chapter-title {
+  font-size: 26px;
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+@media (min-width: 560px) {
+  .rpt-chapter-title {
+    font-size: 30px;
+  }
+}
+
+.rpt-lead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+  padding-top: 12px;
+  border-top: 1px solid var(--hairline);
+}
+
+.rpt-lead-label {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.rpt-lead-value {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+/* ---- Tono malo: rojo --ember solo en cifras malas ---- */
+.rpt-bad {
+  color: var(--ember) !important;
+}
+
+/* Secciones completas para impresión desde portada */
+.rpt-print-only {
+  display: none;
+}
+
+/* ---- Impresión limpia (@media print) ---- */
+@media print {
+  @page {
+    margin: 18mm 16mm;
+  }
+
+  body {
+    background: #ffffff !important;
+  }
+
+  .topbar,
+  .progress,
+  .actions,
+  .rpt-no-print {
+    display: none !important;
+  }
+
+  .app,
+  .screen,
+  .content,
+  .reveal-slot {
+    display: block !important;
+    max-width: none !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    animation: none !important;
+  }
+
+  .rpt-page,
+  .rpt-page * {
+    visibility: visible !important;
+  }
+
+  .rpt-page {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    max-width: none;
+  }
+
+  .rpt-sheet {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .rpt-print-only {
+    display: block;
+  }
+
+  .rpt-section-break {
+    break-before: page;
+    page-break-before: always;
+    padding-top: 0;
+  }
+}
+
+/* ---- Marca del documento (Same Page × Sherpas), ficha y pie ---- */
+.rpt-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.rpt-brand-x {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.rpt-brand-sherpas {
+  color: #0b1033;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.rpt-docinfo {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.rpt-docinfo div {
+  display: flex;
+  gap: 10px;
+}
+
+.rpt-docinfo dt {
+  flex: 0 0 76px;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding-top: 2px;
+}
+
+.rpt-docinfo dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+@media (min-width: 560px) {
+  .rpt-docinfo {
+    grid-template-columns: repeat(3, auto);
+    justify-content: space-between;
+  }
+
+  .rpt-docinfo div {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .rpt-docinfo dt {
+    flex: none;
+    padding-top: 0;
+  }
+}
+
+.rpt-meter {
+  display: block;
+  height: 4px;
+  margin-top: 6px;
+  max-width: 220px;
+  border-radius: 999px;
+  background: var(--hairline);
+  overflow: hidden;
+}
+
+.rpt-meter i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.rpt-meter i.is-bad {
+  background: var(--ember);
+}
+
+.rpt-row-total td {
+  font-weight: 600;
+  border-top: 2px solid var(--ink);
+}
+
+.rpt-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--hairline);
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.rpt-footer-page {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+@media print {
+  .rpt-print-only .rpt-footer {
+    display: none;
+  }
+}

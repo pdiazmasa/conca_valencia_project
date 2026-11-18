@@ -402,7 +402,7 @@
 
   /* La rejilla se estira con la altura libre de la ventana, entre un mínimo y un máximo. */
   .fin-grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 18px;
     flex: 1 1 auto;
     min-height: 260px;
@@ -470,32 +470,3 @@
   }
 }
 
-/* Life line: quinto formato. En móvil ocupa las dos columnas para no quedarse solo. */
-@media (max-width: 1023px) {
-  .fin-widget-lifeline {
-    grid-column: 1 / -1;
-  }
-}
-
-.fin-art-life-dot {
-  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
-  transform-box: fill-box;
-  transform-origin: center;
-}
-.fin-art-life-flag {
-  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-.fin-widget:hover .fin-art-life-dot,
-.fin-widget:focus-visible .fin-art-life-dot {
-  transform: scale(1.25);
-}
-.fin-widget:hover .fin-art-life-flag,
-.fin-widget:focus-visible .fin-art-life-flag {
-  transform: translateY(-3px);
-}
-@media (prefers-reduced-motion: reduce) {
-  .fin-art-life-dot,
-  .fin-art-life-flag {
-    transition: none;
-  }
-}

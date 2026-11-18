@@ -11,7 +11,9 @@ import LoadingScreen from "./LoadingScreen";
 import { NextStepsScreen } from "./NextSteps";
 import { Brand } from "./brand/Brand";
 import { StoryProgress } from "./story/StoryProgress";
+import { StoryPeeks, type Peek } from "./story/StoryPeek";
 import { FormatChooser } from "./finale/FormatChooser";
+import { FamilyCards } from "./finale/FamilyCards";
 
 type Dir = "forward" | "back";
 // turn: "X, responde" (solo con varias personas) · age: edad (decide el formato) · ask: preguntas de intuición ·
@@ -83,6 +85,7 @@ function FamilyScreen({ onPick }: { onPick: (f: Family) => void }) {
           </li>
         ))}
       </ul>
+      <FamilyCards onPick={onPick} />
     </main>
   );
 }
@@ -200,6 +203,7 @@ function AnalysisScreen({
   people,
   allAnswers,
   onNext,
+  onBack,
 }: {
   family: Family;
   format: FormatId;
@@ -207,6 +211,7 @@ function AnalysisScreen({
   people: Person[];
   allAnswers: Record<number, Record<string, number>>;
   onNext: () => void;
+  onBack?: () => void;
 }) {
   const pages = analysisPages(family);
   const page = pages[step];
@@ -237,8 +242,27 @@ function AnalysisScreen({
     return () => window.removeEventListener("samepage:story-end", on);
   }, [story, step]);
   if (!page) return null;
+  // Wrapped en PC: las historias de antes y de después se ven a los lados, pequeñas y difuminadas (src/story/StoryPeek).
+  const peeks: Peek[] = story
+    ? [-2, -1, 1, 2]
+        .filter((o) => pages[step + o])
+        .map((o) => {
+          const pg = pages[step + o];
+          return {
+            offset: o,
+            label: pg.kind === "cover" ? "Your score" : pg.section.title,
+            onOpen: o === -1 ? onBack : o === 1 ? onNext : undefined,
+            node: (
+              <CoupleContext.Provider value={coupleData}>
+                <Page family={family} analysis={ANALYSIS[family.id]} page={pg} answers={allAnswers[0] ?? {}} Reveal={couple ? CoupleRevealAdapter : def.Reveal} />
+              </CoupleContext.Provider>
+            ),
+          };
+        })
+    : [];
   return (
     <main className={`content${story ? " is-story" : ""}`}>
+      {story && <StoryPeeks peeks={peeks} />}
       {story ? <StoryProgress total={pages.length} current={step} /> : <Progress total={pages.length} current={step} />}
       <div className={`reveal-slot${couple ? " is-couple" : ""}`}>
         <CoupleContext.Provider value={coupleData}>
@@ -396,7 +420,7 @@ export default function App() {
         ) : s.phase === "loading" ? (
           <LoadingScreen onDone={afterLoading} />
         ) : s.phase === "analysis" ? (
-          <AnalysisScreen family={family} format={format} step={s.step} people={s.people} allAnswers={s.answers} onNext={nextStep} />
+          <AnalysisScreen family={family} format={format} step={s.step} people={s.people} allAnswers={s.answers} onNext={nextStep} onBack={back} />
         ) : s.phase === "done" ? (
           <FormatChooser current={format} onChangeFormat={changeFormat} onNextSteps={() => go(() => ({ phase: "steps" as Phase }))} />
         ) : s.phase === "steps" ? (

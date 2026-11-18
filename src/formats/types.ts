@@ -3,7 +3,7 @@ import type { Analysis, Family, Person, Probe, Section } from "../data";
 
 // Un formato es una forma distinta de enseñar la MISMA información: las sondas
 // (intuición vs. plan) y el análisis completo. Solo hay cuatro: Wrapped (<30), Dashboard (30–54), Audio (55+) e Informe.
-export type FormatId = "wrapped" | "dashboard" | "audio" | "informe" | "lifeline";
+export type FormatId = "wrapped" | "dashboard" | "audio" | "informe";
 
 export type RevealProps = {
   family: Family;
