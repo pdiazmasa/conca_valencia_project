@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ANALYSIS, FAMILIES, SECTION_OF_PROBE, formatValue, peopleOf, type Family, type Person } from "./data";
 import { FORMATS, formatForAge, type FormatId } from "./formats";
 import { DashboardPage } from "./formats/DashboardPage";
@@ -219,9 +219,24 @@ function AnalysisScreen({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [couple, people, allAnswers, family.id],
   );
-  if (!page) return null;
   // Wrapped se ve como historias de Instagram: pantalla completa en móvil y barras que se llenan tarjeta a tarjeta.
+  // Sin botón Next: se pasa de historia al tocar después de la última tarjeta (evento "samepage:story-end").
   const story = format === "wrapped";
+  const ended = useRef(false);
+  const next = useRef(onNext);
+  next.current = onNext;
+  useEffect(() => {
+    ended.current = false;
+    if (!story) return;
+    const on = () => {
+      if (ended.current) return;
+      ended.current = true;
+      next.current();
+    };
+    window.addEventListener("samepage:story-end", on);
+    return () => window.removeEventListener("samepage:story-end", on);
+  }, [story, step]);
+  if (!page) return null;
   return (
     <main className={`content${story ? " is-story" : ""}`}>
       {story ? <StoryProgress total={pages.length} current={step} /> : <Progress total={pages.length} current={step} />}
@@ -230,11 +245,13 @@ function AnalysisScreen({
           <Page family={family} analysis={ANALYSIS[family.id]} page={page} answers={allAnswers[0] ?? {}} Reveal={couple ? CoupleRevealAdapter : def.Reveal} />
         </CoupleContext.Provider>
       </div>
-      <div className="actions">
-        <button type="button" className="pill pill-filled" onClick={onNext}>
-          {step >= pages.length - 1 ? "Finish" : "Next"}
-        </button>
-      </div>
+      {!story && (
+        <div className="actions">
+          <button type="button" className="pill pill-filled" onClick={onNext}>
+            {step >= pages.length - 1 ? "Finish" : "Next"}
+          </button>
+        </div>
+      )}
     </main>
   );
 }

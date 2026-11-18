@@ -1926,12 +1926,19 @@ function StoryEngine({ n, render, light, label, hasMore, more, startAt }: { n: n
     window.dispatchEvent(new CustomEvent("samepage:story", { detail: { idx: s.idx, n } }));
   }, [s.idx, n]);
 
+  // Al pasar de la última tarjeta se avisa a la app para que salte a la siguiente historia (no hay botón Next).
+  const finish = () => {
+    if (busy.current || sheet || moreOpen) return;
+    window.dispatchEvent(new CustomEvent("samepage:story-end"));
+  };
+
   const onTap = (e: MouseEvent<HTMLDivElement>) => {
     if ((e.target as HTMLElement).closest("[data-nohit]") || sheet || moreOpen) return;
     const rect = e.currentTarget.getBoundingClientRect();
     if (e.clientX - rect.left < rect.width * 0.28) goTo(s.idx - 1);
     else if (s.idx === n - 1) {
       if (hasMore) wrap.current?.nextElementSibling?.scrollIntoView({ behavior: "smooth", block: "start" });
+      else finish();
     } else goTo(s.idx + 1);
   };
   const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -1942,7 +1949,8 @@ function StoryEngine({ n, render, light, label, hasMore, more, startAt }: { n: n
     if (e.target !== e.currentTarget || moreOpen) return;
     if (e.key === "ArrowRight" || e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      goTo(s.idx + 1);
+      if (s.idx === n - 1 && !hasMore) finish();
+      else goTo(s.idx + 1);
     } else if (e.key === "ArrowLeft") {
       e.preventDefault();
       goTo(s.idx - 1);
@@ -1968,7 +1976,7 @@ function StoryEngine({ n, render, light, label, hasMore, more, startAt }: { n: n
             ))}
           </div>
           <div className="ws-hint" style={{ color: fg }} aria-hidden="true">
-            {s.idx === n - 1 ? (hasMore ? "Scroll for the details ↓" : "") : "Tap"}
+            {s.idx === n - 1 ? (hasMore ? "Scroll for the details ↓" : "Tap to continue") : "Tap"}
           </div>
           <div className={`ws-sheet${sheet ? " open" : ""}`} data-nohit onClick={(e) => e.stopPropagation()}>
             {sheet && (
